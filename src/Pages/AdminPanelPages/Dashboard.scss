@@ -1,0 +1,47 @@
+/* Dashboard.css */
+
+.dashboard {
+    // display: flex;
+    height: 100vh; /* Adjust this as needed */
+  }
+  
+  .sidebar {
+    // width: 250px; /* Width of the sidebar */
+    background-color: #333; /* Sidebar background color */
+    color: white; /* Text color */
+    padding: 20px;
+  }
+  .Card {
+    border-radius: 10px;
+    // width: 20%;
+    // padding: 2%;
+    text-align: center;
+    background: white;
+    border: 1px solid;
+    border-color: beige;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+ }
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .sidebar ul li:hover {
+    color: yellow; /* Change color on hover */
+  }
+  
+  .main-content {
+    flex: 1;
+    display: flex;
+    gap:3;
+    flex-direction: row;
+    padding: 20px;
+  }
+  
+
+  

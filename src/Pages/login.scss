@@ -1,0 +1,240 @@
+.container {
+   width: 100%;
+   height: 100%;
+}
+
+.card-position {
+   top: 10px;
+   left: 600px;
+   position: absolute;
+}
+
+.button-color {
+   width: 120%;
+   padding: 4px;
+   border-radius: 50px;
+   background-color: #6D00C2;
+
+}
+
+.button-color:hover {
+   border-radius: 50px;
+   background-color: #6D00C2;
+   width: 120%;
+   padding: 4px;
+
+}
+
+.order-button {
+   width: 60%;
+   padding: 4px;
+   border-radius: 50px;
+   color: #6D00C2;
+   border-color: #6D00C2;
+   background-color: white;
+
+
+}
+
+.order-button:hover {
+   border-radius: 50px;
+   color: #6D00C2;
+   border-color: #6D00C2;
+   background-color: white;
+   width: 60%;
+   padding: 4px;
+
+}
+
+
+
+.middle-card {
+   border-radius: 10px;
+   left: 10%;
+   // right:10%;
+   top: 8%;
+   // bottom: 60%;
+   width: 80%;
+   padding: 5%;
+   background: white;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.coffeeCard {
+   border-radius: 10px;
+   width: 20%;
+   padding: 2%;
+   text-align: center;
+   background-color: transparent;
+   border: 1px solid;
+   border-color: beige;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+}
+
+.coffeeCard:active {
+   border-radius: 10px;
+   width: 20%;
+   padding: 2%;
+   text-align: center;
+   background: white;
+   border: 1px solid;
+   border-color: #6D00C2;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+}
+
+.coffeeCard:focus-visible {
+   border-radius: 10px;
+   width: 20%;
+   padding: 2%;
+   text-align: center;
+   background: white;
+   border: 1px solid #6D00C2;
+   border-color: #6D00C2;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.bowl-card {
+   // border-radius: 10px;
+   margin: 10px;
+   // margin-top: 50px;
+   width: 100%;
+   padding: 4%;
+   align-items: center;
+   background: rgb(246, 246, 246);
+   border: 1px solid;
+   border-color: beige;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.snacksCard {
+   border-radius: 10px;
+   width: 20%;
+   padding: 2%;
+   text-align: center;
+   background: white;
+   border: 1px solid;
+   border-color: beige;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.snacksCard:active {
+   border-radius: 10px;
+   width: 20%;
+   padding: 2%;
+   text-align: center;
+   background: white;
+   border: 1px solid;
+   border-color: #6D00C2;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.lunchCard {
+   border-radius: 10px;
+   width: 20%;
+   padding: 2%;
+   text-align: center;
+   background: white;
+   border: 1px solid;
+   border-color: beige;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.lunchCard:active {
+   border-radius: 10px;
+   width: 20%;
+   padding: 2%;
+   text-align: center;
+   background: white;
+   border: 1px solid;
+   border-color: #6D00C2;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.gapBT {
+   gap: 400px;
+}
+
+.lower-div {
+   margin-top: 15%;
+   margin-bottom: 5%;
+}
+
+.color {
+   color: #6D00C2;
+}
+
+.btn-submit {
+   border-radius: 50px;
+   color: white;
+   border-color: #6D00C2;
+   background-color: #6D00C2;
+   width: 100%;
+   padding: 4px;
+}
+
+.btn-submit:hover {
+   border-radius: 50px;
+   color: white;
+   border-color: #6D00C2;
+   background-color: #6D00C2;
+   width: 100%;
+   padding: 4px;
+}
+
+.breakfast-box {
+
+   width: 148px;
+   height: 80px;
+   border-radius: 5px;
+   text-align: center;
+   // padding: 20px;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+
+}
+
+.breakfast-box:active {
+
+   width: 148px;
+   height: 80px;
+   border-color: #6D00C2;
+   border-radius: 5px;
+   border: 1px solid;
+   text-align: center;
+   // padding: 20px;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+
+}
+
+.loader1 {
+   width: 100%;
+   // height: 100vh;
+   position: fixed;
+   // inset: 0;
+   opacity: 0.5;
+   z-index: 9999;
+   // background-color: #000;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   transition: ease all 0.3s;
+   top: 200px;
+
+
+}
+
+.footer {
+   display: flex;
+   background-color: #484848;
+   // text-align: center;
+   align-items: center;
+   justify-content: center;
+   height: 70px;
+   color: aliceblue;
+}
+.cartIconColor{
+   color: grey;
+}
