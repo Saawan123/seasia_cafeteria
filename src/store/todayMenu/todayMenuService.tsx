@@ -21,9 +21,10 @@ export const todaysMenu = async (data: any) => {
 };
 
 export const UsersListDetails = async (data: any) => {
+  let {currentPage, limit} = data;
   try {
     const response = await axios
-      .get(`${BASE_URL}admin/listUsers`, getToken())
+      .get(`${BASE_URL}admin/listUsers?currentPage=${currentPage ? currentPage : ""}&limit=${limit? limit :10}`, getToken())
       .then((data: any) => {
         return data;
       })

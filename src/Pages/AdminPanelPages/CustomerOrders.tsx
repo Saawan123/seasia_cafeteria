@@ -118,7 +118,7 @@ const UserList = () => {
   );
   useEffect(() => {
 
-    dispatch(CustomerListData({ emp_id: 3751 }));
+    dispatch(CustomerListData({ }));
   }, []);
   return (
     <div>

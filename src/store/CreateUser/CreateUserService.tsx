@@ -7,7 +7,7 @@ export const BASE_URL = import.meta.env.VITE_BASE_URL;
 export const CreateUserList = async (data: any) => {
   try {
     const response = await axios
-      .post(`${BASE_URL}createUser`,data, getToken())
+      .post(`${BASE_URL}admin/createUser`,data, getToken())
       .then((data: any) => {
         return data;
       })

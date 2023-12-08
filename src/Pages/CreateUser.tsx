@@ -1,204 +1,99 @@
-// import { Formik, Form, Field, ErrorMessage } from 'formik';
-// import * as Yup from 'yup';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { AppDispatch } from '../store/store';
-// import { CreateUserData } from '../store/CreateUser/CreateUserSlice';
-// const SimpleForm = () => {
-//   const dispatch = useDispatch<AppDispatch>();
-//   const { createUser} = useSelector((state: any) => state?.createUserDataList);
-//   console.log(createUser,"tstsststststs")
-//   const validationSchema = Yup.object().shape({
-//     name: Yup.string().required('Name is required'),
-    // role: Yup.string().required('Role is required'),
-    // email: Yup.string().email('Invalid email').required('Email is required'),
-//   });
-  
-//   const onSubmit = ({values,  resetForm}:any ) => {
-//    dispatch(CreateUserData({}))
-//     console.log(values);
-//     resetForm();
-//   };
-//   const initialValues = {
-//     first_name: '',
-//     last_name: '',
-//     role: '',
-//     email:'',
-//   };
-
-
-//   return (
-    
-//     <div>
-//       <h1>Simple Form</h1>
-//       <Formik
-//         initialValues={initialValues}
-//         validationSchema={validationSchema}
-//         onSubmit={onSubmit}
-//       >
-//         {({  }) => (
-//           <Form>
-//             <div>
-//               <label htmlFor="name">First Name:</label>
-//               <Field type="text" id="name" name="first_name" />
-//               <label htmlFor="name">Last Name:</label>
-
-//               <Field type="text" id="name" name="last_name" />
-//               <ErrorMessage name="name" component="div" className="error" />
-//             </div>
-//             <div>
-//               <label htmlFor="role">Role:</label>
-//               <Field type="text" id="role" name="role" />
-//               <ErrorMessage name="role" component="div" className="error" />
-//             </div>
-//             <div>
-//               <label htmlFor="email">Email:</label>
-//               <Field type="email" id="email" name="email" />
-//               <ErrorMessage name="email" component="div" className="error" />
-//             </div>
-//             <button type="submit">Submit</button>
-//           </Form>
-//         )}
-//       </Formik>
-//     </div>
-//   );
-// };
-
-// export default SimpleForm;
-
-import { Form } from "react-bootstrap";
-import { useFormik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
-import * as yup from "yup";
-import { AppDispatch } from "../store/store";
-import { CreateUserData } from "../store/CreateUser/CreateUserSlice";
-import UserInput from "../components/UserInput";
-import { useCallback, useMemo } from "react";
-import SelectOption from "../components/SelectOption";
-
-export default function CreateUser({ id}: any) {
-
-  let initialValue = {
-    first_name: "",
-    last_name: "",
-    role: "",
-    email: "",
-   
-  };
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../store/store';
+import "./AdminPanelPages/createUser.scss"
+import { CreateUserData } from '../store/CreateUser/CreateUserSlice';
+import ToastifyShow from '../components/ToastifyShow';
+const CreateUser = ({ closeModal }: any) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { createUser} = useSelector((state: any) => state?.createUserDataList);
-  const { userLists ,loading} = useSelector((state: any) => state?.MenuListToday);
+  const { createUser } = useSelector((state: any) => state?.createUserDataList);
+  console.log(createUser, "tstsststststs")
+  const validationSchema = Yup.object().shape({
+    emp_id: Yup.number().required('Employee ID is required'),
+    first_name: Yup.string().required('First Name is required'),
+    last_name: Yup.string().required('Last Name is required'),
+    role: Yup.string().required('Role is required'),
+    email: Yup.string().email('Invalid email').required('Email is required'),
+  });
 
-  // useEffect(() => {
-  //   dispatch(CreateUserData({ }))
-  // }, [id]);
-  const handleSubmit = async (data: any) => {
-    let arr = {
-      ...formik?.values,
-      first_name: formik?.values?.first_name,
-      last_name: formik?.values?.last_name,
-      role: formik?.values?.role,
-      email: formik?.values?.email,
-     
-    };
-    if (id) {
-      try {
-        if (!userLists) {
-          await dispatch(CreateUserData(arr));
-       
-        } 
-      } catch (error) {
-        console.error(error);
-      }
+  const onSubmit: any = async (values: any, { resetForm }: any) => {
+    console.log('Submit button clicked');
+    try {
+
+      await dispatch(CreateUserData(values));
+
+
+      closeModal(); 
+      ToastifyShow("User Create Successfully","success")
+      resetForm();
+    } catch (error) {
+      console.error('Error creating user:', error);
+      // Handle error if needed
     }
   };
-  const handleOption = useCallback((formData: any, name1: any) => {
-    formik.setFieldValue(name1, formData);
-  }, []);
-  const optionsList2 = useMemo(
-    () => [
-      { value: "User", label: "User" },
-      { value: "Admin", label: "Admin" },
-    ],
-    []
-  );
-  const schema = yup.object().shape({
-    first_name: yup
-    .string()
-      .nullable(),
-    last_name: yup
-      .number()
-      .integer()
-      .nullable(),
-      role: yup.string().required('Role is required'),
-      email: yup.string().email('Invalid email').required('Email is required'),
-
-  });
-
-  const formik: any = useFormik({
-    initialValues: initialValue,
-    validationSchema: schema,
-    onSubmit: handleSubmit,
-  });
-
-
-  const handleInput = (e:any) => {
-    let { value, name } = e.target;
-    if (/^\d*$/.test(value) && value.length < 40) {
-      formik.setFieldValue(name, value);
-    }
+  const initialValues = {
+    emp_id: '',
+    first_name: '',
+    last_name: '',
+    role: '',
+    email: '',
   };
 
 
   return (
-    <div >  
-    
-      <Form onSubmit={formik.handleSubmit}>
-        <div className="row gy-3 mt-4">
-          <div className="col-md-6">
-            <UserInput
-              name="first_name"
-              labelname="First Name"
-              placeholder="Type here"
-              showValue={formik.values.first_name}
-              addValue={handleInput}
-              error={formik.errors.first_name}
-            />
-          </div>
-          <div className="col-md-6">
-            <UserInput
-              name="last_name"
-              labelname="Last Name"
-              placeholder="Type here"
-              showValue={formik?.values?.last_name}
-              addValue={handleInput}
-              error={formik.errors.last_name}
-            />
-          </div>
+    <div className="form-container">
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+      >
+        {({ errors, touched }) => (
+          <Form className="form-row" >
+            {/* <h1>Create User</h1> */}
+            <div className='row'>
 
-          <div className="col-md-6">
-          <SelectOption
-              optionsList={optionsList2}
-              name="role"
-              isSearchable={true}
-              labelText="Role"
-              optionValue={formik?.values?.role}
-              addValue={handleOption}
-            />
-          </div>
-          <div className="col-md-6">
-            <UserInput
-              name="email"
-              labelname="Email"
-              placeholder="Type here"
-              showValue={formik?.values?.email}
-              addValue={handleInput}
-              error={formik.errors.email}
-            />
-          </div>            
+            <div className='col-md-12'>
+
+            <label htmlFor="emp_id">Employee ID:</label>
+            <Field type="number" id="emp_id" name="emp_id" className={errors.emp_id && touched.emp_id ? 'input-error' : 'ms-5'} />
+            <ErrorMessage name="emp_id" component="div" className="error-message" />
+            </div>
+            <div className='col-md-6'>
+
+              <label htmlFor="first_name" className='mt-2 '>First Name:</label>
+              <Field type="text" id="first_name" name="first_name" className={errors.first_name && touched.first_name ? 'input-error' : ''} />
+              <ErrorMessage name="first_name" component="div" className="error-message" />
+            </div>
+              <div className='col-md-6'>
+
+              <label htmlFor="last_name" className='mt-2'>Last Name:</label>
+              <Field type="text" id="last_name" name="last_name" className={errors.last_name && touched.last_name ? 'input-error' : ''} />
+              <ErrorMessage name="last_name" component="div" className="error-message" />
+              </div>
+              <div className='col-md-6'>
+  <label htmlFor="role">Role:</label><br/>
+  <Field as="select" id="role" name="role" className={errors.role && touched.role ? 'input-error' : 'mt-2 w-100 hh'}>
+    <option value="">Select a role</option>
+    <option value="option1">Admin</option>
+    <option value="option2">User</option>
+  </Field>
+  <ErrorMessage name="role" component="div" className="error-message" />
+</div>
+              <div className='col-md-6 mb-4'>
+
+              <label htmlFor="email">Email:</label>
+              <Field type="email" id="email" name="email" className={errors.email && touched.email ? 'input-error' : ''} />
+              <ErrorMessage name="email" component="div" className="error-message" />
+              </div>
          
-        </div>
-      </Form>
-
+            <button type="submit" className="submit-button">Submit</button>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
-}
+};
+
+export default CreateUser;

@@ -15,8 +15,14 @@ const UserList = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [showModal, setShowModal] = useState(false);
-  const { userLists ,loading} = useSelector((state: any) => state?.MenuListToday);
-  console.log(userLists?.data, "userrrrrr")
+  const { userLists, loading } = useSelector((state: any) => state?.MenuListToday);
+  console.log(userLists?.data, "userrrrrr");
+  const [paginationPerDetails, setPaginationPerDetails] = useState({
+    perPage: 10,
+    currentPage: 0,
+  });
+  const { perPage, currentPage } = paginationPerDetails;
+
   const columns: any = useMemo(
     () => [
       // {
@@ -76,66 +82,56 @@ const UserList = () => {
     []
   );
   useEffect(() => {
-    dispatch(UsersListData({}));
-  }, [])
-  const onSubmit = async (values: any, { resetForm }: any) => {
-    try {
-      await dispatch(CreateUserData(values));
-      console.log("User created:", values);
-      resetForm();
-    } catch (error) {
-      console.error("Error creating user:", error);
-    }
-  };
-
+    dispatch(UsersListData({ limit: perPage, currentPage: currentPage }));
+  }, [paginationPerDetails])
 
 
   return (
     <div>
       <Button
-                  // type="submit"
-                  onClick={()=>setShowModal(true)}
-                  size="lg"
-                  data-testid="loginBtn"
-                  className="button-color fs-6 fw-bold w-25 mt-4 ms-3"
-                >
-                  Create User
-                </Button>
-                
-                <ModalShow
-                  handleView={showModal}
-                  handleClose={() => {
-                    setShowModal(false)
-                  }}
-                  title="Login"
-                  title1={
-                    <CreateUser/>
-                  }
-                  title2="Submit"
-                  handleApi={()=>{
+        // type="submit"
+        onClick={() => setShowModal(true)}
+        size="lg"
+        data-testid="loginBtn"
+        className="button-color fs-6 fw-bold w-25 mt-4 ms-3"
+      >
+        Create User
+      </Button>
 
-                    setShowModal(false),
-                    ToastifyShow("User Created successfully","success")
-                  }
-                  //   async()=>{
-                  //   await dispatch()
-                  // }
-                }
-                />
-              
+      <ModalShow
+        handleView={showModal}
+        size="md"
+        handleClose={() => {
+          setShowModal(false)
+        }}
+        title="Login"
+        title1={
+          <CreateUser closeModal={() => setShowModal(false)} /> 
+
+        }
+        // title2="Submit"
+        handleApi={
+      
+""
+        }
+      />
+
       <DataTable
         columns={columns}
         data={userLists?.data}
         pagination
-        // paginationPerPage={FranchiseDocList?.per_page}
+        paginationPerPage={paginationPerDetails?.perPage}
+          noDataComponent="No items found matching the search criteria"
+          
         responsive
         paginationServer
-        // onChangeRowsPerPage={(data) => {
-        //   setPaginationPerDetails({
-        //     ...paginationPerDetails,
-        //     perPage: data,
-        //   });
-        // }}
+        onChangeRowsPerPage={(data) => {
+          console.log(data, 'dataaaa11111')
+          setPaginationPerDetails({
+            ...paginationPerDetails,
+            perPage: data,
+          });
+        }}
         progressPending={loading == "pending" ? true : false}
         progressComponent={
           <div className="py-5 my-5">
@@ -143,17 +139,18 @@ const UserList = () => {
           </div>
         }
         selectableRowsHighlight={true}
-        paginationRowsPerPageOptions={[5, 10, 15, 20, 25]}
-        // paginationTotalRows={FranchiseDocList?.total}
+        paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
+        paginationTotalRows={userLists?.totalRecords}
         highlightOnHover={true}
         fixedHeader
         fixedHeaderScrollHeight="550px"
-      // onChangePage={(data) => {
-      //   setPaginationPerDetails({
-      //     ...paginationPerDetails,
-      //     page: data,
-      //   });
-      // }}
+        onChangePage={(data) => {
+          console.log(data, "data222222")
+          setPaginationPerDetails({
+            ...paginationPerDetails,
+            currentPage: data,
+          });
+        }}
       />
     </div>
   )
