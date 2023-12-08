@@ -17,6 +17,7 @@ import {
 
 import { AppDispatch } from "../store/store";
 import "./sidebar.scss";
+import ToastifyShow from "./ToastifyShow";
 
 const Sidebar = () => {
   const [toggle, setToggle] = useState(false);
@@ -54,8 +55,8 @@ const Sidebar = () => {
       icon: settingIcon,
       link: "/",
       onClick: () => {
-        localStorage.clear(); // Clear the localStorage
-        // Additional actions related to logout can be placed here if needed
+        localStorage.clear(); 
+       ToastifyShow("Logout successfully","success")
       },
     },
   ];
@@ -105,7 +106,7 @@ const Sidebar = () => {
       <NavLink
         to={item.link}
         className="nav-link"
-        onClick={item.onClick} // Adding the onClick event handler
+        onClick={item.onClick} 
       >
         <span>{item.icon}</span>
         <span>{!toggle ? item.name : ""}</span>
