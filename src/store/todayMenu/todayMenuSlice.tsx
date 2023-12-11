@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { CustomerListDetails, UsersListDetails, todaysMenu } from "./todayMenuService";
+import { CustomerListDetails, UsersListDetails, addSubMenu, todaysMenu } from "./todayMenuService";
 
 
 interface UsersState {
   menusList: any;
   userLists:any;
+  subMenuAddList:any;
   customerOrders:any;
   loading: "idle" | "pending" | "succeeded" | "failed";
   error: boolean;
@@ -12,6 +13,7 @@ interface UsersState {
 
 const initialState = {
   menusList: {},
+  subMenuAddList:{},
   userLists:{},
   customerOrders:{},
   error: false,
@@ -77,6 +79,25 @@ console.log(data,"111111")
   }
 );
 
+export const AddSubMenuListData = createAsyncThunk(
+  "addSubMenu/lists",
+  async (data: any, thunkAPI: any) => {
+    try {
+      const response = await addSubMenu(data);
+      return response;
+    } catch (error: any) {
+
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.string();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const todayMenuSlice:any = createSlice({
   name: "Today menu",
   initialState,
@@ -129,6 +150,23 @@ const todayMenuSlice:any = createSlice({
             state.error = false;
           }),
           builder.addCase(CustomerListData.rejected, (state, action) => {
+            state.loading = "failed";
+            state.error = true;
+          });
+
+
+          //add sub menu
+
+        builder.addCase(AddSubMenuListData.pending, (state, action) => {
+          state.loading = "pending";
+          state.customerOrders = {};
+        }),
+          builder.addCase(AddSubMenuListData.fulfilled, (state, action) => {
+            state.loading = "succeeded";
+            state.customerOrders = action.payload;
+            state.error = false;
+          }),
+          builder.addCase(AddSubMenuListData.rejected, (state, action) => {
             state.loading = "failed";
             state.error = true;
           });

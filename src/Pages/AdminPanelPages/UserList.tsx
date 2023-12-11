@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Button, Form, Modal, Spinner } from 'react-bootstrap';
+import { Button,  Spinner } from 'react-bootstrap';
 import DataTable from "react-data-table-component";
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store/store';
@@ -9,8 +9,6 @@ import Icon from '../../components/Icon';
 import ModalShow from '../../components/ModalShow';
 import CreateUser from '../CreateUser';
 import "../login.scss"
-import ToastifyShow from '../../components/ToastifyShow';
-import { CreateUserData } from '../../store/CreateUser/CreateUserSlice';
 const UserList = () => {
   const dispatch = useDispatch<AppDispatch>();
 

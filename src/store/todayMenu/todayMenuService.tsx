@@ -7,7 +7,7 @@ export const BASE_URL = import.meta.env.VITE_BASE_URL;
 export const todaysMenu = async (data: any) => {
   try {
     const response = await axios
-      .get(`${BASE_URL}listTodayMenu`, getToken())
+      .get(`${BASE_URL}admin/listSubMenu`, getToken())
       .then((data: any) => {
         return data;
       })
@@ -19,7 +19,21 @@ export const todaysMenu = async (data: any) => {
     throw err;
   }
 };
-
+export const addSubMenu = async (data: any) => {
+  try {
+    const response = await axios
+      .post(`${BASE_URL}admin/addSubMenu`,data, getToken())
+      .then((data: any) => {
+        return data;
+      })
+      .catch((error: any) => {
+        return error;
+      });
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+};
 export const UsersListDetails = async (data: any) => {
   let {currentPage, limit} = data;
   try {

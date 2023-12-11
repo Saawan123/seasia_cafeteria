@@ -152,12 +152,12 @@ const Login = ({ data }: any) => {
 />
         {drawerOpen && <BackDrop closeDrawer={handleBackdropClick} />}
         <div className="upper-right-div d-flex gap-4 mt-4 p-4">
-          <div>
+          <div >
   
           <Icon
   icon={cartIcon}
   action={showLoginButton ? sendLogin : handleOpenDrawerButton}
-  styleClass={showLoginButton ? "disabled-icon cursor-not-allowed cartIconColor" : "cursor-pointer"}
+  styleClass={showLoginButton ? "disabled-icon cursor-not-allowed " : "cursor-pointer"}
 />{orderItems.length > 0 && (
           <span className="cart-item-count position-absolute">{orderItems.length}</span>
         )}
