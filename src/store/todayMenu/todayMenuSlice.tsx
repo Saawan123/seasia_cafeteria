@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { CustomerListDetails, UsersListDetails, addSubMenu, todaysMenu } from "./todayMenuService";
+import { CustomerListDetails, PendingListDetails, UsersListDetails, addSubMenu, todaysMenu, updateSubMenu } from "./todayMenuService";
 
 
 interface UsersState {
   menusList: any;
   userLists:any;
   subMenuAddList:any;
+  subMenuUpdateList:any;
   customerOrders:any;
+  pendingOrders:any;
   loading: "idle" | "pending" | "succeeded" | "failed";
   error: boolean;
 }
@@ -14,8 +16,10 @@ interface UsersState {
 const initialState = {
   menusList: {},
   subMenuAddList:{},
+  subMenuUpdateList:{},
   userLists:{},
   customerOrders:{},
+  pendingOrders:{},
   error: false,
 } as UsersState;
 
@@ -79,11 +83,54 @@ console.log(data,"111111")
   }
 );
 
+
+export const PendingOrderListData = createAsyncThunk(
+  "pendingOrder/lists",
+  async (data: any, thunkAPI: any) => {
+    console.log(data,"dataaaaaa")
+    try {
+console.log(data,"111111")
+      const response = await PendingListDetails(data);
+      console.log(response,"gfgfgfgfgf")
+      return response;
+    } catch (error: any) {
+      console.log("22222")
+
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.string();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const AddSubMenuListData = createAsyncThunk(
   "addSubMenu/lists",
   async (data: any, thunkAPI: any) => {
     try {
       const response = await addSubMenu(data);
+      return response;
+    } catch (error: any) {
+
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.string();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const UpdateSubMenuListData = createAsyncThunk(
+  "updateSubMenu/lists",
+  async (data: any, thunkAPI: any) => {
+    try {
+      const response = await updateSubMenu(data);
       return response;
     } catch (error: any) {
 
@@ -154,22 +201,50 @@ const todayMenuSlice:any = createSlice({
             state.error = true;
           });
 
-
+          
+          // pending order List
+          builder.addCase(PendingOrderListData.pending, (state, action) => {
+            state.loading = "pending";
+            state.pendingOrders = {};
+          }),
+            builder.addCase(PendingOrderListData.fulfilled, (state, action) => {
+              state.loading = "succeeded";
+              state.pendingOrders = action.payload;
+              state.error = false;
+            }),
+            builder.addCase(PendingOrderListData.rejected, (state, action) => {
+              state.loading = "failed";
+              state.error = true;
+            });
           //add sub menu
 
         builder.addCase(AddSubMenuListData.pending, (state, action) => {
           state.loading = "pending";
-          state.customerOrders = {};
+          state.subMenuAddList = {};
         }),
           builder.addCase(AddSubMenuListData.fulfilled, (state, action) => {
             state.loading = "succeeded";
-            state.customerOrders = action.payload;
+            state.subMenuAddList = action.payload;
             state.error = false;
           }),
           builder.addCase(AddSubMenuListData.rejected, (state, action) => {
             state.loading = "failed";
             state.error = true;
           });
+//update sub menu
+          builder.addCase(UpdateSubMenuListData.pending, (state, action) => {
+            state.loading = "pending";
+            state.subMenuUpdateList = {};
+          }),
+            builder.addCase(UpdateSubMenuListData.fulfilled, (state, action) => {
+              state.loading = "succeeded";
+              state.subMenuUpdateList = action.payload;
+              state.error = false;
+            }),
+            builder.addCase(UpdateSubMenuListData.rejected, (state, action) => {
+              state.loading = "failed";
+              state.error = true;
+            });
     }
 });
 export const { reset } = todayMenuSlice.actions;

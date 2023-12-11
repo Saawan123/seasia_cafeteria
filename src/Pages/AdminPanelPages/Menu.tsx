@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Nav, NavItem, NavLink } from "reactstrap"; // Assuming you're using Reactstrap or Bootstrap
+import { Button, Nav, NavItem, NavLink } from "reactstrap"; // Assuming you're using Reactstrap or Bootstrap
 // import {
 //   activeCoffeeIcon,
 //   activeLunchIcon,
@@ -14,11 +14,16 @@ import { AppDispatch } from "../../store/store";
 import { TodaysMenuListData } from "../../store/todayMenu/todayMenuSlice";
 import { MenuListData } from "../../store/Menu/menuSlice";
 import "../login.scss";
+import Icon from "../../components/Icon";
+import { EditIcon } from "../../lib/icon";
+import ModalShow from "../../components/ModalShow";
+import AddSubMenu from "../AddSubMenu";
 
 const Menu = () => {
   const { menusList } = useSelector((state: any) => state?.MenuListToday);
   const [selectedMenuItem, setSelectedMenuItem] = useState("Breakfast");
   const [orderItems, setOrderItems] = useState<string[]>([]);
+  const [showModal, setShowModal] = useState(false);
   const [activeMenu, setActiveMenu] = useState("");
   const dispatch = useDispatch<AppDispatch>();
 
@@ -71,6 +76,32 @@ const Menu = () => {
       <div className=" ms-5  flex-column  row gap-5 mx-4 ">
         <div className="d-flex justify-content-between gap-5">
           <div className="fs-5 fw-bold ">{selectedMenuItem}</div>
+      <Button
+        type="submit"
+        onClick={() => setShowModal(true)}
+        size="lg"
+        data-testid="loginBtn"
+        className="button-color fs-6 fw-bold w-25 mt-4 ms-3"
+      >
+        Add Sub Menu
+      </Button>
+      <ModalShow
+        handleView={showModal}
+        size="md"
+        handleClose={() => {
+          setShowModal(false)
+        }}
+        title="Login"
+        title1={
+          <AddSubMenu closeModal={() => setShowModal(false)} /> 
+
+        }
+        // title2="Submit"
+        handleApi={
+      
+""
+        }
+      />
           <div className="gap-5 ms-5">
             Timing :{" "}
             {activeMenu == "Breakfast"
@@ -84,19 +115,24 @@ const Menu = () => {
         </div>
       <div className=" row gap-4 ">
       
-      
             {menusList?.data?.map((menu: any) => {
               if (menu.title === selectedMenuItem) {
                 return menu.items.map((item: any) => (
                   <div
-                    className="breakfast-box"
-                    onClick={() =>
-                      addItemToOrder(item?.item_name + " ₹" + item?.price)
-                    }
-                    key={item._id}
+                  className="breakfast-box h-100"
+                  onClick={() =>
+                    addItemToOrder(item?.item_name + " ₹" + item?.price)
+                  }
+                  key={item._id}
                   >
+
                     <p className="color">{item.item_name}</p>
                     <p>Price: ${item.price}</p>
+                              <Icon
+                              
+                icon={EditIcon}
+                action={() => setShowModal(true)}
+                />
                   </div>
                 ));
               }

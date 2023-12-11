@@ -34,6 +34,23 @@ export const addSubMenu = async (data: any) => {
     throw err;
   }
 };
+
+
+export const updateSubMenu = async (data: any) => {
+  try {
+    const response = await axios
+      .post(`${BASE_URL}admin/updateSubMenu`,data, getToken())
+      .then((data: any) => {
+        return data;
+      })
+      .catch((error: any) => {
+        return error;
+      });
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+};
 export const UsersListDetails = async (data: any) => {
   let {currentPage, limit} = data;
   try {
@@ -76,6 +93,31 @@ export const CustomerListDetails = async (data: any) => {
   }
 };
 
+
+export const PendingListDetails = async (data: any) => {
+  console.log(data,"lllllll")
+  try {
+    console.log(data,"5353466")
+    const token = `Bearer ${localStorage.getItem('token')}`;
+    const response = await axios.get(`${BASE_URL}admin/pendingOrderList`, {
+      headers: {
+        Authorization: token,
+      }})
+      
+      .then((data: any) => {
+        console.log(token,"sefsdgdg")
+        return data;
+      })
+      .catch((error: any) => {
+        console.log("efedrgdrgdfg")
+        return error;
+      });
+      console.log(response,"resssss")
+      return response.data;
+  } catch (err) {
+    throw err;
+  }
+};
  
   
 
