@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { CustomerListDetails, PendingListDetails, UsersListDetails, addSubMenu, todaysMenu, updateSubMenu } from "./todayMenuService";
+import { CustomerListDetails, PendingListDetails, UpdateStatusListDetails, UsersListDetails, addSubMenu, todaysMenu, updateSubMenu } from "./todayMenuService";
 
 
 interface UsersState {
   menusList: any;
+  updateStatus:any;
   userLists:any;
   subMenuAddList:any;
   subMenuUpdateList:any;
@@ -16,6 +17,7 @@ interface UsersState {
 const initialState = {
   menusList: {},
   subMenuAddList:{},
+  updateStatus:{},
   subMenuUpdateList:{},
   userLists:{},
   customerOrders:{},
@@ -95,6 +97,29 @@ console.log(data,"111111")
       return response;
     } catch (error: any) {
       console.log("22222")
+
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.string();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const UpdateStatusOrderListData = createAsyncThunk(
+  "updateStatus/lists",
+  async (data: any, thunkAPI: any) => {
+ 
+    try {
+
+      const response = await UpdateStatusListDetails(data);
+
+      return response;
+    } catch (error: any) {
+  
 
       const message =
         (error.response &&
@@ -216,6 +241,20 @@ const todayMenuSlice:any = createSlice({
               state.loading = "failed";
               state.error = true;
             });
+      //update status
+            builder.addCase(UpdateStatusOrderListData.pending, (state, action) => {
+              state.loading = "pending";
+              state.updateStatus = {};
+            }),
+              builder.addCase(UpdateStatusOrderListData.fulfilled, (state, action) => {
+                state.loading = "succeeded";
+                state.updateStatus = action.payload;
+                state.error = false;
+              }),
+              builder.addCase(UpdateStatusOrderListData.rejected, (state, action) => {
+                state.loading = "failed";
+                state.error = true;
+              });
           //add sub menu
 
         builder.addCase(AddSubMenuListData.pending, (state, action) => {

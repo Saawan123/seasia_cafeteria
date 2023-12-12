@@ -5,14 +5,15 @@ import { AppDispatch } from '../store/store';
 import "./AdminPanelPages/createUser.scss"
 import ToastifyShow from '../components/ToastifyShow';
 import { AddSubMenuListData, UpdateSubMenuListData } from '../store/todayMenu/todayMenuSlice';
-const AddSubMenu = ({ closeModal, handleAddSubMenu }: any) => {
+import { SubMenuListData } from '../store/Menu/menuSlice';
+const AddSubMenu = ({ closeModal, menuId }: any) => {
     const dispatch = useDispatch<AppDispatch>();
-    const { subMenuAddList , menusList} = useSelector((state: any) => state?.MenuListToday);
-    console.log(menusList,"sfsdfsdf")
+    const { subMenuAddList, menusList } = useSelector((state: any) => state?.MenuListToday);
+    console.log(menusList, "sfsdfsdf")
     console.log(subMenuAddList, "tstsststststs")
     const validationSchema = Yup.object().shape({
         item_name: Yup.string().required('Item name is required'),
-        menu_id: Yup.string().required('Menu_Id is required'),
+        // menu_id: Yup.string().required('Menu_Id is required'),
         price: Yup.string().required('Price is required'),
         quantity: Yup.string().required('Quantity is required'),
     });
@@ -22,8 +23,10 @@ const AddSubMenu = ({ closeModal, handleAddSubMenu }: any) => {
         try {
 
             await dispatch(AddSubMenuListData(values));
-            await dispatch(UpdateSubMenuListData(values));
+            // await dispatch(UpdateSubMenuListData(values));
             closeModal();
+   await dispatch(SubMenuListData(values));
+
             ToastifyShow("Sub Menu Add Successfully", "success")
             resetForm();
         } catch (error) {
@@ -33,9 +36,9 @@ const AddSubMenu = ({ closeModal, handleAddSubMenu }: any) => {
     };
     const initialValues = {
         item_name: '',
-        menu_id: '',
         price: '',
         quantity: '',
+        menu_id: menuId || '',
     };
 
 
@@ -50,12 +53,12 @@ const AddSubMenu = ({ closeModal, handleAddSubMenu }: any) => {
                     <Form className="form-row" >
                         {/* <h1>Create User</h1> */}
                         <div className='row'>
-                            <div className='col-md-6'>
+                            {/* <div className='col-md-6'>
 
                                 <label htmlFor="menu_id" className='mt-2 '>Menu Id</label>
                                 <Field type="text" id="menu_id" name="menu_id" className={errors.menu_id && touched.menu_id ? 'input-error' : ''} />
                                 <ErrorMessage name="menu_id" component="div" className="error-message" />
-                            </div>
+                            </div> */}
                             <div className='col-md-6'>
 
                                 <label htmlFor="item_name" className='mt-2'>Item Name</label>

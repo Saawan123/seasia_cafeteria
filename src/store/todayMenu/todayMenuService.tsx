@@ -7,7 +7,7 @@ export const BASE_URL = import.meta.env.VITE_BASE_URL;
 export const todaysMenu = async (data: any) => {
   try {
     const response = await axios
-      .get(`${BASE_URL}admin/listSubMenu`, getToken())
+      .get(`${BASE_URL}listTodayMenu`, getToken())
       .then((data: any) => {
         return data;
       })
@@ -19,6 +19,21 @@ export const todaysMenu = async (data: any) => {
     throw err;
   }
 };
+// export const listSubMenuList = async (data: any) => {
+//   try {
+//     const response = await axios
+//       .get(`${BASE_URL}admin/listSubMenu`, getToken())
+//       .then((data: any) => {
+//         return data;
+//       })
+//       .catch((error: any) => {
+//         return error;
+//       });
+//     return response.data;
+//   } catch (err) {
+//     throw err;
+//   }
+// };
 export const addSubMenu = async (data: any) => {
   try {
     const response = await axios
@@ -119,6 +134,28 @@ export const PendingListDetails = async (data: any) => {
   }
 };
  
+
+export const UpdateStatusListDetails = async (data: any) => {
+  console.log(data,"lllllll")
+  try {
+    let {status} = data;
+    const token = `Bearer ${localStorage.getItem('token')}`;
+    const response = await axios.post(`${BASE_URL}admin/order/updateStatus?status=${status ? status : ""}`, data,{
+      headers: {
+        Authorization: token,
+      }})
+      .then((data: any) => {
+        return data;
+      })
+      .catch((error: any) => {
+        return error;
+      });
+      
+      return response.data;
+  } catch (err) {
+    throw err;
+  }
+};
   
 
 

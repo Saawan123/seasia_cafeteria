@@ -63,18 +63,18 @@ const UserList = () => {
 
 
       },
-      {
-        name: "Operations",
+      // {
+      //   name: "Operations",
 
-        cell: ({ }: any) => <Icon
-          icon={EditIcon}
-        // action={() => {
-        //   openExcelPreview(doc_file);
-        // }}
-        />,
+      //   cell: ({ }: any) => <Icon
+      //     icon={EditIcon}
+      //   // action={() => {
+      //   //   openExcelPreview(doc_file);
+      //   // }}
+      //   />,
 
 
-      },
+      // },
 
     ],
     []
