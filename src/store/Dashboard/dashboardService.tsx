@@ -6,9 +6,9 @@ export const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const DashboardDataList = async (data: any) => {
   try {
-    // let {currentDate}:any = data;
+    let {search}:any = data;
     const response = await axios
-      .get(`${BASE_URL}admin/count`, getToken())
+      .get(`${BASE_URL}admin/count?search=${search?search:""}`, getToken())
       .then((data: any) => {
         return data;
       })

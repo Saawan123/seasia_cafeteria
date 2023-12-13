@@ -15,7 +15,7 @@ const HighChartDetails = memo((props: any) => {
         useEffect(() => {
             dispatch(DashboardData({}))
         }, [])
-        const options3 = {
+        const options1 = {
             chart: {
                 type: 'pie',
     
@@ -80,16 +80,8 @@ const HighChartDetails = memo((props: any) => {
     
                 data: [{
                     color: "#9F11C8",
-                    name: 'In Progress',
+                    name: 'Total Menus',
                     y: 68.1
-                }, {
-                    color: "#FFBE0B",
-                    name: 'Sold',
-                    y: 11.0
-                }, {
-                    color: "#6D00C2",
-                    name: 'Inactive',
-                    y: 11.2
                 }]
             }]
         }
@@ -159,20 +151,12 @@ const HighChartDetails = memo((props: any) => {
 
             data: [{
                 color: "#9F11C8",
-                name: 'In Progress',
+                name: 'Total Orders',
                 y: 68.1
-            }, {
-                color: "#FFBE0B",
-                name: 'Sold',
-                y: 11.0
-            }, {
-                color: "#6D00C2",
-                name: 'Inactive',
-                y: 11.2
-            }]
+            },]
         }]
     }
-    const options4 = {
+    const options3 = {
         chart: {
             type: 'pie',
 
@@ -237,20 +221,12 @@ const HighChartDetails = memo((props: any) => {
 
             data: [{
                 color: "#9F11C8",
-                name: 'In Progress',
+                name: 'Pending Orders',
                 y: 68.1
-            }, {
-                color: "#FFBE0B",
-                name: 'Sold',
-                y: 11.0
-            }, {
-                color: "#6D00C2",
-                name: 'Inactive',
-                y: 11.2
-            }]
+            },]
         }]
     }
-    const options1 = {
+    const options4 = {
         chart: {
             type: 'pie',
 
@@ -315,23 +291,15 @@ const HighChartDetails = memo((props: any) => {
 
             data: [{
                 color: "#9F11C8",
-                name: 'In Progress',
+                name: 'Total Customers',
                 y: 68.1
-            }, {
-                color: "#FFBE0B",
-                name: 'Sold',
-                y: 11.0
-            }, {
-                color: "#6D00C2",
-                name: 'Inactive',
-                y: 11.2
             }]
         }]
     }
     return (
         <HighchartsReact
             highcharts={Highcharts}
-            options={props.chart == 1 ? options1 : props.chart == 2 ? options2 :props.chart == 2? options3:options4}
+            options={props.chart == 1 ? options1 : props.chart == 2 ? options2 :props.chart == 3? options3:options4}
         />
     );
 })

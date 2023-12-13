@@ -1,31 +1,39 @@
 import { useEffect, useState } from "react";
-import { Button } from "reactstrap";
+
 import { Nav, } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store/store";
-import { TodaysMenuListData } from "../../store/todayMenu/todayMenuSlice";
+
 import "../login.scss";
 import Icon from "../../components/Icon";
-import { EditIcon } from "../../lib/icon";
-import ModalShow from "../../components/ModalShow";
-import AddSubMenu from "../AddSubMenu";
+import {  cartIcon } from "../../lib/icon";
+
 import {  SubMenuListData } from "../../store/Menu/menuSlice";
+import SlideDrawer from "../../components/slideDrawer";
+import BackDrop from "../../components/backDrop";
 
 const CustomerOrders = () => {
   const { subMenus } = useSelector((state: any) => state?.MenuList);
   const [selectedMenuItem, setSelectedMenuItem]:any = useState("Breakfast");
   const [orderItems, setOrderItems] = useState<string[]>([]);
-  const [showModal, setShowModal] = useState(false);
+
   const [activeMenu, setActiveMenu] = useState("Breakfast");
   const dispatch = useDispatch<AppDispatch>();
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     // dispatch(TodaysMenuListData({}));
     dispatch(SubMenuListData({  }));
   }, [dispatch]);
-
+  function handleOpenDrawerButton() {
+ 
+    setDrawerOpen(!drawerOpen);
+  }
+  function handleBackdropClick() {
+    setDrawerOpen(false);
+  }
   const handleMenuClick = (menuItem: string) => {
-    const selectedMenu = subMenus?.data.find((menu: any) => menu.title === menuItem);
+    const selectedMenu = subMenus?.data?.find((menu: any) => menu.title === menuItem);
     if (selectedMenu) {
       setSelectedMenuItem(selectedMenu);
       setActiveMenu(menuItem);
@@ -42,7 +50,6 @@ const CustomerOrders = () => {
 
     <Nav variant="pills" className="justify-content-around mt-4">
         <Nav.Item>
-     
 
           <Nav.Link  
            className={`${activeMenu === "Breakfast" ? "active" : ""} ` }
@@ -60,30 +67,28 @@ const CustomerOrders = () => {
             onClick={() => handleMenuClick("Snacks")}  >Snacks</Nav.Link>
         </Nav.Item>
       </Nav>
+      <div className="d-flex justify-content-end p-3">
+
+<Icon
+icon={cartIcon}
+action={handleOpenDrawerButton}
+styleClass={"cursor-pointer p-2"}
+/>{orderItems.length > 0 && (
+          <span className="cart-item-count position-absolute">{orderItems.length}</span>
+        )}
+<SlideDrawer
+  show={drawerOpen}
+  orderItems={orderItems}
+  onClose={handleBackdropClick}
+  selectedMenuItem={selectedMenuItem}
+  addItemToOrder={addItemToOrder} 
+/>
+        {drawerOpen && <BackDrop closeDrawer={handleBackdropClick} />}
+</div>
       {selectedMenuItem && (
         <div className="ms-5 flex-column row gap-5 mx-4">
           <div className="d-flex justify-content-between gap-5">
             <div className="fs-5 fw-bold">{selectedMenuItem.title}</div>
-            <Button
-              type="submit"
-              onClick={() => setShowModal(true)}
-              size="lg"
-              data-testid="loginBtn"
-              className="button-color fs-6 fw-bold w-25 mt-4 ms-3"
-            >
-              Add Sub Menu
-            </Button>
-            <ModalShow
-              handleView={showModal}
-              size="md"
-              handleClose={() => setShowModal(false)}
-              title="Login"
-              title1={<AddSubMenu
-                closeModal={() => setShowModal(false)}
-                menuId={selectedMenuItem?._id} // Pass the menuId prop
-              />}
-              handleApi={""}
-            />
             <div className="gap-5 ms-5">Timing: {selectedMenuItem.time}</div>
           </div>
           <div className="row gap-4">
@@ -95,7 +100,6 @@ const CustomerOrders = () => {
               >
                 <p className="color">{item.item_name}</p>
                 <p>Price: ${item.price}</p>
-                <Icon icon={EditIcon} action={() => setShowModal(true)} />
               </div>
             ))}
           </div>

@@ -67,10 +67,10 @@ export const updateSubMenu = async (data: any) => {
   }
 };
 export const UsersListDetails = async (data: any) => {
-  let {currentPage, limit} = data;
+  let {currentPage, limit, search} = data;
   try {
     const response = await axios
-      .get(`${BASE_URL}admin/listUsers?currentPage=${currentPage ? currentPage : ""}&limit=${limit? limit :10}`, getToken())
+      .get(`${BASE_URL}admin/listUsers?currentPage=${currentPage ? currentPage : ""}&limit=${limit? limit :10}&search=${search ? search : ""}`, getToken())
       .then((data: any) => {
         return data;
       })
@@ -86,9 +86,10 @@ export const UsersListDetails = async (data: any) => {
 export const CustomerListDetails = async (data: any) => {
   console.log(data,"lllllll")
   try {
-    console.log(data,"5353466")
+  let {currentPage, limit,search} = data;
+  console.log(data,"5353466")
     const token = `Bearer ${localStorage.getItem('token')}`;
-    const response = await axios.get(`${BASE_URL}admin/listOrder`, {
+    const response = await axios.get(`${BASE_URL}admin/listOrder?currentPage=${currentPage ? currentPage : ""}&limit=${limit? limit :10}&search=${search?search:""}`, {
       headers: {
         Authorization: token,
       }})
@@ -112,9 +113,10 @@ export const CustomerListDetails = async (data: any) => {
 export const PendingListDetails = async (data: any) => {
   console.log(data,"lllllll")
   try {
-    console.log(data,"5353466")
+  let {currentPage, limit,search} = data;
+  console.log(data,"5353466")
     const token = `Bearer ${localStorage.getItem('token')}`;
-    const response = await axios.get(`${BASE_URL}admin/pendingOrderList`, {
+    const response = await axios.get(`${BASE_URL}admin/pendingOrderList?currentPage=${currentPage ? currentPage : ""}&limit=${limit? limit :10}&search=${search?search:""}`, {
       headers: {
         Authorization: token,
       }})

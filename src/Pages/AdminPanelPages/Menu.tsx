@@ -3,19 +3,21 @@ import { Button } from "reactstrap";
 import { Nav, } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store/store";
-import { TodaysMenuListData } from "../../store/todayMenu/todayMenuSlice";
 import "../login.scss";
 import Icon from "../../components/Icon";
-import { EditIcon } from "../../lib/icon";
+import { EditIcon, deleteIcon } from "../../lib/icon";
 import ModalShow from "../../components/ModalShow";
 import AddSubMenu from "../AddSubMenu";
-import {  SubMenuListData } from "../../store/Menu/menuSlice";
+import {  DeleteItemRecords, SubMenuListData } from "../../store/Menu/menuSlice";
+import ToastifyShow from "../../components/ToastifyShow";
 
 const Menu = () => {
   const { subMenus } = useSelector((state: any) => state?.MenuList);
   const [selectedMenuItem, setSelectedMenuItem]:any = useState("Breakfast");
   const [orderItems, setOrderItems] = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [idd, setIdd] = useState("");
   const [activeMenu, setActiveMenu] = useState("Breakfast");
   const dispatch = useDispatch<AppDispatch>();
 
@@ -25,7 +27,7 @@ const Menu = () => {
   }, [dispatch]);
 
   const handleMenuClick = (menuItem: string) => {
-    const selectedMenu = subMenus?.data.find((menu: any) => menu.title === menuItem);
+    const selectedMenu = subMenus?.data?.find((menu: any) => menu.title === menuItem);
     if (selectedMenu) {
       setSelectedMenuItem(selectedMenu);
       setActiveMenu(menuItem);
@@ -84,20 +86,43 @@ const Menu = () => {
               />}
               handleApi={""}
             />
+
+<ModalShow
+              handleView={showDeleteModal}
+              size="md"
+              handleClose={() => setShowDeleteModal(false)}
+              title="Delete Item"
+              title1={"are you sure you want to delete?"}
+              title2={"Yes"}
+              handleApi={async()=>{
+                
+                await dispatch(DeleteItemRecords({id: idd }));
+                setShowDeleteModal(false)
+               await  dispatch(SubMenuListData({}));
+ToastifyShow("Items Deleted Successfully","success")
+              }}
+            />
             <div className="gap-5 ms-5">Timing: {selectedMenuItem.time}</div>
           </div>
           <div className="row gap-4">
-            {selectedMenuItem?.items?.map((item: any) => (
-              <div
-                className="breakfast-box h-100"
-                onClick={() => addItemToOrder(`${item.item_name} ₹${item.price}`)}
-                key={item._id}
-              >
-                <p className="color">{item.item_name}</p>
-                <p>Price: ${item.price}</p>
-                <Icon icon={EditIcon} action={() => setShowModal(true)} />
-              </div>
-            ))}
+              {selectedMenuItem?.items?.map((item: any) => (
+                <div
+                  className="breakfast-box h-100"
+                  onClick={() => addItemToOrder(`${item.item_name} ₹${item.price}`)}
+                  key={item._id}
+                >
+                  <p className="color">{item.item_name}</p>
+                  {/* <p className="color">{item._id}</p> */}
+                  <p>Price: ${item.price}</p>
+                  <div className="d-flex justify-content-center gap-2 mb-2">
+                  <Icon icon={EditIcon} action={() => setShowModal(true)} />
+                <Icon icon={deleteIcon} action={() => {setShowDeleteModal(true);
+                  console.log(item?._id,"klklklkl")
+                  setIdd(item?._id);
+                  }} />
+                    </div>
+                </div>
+              ))}
           </div>
         </div>
       )}

@@ -38,4 +38,22 @@ export const subMenuList = async (data: any) => {
   };
 
 
+  export const deleteItems = async (data: any) => {
+    try {
+      let {id}:any=data;
+      const response :any= await axios
+        .delete(`${BASE_URL}admin/deleteSubMenu?id=${id ? id : ""}`, getToken())
+        .then((data: any) => {
+          return data;
+        })
+        .catch((error: any) => {
+          return error;
+        });
+      return response.data;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+
 

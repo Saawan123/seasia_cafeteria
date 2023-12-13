@@ -7,14 +7,14 @@ import { AppDispatch } from "../store/store";
 const SlideDrawer = ({ show, orderItems, onClose, selectedMenuItem }: any) => {
   console.log(selectedMenuItem, "selecteeeeeeeeeeeeee")
   const { menusList } = useSelector((state: any) => state?.MenuListToday);
+  console.log(menusList,"menusListmenusList")
+  const { subMenus } = useSelector((state: any) => state?.MenuList);
 
   const handleClose = () => {
     onClose(); // Call the onClose function passed from the parent component to close the drawer
   };
   const dispatch = useDispatch<AppDispatch>();
-  const { loginOtp } = useSelector(
-    (state: any) => state?.auth
-  );
+ 
   const { addOrder } = useSelector((state: any) => state?.confirmOrderList);
   console.log(addOrder, "jjjjjj")
   const handleOrderItem = () => {

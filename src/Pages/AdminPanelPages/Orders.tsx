@@ -9,11 +9,18 @@ import { EditIcon, cancelledButtonIcon, confirmedButton } from '../../lib/icon';
 import Icon from '../../components/Icon';
 import ToastifyShow from '../../components/ToastifyShow';
 import ToolTipDetails from '../../components/ToolTipDetails';
+import InputSearch from '../../components/InputSearch';
 
 const UserList = () => {
   const [activeTab, setActiveTab] = useState('customerOrders');
   const dispatch = useDispatch<AppDispatch>();
+  const [searchValue, setSearchValue] = useState("");
   const { customerOrders, loading, pendingOrders } = useSelector((state: any) => state?.MenuListToday);
+  const [paginationPerDetails, setPaginationPerDetails] = useState({
+    perPage: 10,
+    currentPage: 0,
+  });
+  const { perPage, currentPage } = paginationPerDetails;
   // console.log(pendingOrders?.data, "userrrrrr")
   // const columns: any = useMemo(
   //   () => [
@@ -119,11 +126,11 @@ const UserList = () => {
         name: "Employee ID",
         cell: ({ emp_id }: any) => emp_id,
       },
-      {
-        name: "Menu ID",
-        cell: ({ menu_id }: any) => menu_id,
+      // {
+      //   name: "Menu ID",
+      //   cell: ({ menu_id }: any) => menu_id,
 
-      },
+      // },
       {
         name: "Order Status",
         cell: ({ order_status }: any) => order_status,
@@ -167,7 +174,7 @@ const UserList = () => {
     if (activeTab === 'pendingOrders') {
       dynamicColumns.push({
         name: "Operations",
-        cell: ({_id }: any) => (
+        cell: ({ _id }: any) => (
           <div className='d-flex gap-2'>
             <ToolTipDetails
               data={"Cancel Order"}
@@ -176,7 +183,7 @@ const UserList = () => {
                   icon={cancelledButtonIcon}
                   className="cursor-pointer"
                   action={() => {
-                    dispatch(UpdateStatusOrderListData({ status: "cancelled", order_id:_id  }))
+                    dispatch(UpdateStatusOrderListData({ status: "cancelled", order_id: _id }))
                     ToastifyShow("Order Cancelled", "success");
 
                   }}
@@ -187,7 +194,7 @@ const UserList = () => {
                 <Icon
                   icon={confirmedButton}
                   action={() => {
-                    dispatch(UpdateStatusOrderListData({ status: "confirm", order_id:_id }))
+                    dispatch(UpdateStatusOrderListData({ status: "confirm", order_id: _id }))
                     ToastifyShow("Order Confirmed", "success");
                   }}
                 />} />
@@ -210,9 +217,9 @@ const UserList = () => {
   };
   useEffect(() => {
 
-    dispatch(CustomerListData({}));
-    dispatch(PendingOrderListData({}));
-  }, []);
+    dispatch(CustomerListData({ limit: perPage, currentPage: currentPage, search: searchValue }));
+    dispatch(PendingOrderListData({ limit: perPage, currentPage: currentPage, search: searchValue }));
+  }, [paginationPerDetails, searchValue]);
   return (
     <div className='p-4 '>
       <Nav variant="pills" defaultActiveKey="customerOrders" onSelect={handleTabClick} className='gap-5 '>
@@ -226,21 +233,30 @@ const UserList = () => {
           <Nav.Link eventKey="pendingOrders"  >Pending Orders</Nav.Link>
         </Nav.Item>
       </Nav>
+      <div className='justify-content-end d-flex'>
 
+        <InputSearch
+          placeholder="Search here"
+          className="text-center w-100 "
+          showValue={searchValue}
+          addValue={(e: any) => setSearchValue(e.target.value)}
+        />
+      </div>
       {activeTab === 'customerOrders' && (
+
         <DataTable
           columns={columns}
           data={customerOrders?.data}
           pagination
-          // paginationPerPage={FranchiseDocList?.per_page}
+          paginationPerPage={paginationPerDetails?.perPage}
           responsive
           paginationServer
-          // onChangeRowsPerPage={(data) => {
-          //   setPaginationPerDetails({
-          //     ...paginationPerDetails,
-          //     perPage: data,
-          //   });
-          // }}
+          onChangeRowsPerPage={(data) => {
+            setPaginationPerDetails({
+              ...paginationPerDetails,
+              perPage: data,
+            });
+          }}
           progressPending={loading == "pending" ? true : false}
           progressComponent={
             <div className="py-5 my-5">
@@ -249,31 +265,33 @@ const UserList = () => {
           }
           selectableRowsHighlight={true}
           paginationRowsPerPageOptions={[5, 10, 15, 20, 25]}
-          // paginationTotalRows={FranchiseDocList?.total}
+          paginationTotalRows={customerOrders?.totalRecords}
+
           highlightOnHover={true}
           fixedHeader
           fixedHeaderScrollHeight="550px"
-        // onChangePage={(data) => {
-        //   setPaginationPerDetails({
-        //     ...paginationPerDetails,
-        //     page: data,
-        //   });
-        // }}
-        />)}
+          onChangePage={(data) => {
+            setPaginationPerDetails({
+              ...paginationPerDetails,
+              currentPage: data,
+            });
+          }}
+        />
+      )}
 
       {activeTab === 'pendingOrders' && (<DataTable
         columns={columns}
         data={pendingOrders?.data}
         pagination
-        // paginationPerPage={FranchiseDocList?.per_page}
+        paginationPerPage={paginationPerDetails?.perPage}
         responsive
         paginationServer
-        // onChangeRowsPerPage={(data) => {
-        //   setPaginationPerDetails({
-        //     ...paginationPerDetails,
-        //     perPage: data,
-        //   });
-        // }}
+        onChangeRowsPerPage={(data) => {
+          setPaginationPerDetails({
+            ...paginationPerDetails,
+            perPage: data,
+          });
+        }}
         progressPending={loading == "pending" ? true : false}
         progressComponent={
           <div className="py-5 my-5">
@@ -282,16 +300,17 @@ const UserList = () => {
         }
         selectableRowsHighlight={true}
         paginationRowsPerPageOptions={[5, 10, 15, 20, 25]}
-        // paginationTotalRows={FranchiseDocList?.total}
+        paginationTotalRows={pendingOrders?.totalRecords}
+
         highlightOnHover={true}
         fixedHeader
         fixedHeaderScrollHeight="550px"
-      // onChangePage={(data) => {
-      //   setPaginationPerDetails({
-      //     ...paginationPerDetails,
-      //     page: data,
-      //   });
-      // }}
+        onChangePage={(data) => {
+          setPaginationPerDetails({
+            ...paginationPerDetails,
+            currentPage: data,
+          });
+        }}
       />)}
     </div>
   )
