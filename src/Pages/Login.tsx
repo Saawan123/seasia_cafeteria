@@ -38,6 +38,7 @@ const Login = ({ data }: any) => {
   const { loadingOtp, loading, loginOtp, loginData } = useSelector(
     (state: any) => state?.auth
   );
+  console.log(loginOtp?.data?.empDetails?.role,"loginotppppp")
   const { menusList } = useSelector((state: any) => state?.MenuListToday);
   console.log(menusList,"kkkkk")
   const [type, setType] = useState("");
@@ -70,11 +71,36 @@ const Login = ({ data }: any) => {
     setOrderItems(updatedOrder);
   };
 
-  const Options = [
+  const Options = 
+  
+  loginOtp?.data?.empDetails?.role != "User" ? [
     {
       name: "Admin Panel",
       id: 0,
     },
+    {
+      name: "Balance" + "=" + `${loginOtp?.data?.empDetails?.balance}`,
+      id: 1,
+    },
+    {
+      name: "Wallet" + "=" + `${loginOtp?.data?.empDetails?.wallet}`,
+      id: 2,
+    },
+    {
+      name:
+        "Name" +
+        "=" +
+        `${loginOtp?.data?.empDetails?.FirstName +
+        " " +
+        loginOtp?.data?.empDetails?.LastName
+        }`,
+      id: 3,
+    },
+    {
+      name: "LogOut",
+      id: 4,
+    },
+  ]:[
     {
       name: "Balance" + "=" + `${loginOtp?.data?.empDetails?.balance}`,
       id: 1,

@@ -75,8 +75,8 @@ const CreateUser = ({ closeModal }: any) => {
   <label htmlFor="role">Role:</label><br/>
   <Field as="select" id="role" name="role" className={errors.role && touched.role ? 'input-error' : 'mt-2 w-100 hh'}>
     <option value="">Select a role</option>
-    <option value="option1">Admin</option>
-    <option value="option2">User</option>
+    <option value="Admin">Admin</option>
+    <option value="User">User</option>
   </Field>
   <ErrorMessage name="role" component="div" className="error-message" />
 </div>

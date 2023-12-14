@@ -1,306 +1,76 @@
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { memo, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../store/store';
-import { DashboardData } from '../store/Dashboard/dashboardSlice';
-
-
+import { useCallback, useMemo, memo } from 'react'
 
 const HighChartDetails = memo((props: any) => {
-
-        const dispatch = useDispatch<AppDispatch>();
-        const { dashboardList, loading } = useSelector((state: any) => state?.dashboardDataShow);
-    // console.log(dashboardList?.data[0]?.today_menu_items,"dashboardListdashboardListdashboardList")
-        useEffect(() => {
-            dispatch(DashboardData({}))
-        }, [])
-        const options1 = {
-            chart: {
-                type: 'pie',
-    
+    const options1 = {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: ''
+        },
+        credits: {
+            enabled: false
             },
-            credits: {
-                enabled: false
+        xAxis: {
+            categories: [
+                'Monday',
+                'Tuesday',
+                'Wednesday',
+                'Thursday',
+                'Friday',
+                'Saturday',
+                'Sunday'
+            ],
+            crosshair: true
+        },
+        yAxis: {
+            labels: {
+                format: '{text} k'
             },
-            accessibility: {
-                point: {
-                    valueSuffix: '%'
-                }
-            },
+            min: 0,
             title: {
-                verticalAlign: 'middle',
-                floating: false,
-                text: dashboardList?.data?.map((x: any) => x?.today_menu_items).join(', '), 
-                x: -55,
-                useHTML: true,
-                style: {
-                    "fontSize": "56px",
-                    "whiteSpace": "normal",
-                    "textAlign": "center",
-                    "color": "#2ED47A"
-                },
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: false,
-                        format: '{point.name}: {y} %'
-                    },
-                    useHTML: true,
-                    style: {
-                        "fontSize": "30px",
-                        "whiteSpace": "normal",
-                        "textAlign": "center",
-                        "color": "#black"
-                    },
-                    showInLegend: true
-                }
-            },
-    
-            legend: {
-                align: 'right',
-                verticalAlign: 'middle',
-                layout: 'vertical',
-                x: 15,
-                itemStyle: {
-                    color: '#545454',
-                    fontSize: '14px'
-                }
-            },
-            series: [{
-                name: 'Food Details',
-                colorByPoint: true,
-                innerSize: '90%',
-    
-                data: [{
-                    color: "#9F11C8",
-                    name: 'Total Menus',
-                    y: 68.1
-                }]
-            }]
-        }
-
-    const options2 = {
-        chart: {
-            type: 'pie',
-
-        },
-        credits: {
-            enabled: false
-        },
-        accessibility: {
-            point: {
-                valueSuffix: '%'
+                text: ''
             }
-        },
-        title: {
-            verticalAlign: 'middle',
-            floating: false,
-            text: dashboardList?.data?.map((x: any) => x?.total_orders).join(', '), 
-            x: -55,
-            useHTML: true,
-            style: {
-                "fontSize": "56px",
-                "whiteSpace": "normal",
-                "textAlign": "center",
-                "color": "#2ED47A"
-            },
         },
         tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
         },
         plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: false,
-                    format: '{point.name}: {y} %'
-                },
-                useHTML: true,
-                style: {
-                    "fontSize": "30px",
-                    "whiteSpace": "normal",
-                    "textAlign": "center",
-                    "color": "#black"
-                },
-                showInLegend: true
-            }
-        },
-
-        legend: {
-            align: 'right',
-            verticalAlign: 'middle',
-            layout: 'vertical',
-            x: 15,
-            itemStyle: {
-                color: '#545454',
-                fontSize: '14px'
+            column: {
+                pointWidth: 12,
+                pointPadding: 0.2,
+                borderWidth: 0
+            },
+            series: {
+                borderRadius: 3
             }
         },
         series: [{
-            name: 'Food Details',
-            colorByPoint: true,
-            innerSize: '90%',
+            color: "rgb(255,193,7)",
+            name: 'Online Sales',
+            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6]
 
-            data: [{
-                color: "#9F11C8",
-                name: 'Total Orders',
-                y: 68.1
-            },]
-        }]
-    }
-    const options3 = {
-        chart: {
-            type: 'pie',
+        }, {
+            color: "#6D00C2",
+            name: 'Offline Sales',
+            data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0]
 
-        },
-        credits: {
-            enabled: false
-        },
-        accessibility: {
-            point: {
-                valueSuffix: '%'
-            }
-        },
-        title: {
-            verticalAlign: 'middle',
-            floating: false,
-            text: dashboardList?.data?.map((x: any) => x?.pendingOrder).join(', '), 
-            x: -55,
-            useHTML: true,
-            style: {
-                "fontSize": "56px",
-                "whiteSpace": "normal",
-                "textAlign": "center",
-                "color": "#2ED47A"
-            },
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: false,
-                    format: '{point.name}: {y} %'
-                },
-                useHTML: true,
-                style: {
-                    "fontSize": "30px",
-                    "whiteSpace": "normal",
-                    "textAlign": "center",
-                    "color": "#black"
-                },
-                showInLegend: true
-            }
-        },
-
-        legend: {
-            align: 'right',
-            verticalAlign: 'middle',
-            layout: 'vertical',
-            x: 15,
-            itemStyle: {
-                color: '#545454',
-                fontSize: '14px'
-            }
-        },
-        series: [{
-            name: 'Food Details',
-            colorByPoint: true,
-            innerSize: '90%',
-
-            data: [{
-                color: "#9F11C8",
-                name: 'Pending Orders',
-                y: 68.1
-            },]
-        }]
-    }
-    const options4 = {
-        chart: {
-            type: 'pie',
-
-        },
-        credits: {
-            enabled: false
-        },
-        accessibility: {
-            point: {
-                valueSuffix: '%'
-            }
-        },
-        title: {
-            verticalAlign: 'middle',
-            floating: false,
-            text: dashboardList?.data?.map((x: any) => x?.total_users).join(', '), 
-            x: -55,
-            useHTML: true,
-            style: {
-                "fontSize": "56px",
-                "whiteSpace": "normal",
-                "textAlign": "center",
-                "color": "#2ED47A"
-            },
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: false,
-                    format: '{point.name}: {y} %'
-                },
-                useHTML: true,
-                style: {
-                    "fontSize": "30px",
-                    "whiteSpace": "normal",
-                    "textAlign": "center",
-                    "color": "#black"
-                },
-                showInLegend: true
-            }
-        },
-
-        legend: {
-            align: 'right',
-            verticalAlign: 'middle',
-            layout: 'vertical',
-            x: 15,
-            itemStyle: {
-                color: '#545454',
-                fontSize: '14px'
-            }
-        },
-        series: [{
-            name: 'Food Details',
-            colorByPoint: true,
-            innerSize: '90%',
-
-            data: [{
-                color: "#9F11C8",
-                name: 'Total Customers',
-                y: 68.1
-            }]
         }]
     }
     return (
+
         <HighchartsReact
             highcharts={Highcharts}
-            options={props.chart == 1 ? options1 : props.chart == 2 ? options2 :props.chart == 3? options3:options4}
+            options={ options1}
         />
+
     );
 })
 export default HighChartDetails;
