@@ -8,7 +8,7 @@ import ToastifyShow from '../components/ToastifyShow';
 const CreateUser = ({ closeModal }: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const { createUser } = useSelector((state: any) => state?.createUserDataList);
-  console.log(createUser, "tstsststststs")
+
   const validationSchema = Yup.object().shape({
     emp_id: Yup.number().required('Employee ID is required'),
     first_name: Yup.string().required('First Name is required'),
@@ -18,7 +18,7 @@ const CreateUser = ({ closeModal }: any) => {
   });
 
   const onSubmit: any = async (values: any, { resetForm }: any) => {
-    console.log('Submit button clicked');
+ 
     try {
 
       await dispatch(CreateUserData(values));
@@ -28,7 +28,7 @@ const CreateUser = ({ closeModal }: any) => {
       ToastifyShow("User Create Successfully","success")
       resetForm();
     } catch (error) {
-      console.error('Error creating user:', error);
+
       // Handle error if needed
     }
   };

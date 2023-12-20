@@ -175,7 +175,7 @@ const todayMenuSlice:any = createSlice({
   initialState,
   reducers: {
  reset:(state:any)=>{
-
+  state.subMenuUpdateList = [];
  }
   },
   extraReducers: (builder) => {

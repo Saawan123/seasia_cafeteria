@@ -7,44 +7,48 @@ import { AppDispatch } from "../store/store";
 import Icon from "./Icon";
 import { deleteIcon } from "../lib/icon";
 
-const SlideDrawer = ({ show, orderItems, onClose, selectedMenuItem,  setOrderItems }: any) => {
+const SlideDrawerCustom = ({ show, orderItems, onClose, selectedMenuItem,  setOrderItems }: any) => {
+  console.log(selectedMenuItem, "selecteeeeeeeeeeeeee")
   
-  const { menusList } = useSelector((state: any) => state?.MenuListToday);
-
+//   const { menusList } = useSelector((state: any) => state?.MenuListToday);
+  const { subMenus } = useSelector((state: any) => state?.MenuList);
+  console.log(subMenus,"siubmenussssss")
   const handleClose = () => {
     onClose(); // Call the onClose function passed from the parent component to close the drawer
   };
   const dispatch = useDispatch<AppDispatch>();
-  const handleOrderItem = () => {
-    console.log(menusList,"menusList");
-    const order_rec = menusList?.data?.flatMap((menu: any) => {
-      console.log(menu,"menumenu")
-      if (menu?.title === selectedMenuItem) {
-        return menu?.items?.map((item: any) => {
-          // Check if the item exists in the orderItems array
-          const itemExists = orderItems.includes(`${item?.item_name} ₹${item?.price}`);
-          return {
-            itemId: item?._id,
-            quantity: itemExists ? orderItems.filter((x: string) => x === `${item?.item_name} ₹${item?.price}`).length : 0,
-          };
-        });
-      }
-      return [];
-    }).filter((x: any) => x.quantity > 0); // Filter out items with zero quantity
 
-    // Dispatch the ConfirmOrderedData action with the gathered orderData
-    dispatch(ConfirmOrderedData({ order_rec }));
-    // dispatch(AddTodayOrderedData({ order_rec }))
-    // Close the drawer and show a success message
+  const { addOrder } = useSelector((state: any) => state?.confirmOrderList);
+  // console.log(addOrder, "jjjjjj")
+  const handleOrderItem = () => {
+    const formattedOrderRec = subMenus?.data?.flatMap((menu:any) =>
+        menu.items.map((item:any) => {
+          const quantity = orderItems.filter(
+            (order:any) => order === `${item.item_name} ₹${item.price}`
+          ).length;
+  
+          return quantity > 0 ? { itemId: item._id, quantity } : null;
+        })
+      )
+      .filter(Boolean);
+  
+    dispatch(ConfirmOrderedData({ bill_status: "unpaid", order_rec: formattedOrderRec }));
     handleClose();
     ToastifyShow("Items confirmed successfully", "success");
   };
+  
+  
+  
+  
 
   const totalPrice = orderItems.reduce((total: number, item: any) => {
+    console.log(total, "eeeeee", item)
     // Extract the price from the item string and add it to the total
     const price = parseFloat(item.split('₹')[1]); // Extract the price from the item string
+    console.log(price, "priceeeeeee", item, total)
     return total + price;
   }, 0);
+  console.log(orderItems, "orderItemssss")
   let drawerClasses = show ? "side-drawer open" : "side-drawer";
   const handleDeleteItem = (index: number) => {
     const updatedOrderItems = [...orderItems];
@@ -58,6 +62,7 @@ const SlideDrawer = ({ show, orderItems, onClose, selectedMenuItem,  setOrderIte
         {orderItems?.map((item: any, index: any) => (
 
           <div className="inputField " key={index}>
+            {console.log(orderItems, "orderItems")}
             {item}
             <Icon
               icon={deleteIcon}
@@ -82,4 +87,4 @@ const SlideDrawer = ({ show, orderItems, onClose, selectedMenuItem,  setOrderIte
   );
 };
 
-export default SlideDrawer
+export default SlideDrawerCustom

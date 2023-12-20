@@ -24,11 +24,17 @@
 }
 
 .inputField {
+  // gap: 300px;
+  display: flex;
+  justify-content: space-between;
   border-radius: 10px;
   width: 100%;
   padding: 2%;
-  text-align: center;
+  // text-align: center;
   background: white;
+  // display: flex;
+  // justify-content: flex-end;
+  // gap: 350px;
   border: 1px solid;
-  border-color: beigeblack;
+  // border-color: beigeblack;
 }

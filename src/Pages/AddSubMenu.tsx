@@ -4,13 +4,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../store/store';
 import "./AdminPanelPages/createUser.scss"
 import ToastifyShow from '../components/ToastifyShow';
-import { AddSubMenuListData, UpdateSubMenuListData } from '../store/todayMenu/todayMenuSlice';
+import { AddSubMenuListData, UpdateSubMenuListData, reset } from '../store/todayMenu/todayMenuSlice';
 import { SubMenuListData } from '../store/Menu/menuSlice';
-const AddSubMenu = ({ closeModal, menuId }: any) => {
+import { useEffect, useState } from 'react';
+const AddSubMenu = ({ closeModal, menuId, data }: any) => {
     const dispatch = useDispatch<AppDispatch>();
-    const { subMenuAddList, menusList } = useSelector((state: any) => state?.MenuListToday);
-    console.log(menusList, "sfsdfsdf")
-    console.log(subMenuAddList, "tstsststststs")
+    // const { subMenuAddList, menusList } = useSelector((state: any) => state?.MenuListToday);
+    const [updateState, setUpdateState]: any = useState()
+
+    useEffect(() => {
+        setUpdateState((prevState:any) => ({
+            ...prevState,
+            item_name: data?.item_name || '',
+            price: data?.price || '',
+            quantity: data?.quantity || '',
+            menu_id: menuId || '',
+            _id:data?._id
+        }));
+    }, [data, menuId]);;
+    
+console.log(data,"datadata")
     const validationSchema = Yup.object().shape({
         item_name: Yup.string().required('Item name is required'),
         // menu_id: Yup.string().required('Menu_Id is required'),
@@ -18,34 +31,61 @@ const AddSubMenu = ({ closeModal, menuId }: any) => {
         quantity: Yup.string().required('Quantity is required'),
     });
 
-    const onSubmit: any = async (values: any, { resetForm }: any) => {
-        console.log('Submit button clicked');
-        try {
+//     const onSubmit: any = async (values: any, { resetForm }: any) => {
+//         console.log(values, "valuesssss")
+//         console.log('Submit button clicked');
+//         try {
+// if (data){
 
+//     await dispatch(UpdateSubMenuListData(values));
+// }
+//             await dispatch(AddSubMenuListData(values));
+//             closeModal();
+//             await dispatch(SubMenuListData(values));
+
+//             ToastifyShow("Sub Menu Add Successfully", "success")
+//             resetForm();
+//         } catch (error) {
+//             console.error('Error creating user:', error);
+//             // Handle error if needed
+//         }
+//     };
+const onSubmit = async (values:any, { resetForm }:any) => {
+    console.log(values, "valuesssss");
+    console.log('Submit button clicked');
+    
+    try {
+        if (data) {
+            // Update existing data
+            await dispatch(UpdateSubMenuListData(values));
+            ToastifyShow("Sub Menu Updated Successfully", "success");
+            dispatch(reset());
+
+        } else {
+            // Create new data
             await dispatch(AddSubMenuListData(values));
-            // await dispatch(UpdateSubMenuListData(values));
-            closeModal();
-   await dispatch(SubMenuListData(values));
-
-            ToastifyShow("Sub Menu Add Successfully", "success")
-            resetForm();
-        } catch (error) {
-            console.error('Error creating user:', error);
-            // Handle error if needed
+            ToastifyShow("Sub Menu Added Successfully", "success");
         }
-    };
-    const initialValues = {
-        item_name: '',
-        price: '',
-        quantity: '',
-        menu_id: menuId || '',
-    };
 
+        // Fetch updated/complete data after action
+        await dispatch(SubMenuListData(values));
+
+        // Close modal and reset form
+        closeModal();
+        resetForm();
+    } catch (error) {
+        console.error('Error:', error);
+        // Handle error if needed
+    }
+};
+
+    console.log('data', data)
 
     return (
         <div className="form-container">
             <Formik
-                initialValues={initialValues}
+                enableReinitialize={true}
+                initialValues={updateState}
                 validationSchema={validationSchema}
                 onSubmit={onSubmit}
             >
@@ -55,10 +95,10 @@ const AddSubMenu = ({ closeModal, menuId }: any) => {
                         <div className='row'>
                             {/* <div className='col-md-6'>
 
-                                <label htmlFor="menu_id" className='mt-2 '>Menu Id</label>
-                                <Field type="text" id="menu_id" name="menu_id" className={errors.menu_id && touched.menu_id ? 'input-error' : ''} />
-                                <ErrorMessage name="menu_id" component="div" className="error-message" />
-                            </div> */}
+                                    <label htmlFor="menu_id" className='mt-2 '>Menu Id</label>
+                                    <Field type="text" id="menu_id" name="menu_id" className={errors.menu_id && touched.menu_id ? 'input-error' : ''} />
+                                    <ErrorMessage name="menu_id" component="div" className="error-message" />
+                                </div> */}
                             <div className='col-md-6'>
 
                                 <label htmlFor="item_name" className='mt-2'>Item Name</label>

@@ -1,32 +1,38 @@
 import { useEffect, useState } from "react";
 
-import { Nav, } from 'react-bootstrap';
+import { Button, Nav, } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store/store";
 
 import "../login.scss";
 import Icon from "../../components/Icon";
-import {  cartIcon } from "../../lib/icon";
+import { cartIcon } from "../../lib/icon";
 
-import {  SubMenuListData } from "../../store/Menu/menuSlice";
+import { MenuListData, SubMenuListData } from "../../store/Menu/menuSlice";
 import SlideDrawer from "../../components/slideDrawer";
 import BackDrop from "../../components/backDrop";
+import ModalShow from "../../components/ModalShow";
+import AddSubMenu from "../AddSubMenu";
+import SlideDrawerCustom from "../../components/SlideDrawerCustom";
+
+
 
 const CustomerOrders = () => {
   const { subMenus } = useSelector((state: any) => state?.MenuList);
-  const [selectedMenuItem, setSelectedMenuItem]:any = useState("Breakfast");
+  const [selectedMenuItem, setSelectedMenuItem]: any = useState("Breakfast");
   const [orderItems, setOrderItems] = useState<string[]>([]);
-
+  const [showModal, setShowModal] = useState(false);
   const [activeMenu, setActiveMenu] = useState("Breakfast");
   const dispatch = useDispatch<AppDispatch>();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  // const [idd, setIdd]:any = useState("");
 
   useEffect(() => {
-    // dispatch(TodaysMenuListData({}));
-    dispatch(SubMenuListData({  }));
+    dispatch(MenuListData({}));
+    dispatch(SubMenuListData({}));
   }, [dispatch]);
   function handleOpenDrawerButton() {
- 
+
     setDrawerOpen(!drawerOpen);
   }
   function handleBackdropClick() {
@@ -37,7 +43,7 @@ const CustomerOrders = () => {
     if (selectedMenu) {
       setSelectedMenuItem(selectedMenu);
       setActiveMenu(menuItem);
-      dispatch(SubMenuListData({ menu_id: selectedMenu._id })); 
+      dispatch(SubMenuListData({ menu_id: selectedMenu._id }));
     }
   };
 
@@ -48,14 +54,14 @@ const CustomerOrders = () => {
   return (
     <div>
 
-    <Nav variant="pills" className="justify-content-around mt-4">
+      <Nav variant="pills" className="justify-content-around mt-4">
         <Nav.Item>
 
-          <Nav.Link  
-           className={`${activeMenu === "Breakfast" ? "active" : ""} ` }
-           onClick={() => handleMenuClick("Breakfast")}
+          <Nav.Link
+            className={`${activeMenu === "Breakfast" ? "active" : ""} `}
+            onClick={() => handleMenuClick("Breakfast")}
           >Breakfast</Nav.Link>
-      
+
         </Nav.Item>
         <Nav.Item>
           <Nav.Link className={`${activeMenu === "Lunch" ? "active" : ""}`}
@@ -63,28 +69,55 @@ const CustomerOrders = () => {
         </Nav.Item>
 
         <Nav.Item>
-          <Nav.Link    className={`${activeMenu === "Snacks" ? "active" : ""}`}
+          <Nav.Link className={`${activeMenu === "Snacks" ? "active" : ""}`}
             onClick={() => handleMenuClick("Snacks")}  >Snacks</Nav.Link>
+        </Nav.Item>
+
+        <Nav.Item>
+          <Nav.Link className={`${activeMenu === "custom" ? "active" : ""}`}
+            onClick={() => handleMenuClick("custom")}  >Custom Order</Nav.Link>
         </Nav.Item>
       </Nav>
       <div className="d-flex justify-content-end p-3">
-
-<Icon
-icon={cartIcon}
-action={handleOpenDrawerButton}
-styleClass={"cursor-pointer p-2"}
-/>{orderItems.length > 0 && (
-          <span className="cart-item-count position-absolute">{orderItems.length}</span>
+        {activeMenu === "custom" ? <Button
+          type="submit"
+          onClick={() => setShowModal(true)}
+          size="lg"
+          data-testid="loginBtn"
+          className="button-color fs-6 fw-bold w-25 mt-4"
+        >
+          Add Custom Order
+        </Button> : ""}
+        <ModalShow
+          handleView={showModal}
+          size="md"
+          handleClose={() => setShowModal(false)}
+          title="Login"
+          title1={<AddSubMenu
+            data={undefined}
+            closeModal={() => setShowModal(false)}
+            menuId={selectedMenuItem?._id} // Pass the menuId prop
+          />}
+          handleApi={""}
+        />
+        <Icon
+          icon={cartIcon}
+          action={handleOpenDrawerButton}
+          styleClass={"cursor-pointer mt-4 p-1"}
+        />{orderItems.length > 0 && (
+          <span className="cart-item-count position-absolute fw-bold text-danger mt-3">{orderItems.length}</span>
         )}
-<SlideDrawer
-  show={drawerOpen}
-  orderItems={orderItems}
-  onClose={handleBackdropClick}
-  selectedMenuItem={selectedMenuItem}
-  addItemToOrder={addItemToOrder} 
-/>
+        <SlideDrawerCustom
+          show={drawerOpen}
+          orderItems={orderItems}
+          onClose={handleBackdropClick}
+          selectedMenuItem={selectedMenuItem}
+          activeMenu={activeMenu}
+          addItemToOrder={addItemToOrder}
+          setOrderItems={setOrderItems}
+        />
         {drawerOpen && <BackDrop closeDrawer={handleBackdropClick} />}
-</div>
+      </div>
       {selectedMenuItem && (
         <div className="ms-5 flex-column row gap-5 mx-4">
           <div className="d-flex justify-content-between gap-5">

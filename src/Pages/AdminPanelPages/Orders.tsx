@@ -21,104 +21,6 @@ const UserList = () => {
     currentPage: 0,
   });
   const { perPage, currentPage } = paginationPerDetails;
-  // console.log(pendingOrders?.data, "userrrrrr")
-  // const columns: any = useMemo(
-  //   () => [
-  //     // {
-  //     //   name: "_id",
-  //     //   sortable: true,
-  //     //   cell: ({ _id }: any) => _id,
-  //     // },
-  //     {
-  //       name: "Employee ID",
-  //       cell: ({ emp_id }: any) => emp_id,
-
-  //     },
-  //     {
-  //       name: "Menu ID",
-  //       cell: ({ menu_id }: any) => menu_id,
-
-  //     },
-  //     {
-  //       name: "Order Status",
-  //       cell: ({ order_status }: any) => order_status,
-  //     },
-
-  //     {
-  //       name: "Bill Status",
-  //       cell: ({ bill_status }: any) => bill_status,
-  //     },
-  //     {
-  //       name: "Price",
-  //       cell: ({ order_rec }: any) => order_rec?.map((item: any) => item.price).join(', '),
-  //     },
-  //     {
-  //       name: "Item Name",
-  //       cell: ({ order_rec }: any) => order_rec?.map((item: any) => item.item_name).join(', '),
-
-  //     },
-  //     {
-  //       name: "Quantity",
-  //       cell: ({ order_rec }: any) => order_rec?.map((item: any) => item.quantity).join(', '),
-
-  //     },
-  //     {
-  //       name: "Total Price",
-  //       cell: ({ order_rec }: any) => order_rec?.map((item: any) => item.totalPrice).join(', '),
-
-  //     },
-  //     {
-  //       name: "Total Balance",
-  //       cell: ({ totalBalance }: any) => totalBalance,
-
-
-  //     },
-  //     {
-  //       name: "Date",
-  //       cell: ({ date }: any) => date,
-
-  //     },
-  //     {
-  //       name: "Time",
-  //       cell: ({ time }: any) => time,
-
-  //     },
-  //      {
-  //       name:  "Operations",
-
-  //       cell: ({ }: any) => 
-  //      <div className='d-flex gap-2'>
-  //    <ToolTipDetails
-  //       data={"Cancel Order"}
-  //       data1={
-  //         <Icon
-  //         icon={ cancelledButtonIcon}
-  //         className="cursor-pointer"
-  //         action={() => {
-  //           dispatch(UpdateStatusOrderListData({status:"cancelled"}))
-  //           ToastifyShow("Order Cancelled","success");
-
-  //           }}
-  //           />}/>
-  //    <ToolTipDetails
-  //       data={"Confirm Order"}
-  //       data1={
-  //         <Icon
-  //   icon={confirmedButton}
-  // action={() => {
-  //   dispatch(UpdateStatusOrderListData({status:"confirmed"}))
-  //     ToastifyShow("Order Confirmed","success");
-  //   }}
-  //   />}/>
-
-  //       </div>
-
-  //     },
-
-  //   ],
-  //   []
-  // );
-
 
   const columns: any = useMemo(() => {
     let dynamicColumns = [
@@ -126,11 +28,7 @@ const UserList = () => {
         name: "Employee ID",
         cell: ({ emp_id }: any) => emp_id,
       },
-      // {
-      //   name: "Menu ID",
-      //   cell: ({ menu_id }: any) => menu_id,
 
-      // },
       {
         name: "Order Status",
         cell: ({ order_status }: any) => order_status,
@@ -242,46 +140,11 @@ const UserList = () => {
           addValue={(e: any) => setSearchValue(e.target.value)}
         />
       </div>
-      {activeTab === 'customerOrders' && (
 
-        <DataTable
-          columns={columns}
-          data={customerOrders?.data}
-          pagination
-          paginationPerPage={paginationPerDetails?.perPage}
-          responsive
-          paginationServer
-          onChangeRowsPerPage={(data) => {
-            setPaginationPerDetails({
-              ...paginationPerDetails,
-              perPage: data,
-            });
-          }}
-          progressPending={loading == "pending" ? true : false}
-          progressComponent={
-            <div className="py-5 my-5">
-              <Spinner animation="border" variant="primary" />
-            </div>
-          }
-          selectableRowsHighlight={true}
-          paginationRowsPerPageOptions={[5, 10, 15, 20, 25]}
-          paginationTotalRows={customerOrders?.totalRecords}
 
-          highlightOnHover={true}
-          fixedHeader
-          fixedHeaderScrollHeight="550px"
-          onChangePage={(data) => {
-            setPaginationPerDetails({
-              ...paginationPerDetails,
-              currentPage: data,
-            });
-          }}
-        />
-      )}
-
-      {activeTab === 'pendingOrders' && (<DataTable
+      <DataTable
         columns={columns}
-        data={pendingOrders?.data}
+        data={activeTab === 'customerOrders' ? customerOrders?.data : pendingOrders?.data}
         pagination
         paginationPerPage={paginationPerDetails?.perPage}
         responsive
@@ -300,7 +163,7 @@ const UserList = () => {
         }
         selectableRowsHighlight={true}
         paginationRowsPerPageOptions={[5, 10, 15, 20, 25]}
-        paginationTotalRows={pendingOrders?.totalRecords}
+        paginationTotalRows={customerOrders?.totalRecords}
 
         highlightOnHover={true}
         fixedHeader
@@ -311,7 +174,10 @@ const UserList = () => {
             currentPage: data,
           });
         }}
-      />)}
+      />
+
+
+
     </div>
   )
 }

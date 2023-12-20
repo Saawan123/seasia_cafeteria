@@ -53,8 +53,9 @@ export const addSubMenu = async (data: any) => {
 
 export const updateSubMenu = async (data: any) => {
   try {
+  ;
     const response = await axios
-      .post(`${BASE_URL}admin/updateSubMenu`,data, getToken())
+      .put(`${BASE_URL}admin/updateSubMenu`,data, getToken())
       .then((data: any) => {
         return data;
       })

@@ -6,11 +6,13 @@ import "./sidebar.scss"
 
 import {
   GraphIcon,
-  BuyersIcon,
+
   SellersIcon,
   MarketingIcon,
   ChartlineIcon,
-  settingIcon,
+ 
+  logoutIcon,
+
 
 
 } from "../lib/icon";
@@ -47,12 +49,12 @@ const Sidebar = () => {
     },
     {
       name: "Menu",
-      icon: settingIcon,
+      icon: GraphIcon,
       link: "Menu",
     },
     {
       name: "LogOut",
-      icon: settingIcon,
+      icon: logoutIcon,
       link: "/",
       onClick: () => {
         localStorage.clear(); 

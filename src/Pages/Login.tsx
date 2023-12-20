@@ -38,9 +38,9 @@ const Login = ({ data }: any) => {
   const { loadingOtp, loading, loginOtp, loginData } = useSelector(
     (state: any) => state?.auth
   );
-  console.log(loginOtp?.data?.empDetails?.role,"loginotppppp")
+
   const { menusList } = useSelector((state: any) => state?.MenuListToday);
-  console.log(menusList,"kkkkk")
+
   const [type, setType] = useState("");
   const navigate = useNavigate();
   const [loginDataDetails, setLoginDataDetails] = useState<LoginData>({
@@ -71,59 +71,59 @@ const Login = ({ data }: any) => {
     setOrderItems(updatedOrder);
   };
 
-  const Options = 
-  
-  loginOtp?.data?.empDetails?.role != "User" ? [
-    {
-      name: "Admin Panel",
-      id: 0,
-    },
-    {
-      name: "Balance" + "=" + `${loginOtp?.data?.empDetails?.balance}`,
-      id: 1,
-    },
-    {
-      name: "Wallet" + "=" + `${loginOtp?.data?.empDetails?.wallet}`,
-      id: 2,
-    },
-    {
-      name:
-        "Name" +
-        "=" +
-        `${loginOtp?.data?.empDetails?.FirstName +
-        " " +
-        loginOtp?.data?.empDetails?.LastName
-        }`,
-      id: 3,
-    },
-    {
-      name: "LogOut",
-      id: 4,
-    },
-  ]:[
-    {
-      name: "Balance" + "=" + `${loginOtp?.data?.empDetails?.balance}`,
-      id: 1,
-    },
-    {
-      name: "Wallet" + "=" + `${loginOtp?.data?.empDetails?.wallet}`,
-      id: 2,
-    },
-    {
-      name:
-        "Name" +
-        "=" +
-        `${loginOtp?.data?.empDetails?.FirstName +
-        " " +
-        loginOtp?.data?.empDetails?.LastName
-        }`,
-      id: 3,
-    },
-    {
-      name: "LogOut",
-      id: 4,
-    },
-  ];
+  const Options =
+
+    loginOtp?.data?.empDetails?.role != "User" ? [
+      {
+        name: "Admin Panel",
+        id: 0,
+      },
+      {
+        name: "Balance" + "=" + `${loginOtp?.data?.empDetails?.balance}`,
+        id: 1,
+      },
+      {
+        name: "Wallet" + "=" + `${loginOtp?.data?.empDetails?.wallet}`,
+        id: 2,
+      },
+      {
+        name:
+          "Name" +
+          "=" +
+          `${loginOtp?.data?.empDetails?.FirstName +
+          " " +
+          loginOtp?.data?.empDetails?.LastName
+          }`,
+        id: 3,
+      },
+      {
+        name: "LogOut",
+        id: 4,
+      },
+    ] : [
+      {
+        name: "Balance" + "=" + `${loginOtp?.data?.empDetails?.balance}`,
+        id: 1,
+      },
+      {
+        name: "Wallet" + "=" + `${loginOtp?.data?.empDetails?.wallet}`,
+        id: 2,
+      },
+      {
+        name:
+          "Name" +
+          "=" +
+          `${loginOtp?.data?.empDetails?.FirstName +
+          " " +
+          loginOtp?.data?.empDetails?.LastName
+          }`,
+        id: 3,
+      },
+      {
+        name: "LogOut",
+        id: 4,
+      },
+    ];
 
   const handleSelect = (eventKey: any) => {
     const selectedOption = Options?.find((option) => option.id === eventKey);
@@ -137,7 +137,7 @@ const Login = ({ data }: any) => {
     }
   };
   function handleOpenDrawerButton() {
- 
+
     setDrawerOpen(!drawerOpen);
   }
 
@@ -162,32 +162,31 @@ const Login = ({ data }: any) => {
         <p className="loader1">
           {loadingOtp == "pending" && <FullScreenLoader />}
         </p>
-        {/* <SlideDrawer
+        <SlideDrawer
           show={drawerOpen}
-          addItemToOrder={addItemToOrder}
           orderItems={orderItems}
           onClose={handleBackdropClick}
           selectedMenuItem={selectedMenuItem}
-        /> */}
-        <SlideDrawer
-  show={drawerOpen}
-  orderItems={orderItems}
-  onClose={handleBackdropClick}
-  selectedMenuItem={selectedMenuItem}
-  addItemToOrder={addItemToOrder} 
-/>
+          addItemToOrder={addItemToOrder}
+          setOrderItems={setOrderItems} 
+        />
         {drawerOpen && <BackDrop closeDrawer={handleBackdropClick} />}
         <div className="upper-right-div d-flex gap-4 mt-4 p-4">
+         { showLoginButton == false? 
           <div >
-  
           <Icon
-  icon={cartIcon}
-  action={showLoginButton ? sendLogin : handleOpenDrawerButton}
-  styleClass={showLoginButton ? "disabled-icon cursor-not-allowed " : "cursor-pointer"}
-/>{orderItems.length > 0 && (
-          <span className="cart-item-count position-absolute">{orderItems.length}</span>
-        )}
-          </div>
+
+              icon={cartIcon}
+              action={
+                showLoginButton ?
+                  sendLogin :
+                  handleOpenDrawerButton
+              }
+              styleClass={showLoginButton ? "disabled-icon cursor-not-allowed " : "cursor-pointer"}
+            />{orderItems.length > 0 && (
+              <span className="cart-item-count position-absolute">{orderItems.length}</span>
+            )}
+          </div>:""}
           <div>
             <Form onSubmit={sendLogin} className="w-100">
               {showLoginButton == false ? (
@@ -236,7 +235,7 @@ const Login = ({ data }: any) => {
                   handleApi={async () => {
                     const empIdAsNumber = parseInt(loginDataDetails.emp_id, 10);
                     if (!isNaN(empIdAsNumber)) {
-                      console.log(empIdAsNumber, "sefdsgdg")
+                
                       localStorage.setItem("token", empIdAsNumber.toString());
 
                       const loginDataWithNumberEmpId = {
@@ -283,7 +282,7 @@ const Login = ({ data }: any) => {
                       let { token } = x?.payload?.data;
                       ToastifyShow("Otp Verified Successfully", "success");
                       if (token) {
-                        console.log("dataaaaa", token)
+                     
                         localStorage.setItem("token", token);
                         // localStorage.setItem("emp_id", emp_id);
                         localStorage.setItem(

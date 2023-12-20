@@ -21,6 +21,54 @@ export const ConfirmOrder = async (data: any) => {
 };
 
 
+export const UsersOrder = async (data: any) => {
+  try {
+    const response = await axios
+      .get(`${BASE_URL}user-orders`, getToken())
+      .then((data: any) => {
+        return data;
+      })
+      .catch((error: any) => {
+        return error;
+      });
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const DeleteOrder = async (data: any) => {
+  try {
+    let {id}:any=data;
+    const response = await axios
+      .delete(`${BASE_URL}admin/delete?id=${id?id:""}`, getToken())
+      .then((data: any) => {
+        return data;
+      })
+      .catch((error: any) => {
+        return error;
+      });
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+};
 
 
 
+export const addTodayMenuOrder = async (data: any) => {
+  try {
+ 
+    const response = await axios
+      .post(`${BASE_URL}admin/addTodayMenu`,data, getToken())
+      .then((data: any) => {
+        return data;
+      })
+      .catch((error: any) => {
+        return error;
+      });
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+};
