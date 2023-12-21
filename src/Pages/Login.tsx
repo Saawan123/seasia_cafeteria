@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LoginData } from "../lib/interfaces";
-import { authLogin, otpLogin } from "../store/reducer/authSlice";
+import { authLogin, otpLogin, resetLoginData } from "../store/reducer/authSlice";
 import { AppDispatch } from "../store/store";
 import ModalShow from "../components/ModalShow";
+import { Navigate} from "react-router-dom";
 import FullScreenLoader from "../components/FullScreenLoader";
 import {
   HeartIcon,
@@ -59,6 +60,17 @@ const Login = ({ data }: any) => {
     dispatch(TodaysMenuListData({ data }));
     dispatch(MenuListData({ data }));
   }, [loginData]);
+  // useEffect(() => {
+  //   const clearLocalStorage = () => {
+  //     localStorage.clear();
+  //   };
+
+  //   window.addEventListener("beforeunload", clearLocalStorage);
+
+  //   return () => {
+  //     window.removeEventListener("beforeunload", clearLocalStorage);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (loginOtp?.data?.empDetails?.FirstName) {
@@ -133,6 +145,7 @@ const Login = ({ data }: any) => {
     if (selectedOption?.id === 4) {
       // navigate("/");
       setShowLoginButton(true);
+      localStorage.clear();
       ToastifyShow("Logged out successfully", "success");
     }
   };
@@ -280,15 +293,21 @@ const Login = ({ data }: any) => {
                     const otp = loginDataDetails.otp;
                     await dispatch(otpLogin({ emp_id, otp })).then((x: any) => {
                       let { token } = x?.payload?.data;
+                      let roleUSer = x?.payload?.data?.empDetails?.role;
                       ToastifyShow("Otp Verified Successfully", "success");
+
+                 
                       if (token) {
                      
                         localStorage.setItem("token", token);
+                        roleUSer === "User" ?  navigate("/") : navigate("/AdminPanel");
+
                         // localStorage.setItem("emp_id", emp_id);
                         localStorage.setItem(
                           "apiResponse",
                           JSON.stringify(x?.payload)
                         );
+                      
                         setShowModal(false);
                         setShowModalOtp(false);
                         setShowLoginButton(false);

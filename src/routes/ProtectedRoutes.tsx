@@ -1,7 +1,4 @@
 import { Navigate, Outlet } from "react-router-dom";
-import Login from "../Pages/Login";
-import ToastifyShow from "../components/ToastifyShow";
-import AdminPanel from "../Pages/AdminPanel";
 import Sidebar from "../components/SideBar";
 
 export const useAuth = () => {
@@ -35,7 +32,7 @@ const ProtectedRoute = () => {
       </main>
     </>
   ) : (
-    <Navigate to="/" /> // Redirect to login if not authenticated
+    <Navigate to="/" /> 
   );
 };
 
