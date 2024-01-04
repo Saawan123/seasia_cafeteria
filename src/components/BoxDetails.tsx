@@ -7,7 +7,7 @@ export default function BoxDetails(props: any) {
           <ul className="row px-3 gy-3 stats gap-3">
             {props?.data?.map((x:any, index:any) => (
               <li
-                className="p-3 pb-4 col custom-col-120  border d-flex flex-column rounded-4  pointer-c"
+                className="p-3 pb-4 col card mt-5 custom-col-120  border d-flex flex-column rounded-4  pointer-c"
                 ref={(element) => {
                   element &&
                     element.style.setProperty("border-color", x?.boxColor, "important");

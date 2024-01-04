@@ -153,7 +153,7 @@ const UserList = () => {
           console.log(data, "data222222")
           setPaginationPerDetails({
             ...paginationPerDetails,
-            currentPage: data,
+            currentPage: data-1,
           });
         }}
       />

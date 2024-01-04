@@ -1,5 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { crossButton } from "../lib/icon";
+import Icon from "./Icon";
 
 export default function ModalShow({
   handleView,
@@ -12,7 +14,7 @@ export default function ModalShow({
   customComponent,
   size,
   className,
- 
+
 }: any) {
   return (
     <Modal
@@ -20,16 +22,24 @@ export default function ModalShow({
       className={className}
       onHide={() => handleClose()}
       size={size ? size : "md"}
-      
+
       centered
     >
-      <Modal.Header closeButton className="p-3">
+      <div className="p-3 d-flex justify-content-between">
+
         <Modal.Title>{title}</Modal.Title>
-      </Modal.Header>
+        <Icon
+          icon={crossButton}
+          action={
+            handleClose
+          }
+  
+        />
+      </div>
       <Modal.Body className="p-3">{title1}</Modal.Body>
-      <Modal.Footer className="justify-content-end p-3">
+      <div className="justify-content-end p-3">
         {title2 ? (
-          <Button  onClick={() => handleApi()} className="btn-submit" >{title2}</Button>
+          <Button onClick={() => handleApi()} className="btn-submit" >{title2}</Button>
         ) : (
           customComponent
         )}
@@ -38,7 +48,7 @@ export default function ModalShow({
             {cancelBtn ? cancelBtn : "Cancel"}
           </Button>
         )}
-      </Modal.Footer>
+      </div>
     </Modal>
   );
 }

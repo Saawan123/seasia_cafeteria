@@ -4,7 +4,29 @@
     // display: flex;
     height: 100vh; /* Adjust this as needed */
   }
-  
+  .upper-card{
+
+      border-radius: 10px;
+      // left: 10%;
+      // right:10%;
+      // top: 3%;
+      // bottom: 60%;
+      // width: 80%;
+      padding: 5%;
+      // position: absolute;
+      display: flex;
+      overflow: hidden;
+      justify-content: space-between;
+      // width: 1200px;
+      border-radius: 30px;
+   background: #FFF;
+   box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.10);
+   height:534px;
+   flex-shrink: 0;
+      // background: white;
+      // box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+   
+  }
   .sidebar {
     // width: 250px; /* Width of the sidebar */
     background-color: #333; /* Sidebar background color */

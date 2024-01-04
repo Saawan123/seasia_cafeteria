@@ -30,7 +30,7 @@ const Dashboard = () => {
         () => [
             {
                 name: "Item Name",
-                cell: ({ item_name }: any) => item_name,
+                cell: ({ _id }: any) => _id,
             },
             {
                 name: "Quantity",
@@ -38,7 +38,7 @@ const Dashboard = () => {
             },
             {
                 name: "Total Price",
-                cell: ({ price }: any) => "₹" + price
+                cell: ({  }: any) => "₹" + 20
             },
         ],
         []
@@ -85,7 +85,7 @@ const Dashboard = () => {
     return (
 
         <div >
-            <div className="p-2 mt-2">
+            <div className="p-2 mt-2 overflow-hidden">
                 <div className='justify-content-between d-flex'>
                     <h1 className=' ms-4'>Seasia Cafeteria</h1>
 
@@ -96,7 +96,7 @@ const Dashboard = () => {
                         addValue={(e: any) => setSearchValue(e.target.value)}
                     />
                 </div>
-                <div className="middle-card w-100 d-flex justify-content-between">
+                {/* <div className="middle-card w-100 d-flex justify-content-between">
                     <div>
                         <div>
                             <Icon icon={eatFresh} />
@@ -119,7 +119,7 @@ const Dashboard = () => {
                             src={juice}
                             alt="profile Pic"
                             loading={"lazy"}
-                            style={{ height: "100px", width: "100px", marginTop: "70px" }}
+                            style={{ height: "130px", width: "130px", marginTop: "70px" }}
                             draggable={false}
                         />
 
@@ -127,7 +127,7 @@ const Dashboard = () => {
                             src={dummyImage}
                             alt="profile Pic"
                             loading={"lazy"}
-                            style={{ height: "180px" }}
+                            style={{ height: "250px" }}
                             draggable={false}
                             className="mb-4"
                         />
@@ -136,24 +136,95 @@ const Dashboard = () => {
                             src={burger}
                             alt="profile Pic"
                             loading={"lazy"}
-                            style={{ height: "100px", marginTop: "70px" }}
+                            style={{ height: "120px", marginTop: "80px" }}
                             draggable={false}
                         />
                     </div>
-                </div>
-                <div >
+                </div> */}
+                <div className="mt-3 upper-card m-4 p-4 ">
+        <div>
+          <p className="eat  d-flex gap-3">
+            Eat
+            <p className="fresh">
+              Fresh
+            </p>
 
-                    <div className="d-flex justify-content-between mt-4  align-items-center">
-                    </div>
-                    <BoxDetails
-                        data={marketingDetails}
-                        setOption={setLeadType}
-                        option={leadType}
-                    />
+          </p>
+          <div>
+            <p className="stay-young">Stay Young</p>
+          </div>
+          <div className="mt-2">
+            <Button
+              variant="outline-primary"
+              type="submit"
+              className="order-button fs-6 mt-5"
+            >
+              Order Now
+            </Button>
+          </div>
+        </div>
+        <div className="d-flex justify-content-between ">
+          <img
+            src={juice}
+            alt="profile Pic"
+            loading={"lazy"}
+            style={{
+              width: '185.923px',
+              marginTop: '235px',
+              height: '185.923px',
+              marginRight: '-87px',
+              marginLeft: '100px',
+              transform: 'rotate(-3.388deg)',
+              flexShrink: 0,
+            }}
+            draggable={false}
+          />
+
+          <img
+            src={dummyImage}
+            alt="profile Pic"
+            loading={"lazy"}
+            style={{
+              width: '484px',
+              height: '454px',
+              marginLeft: '30px',
+              flexShrink: 0 
+            }}
+
+            draggable={false}
+            className="mb-4"
+          />
+
+          <img
+            src={burger}
+            alt="profile Pic"
+            loading={"lazy"}
+            style={{
+              // width: '225.836px',
+              height: '225.836px',
+              marginTop: '129px',
+              marginLeft: '-80px',
+              transform: 'rotate(0.596deg)',
+              flexShrink: 0
+            }}
+
+            draggable={false}
+          />
+        </div>
+      </div>
+               
+
+                    <div className='mt-4 m-4'>
+                 
+                        <BoxDetails
+                            data={marketingDetails}
+                            setOption={setLeadType}
+                            option={leadType}
+                        />
                 </div>
             </div>
 
-            <div className='m-5 row gap-4'>
+            <div className='m-4 row gap-4'>
                 <div className='d-flex gap-3'>
                     
                     <div className='w-100 Card'>

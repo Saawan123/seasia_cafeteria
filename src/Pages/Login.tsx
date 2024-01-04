@@ -5,7 +5,7 @@ import { LoginData } from "../lib/interfaces";
 import { authLogin, otpLogin, resetLoginData } from "../store/reducer/authSlice";
 import { AppDispatch } from "../store/store";
 import ModalShow from "../components/ModalShow";
-import { Navigate} from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import FullScreenLoader from "../components/FullScreenLoader";
 import {
   HeartIcon,
@@ -14,11 +14,14 @@ import {
   activeSnacksIcon,
   cartIcon,
   coffeeIcon,
+  disableCartIcon,
   eatFresh,
   lunchIcon,
+  optIcon,
   snacksIcon,
   stayHealthy,
   todaysMenu,
+  userProfile,
 } from "../lib/icon";
 import "./login.scss";
 import Icon from "../components/Icon";
@@ -161,15 +164,16 @@ const Login = ({ data }: any) => {
     setSelectedMenuItem(menuItem);
     setActiveMenu(menuItem);
   };
-  const sendLogin = async (e: any) => {
+  const sendLogin: any = async (e: any) => {
     e.preventDefault();
     setShowModal(true);
   };
   return (
-    <div className="position-relative ">
-      <div className="upper-div d-flex justify-content-around bg-warning ">
-        <div className="mt-5 fs-2 ">Seasia</div>
-        <p className="loader1">
+
+    <div className="position-absolute overflow-hidden ">
+      <div className="upper-div ">
+        <div className="mt-4 seasia fs-2 ">Seasia</div>
+        <p className="loader1 ">
           {loading == "pending" && <FullScreenLoader />}
         </p>
         <p className="loader1">
@@ -181,25 +185,32 @@ const Login = ({ data }: any) => {
           onClose={handleBackdropClick}
           selectedMenuItem={selectedMenuItem}
           addItemToOrder={addItemToOrder}
-          setOrderItems={setOrderItems} 
+          setOrderItems={setOrderItems}
         />
         {drawerOpen && <BackDrop closeDrawer={handleBackdropClick} />}
-        <div className="upper-right-div d-flex gap-4 mt-4 p-4">
-         { showLoginButton == false? 
-          <div >
-          <Icon
+        <div className="upper-right-div d-flex gap-4 mb-3 p-4">
+          {showLoginButton == false ?
+            <div >
+              <Icon
 
-              icon={cartIcon}
-              action={
-                showLoginButton ?
-                  sendLogin :
-                  handleOpenDrawerButton
-              }
-              styleClass={showLoginButton ? "disabled-icon cursor-not-allowed " : "cursor-pointer"}
-            />{orderItems.length > 0 && (
-              <span className="cart-item-count position-absolute">{orderItems.length}</span>
-            )}
-          </div>:""}
+                icon={cartIcon}
+                action={
+                  showLoginButton ?
+                    sendLogin :
+                    handleOpenDrawerButton
+                }
+              // styleClass={showLoginButton ? "disabled-icon cursor-not-allowed " : "cursor-pointer"}
+              />{orderItems.length > 0 && (
+                <span className="cart-item-count position-absolute">{orderItems.length}</span>
+              )}
+            </div> :
+            <div onClick={() => { ToastifyShow("Please login to add menu in Cart", "warning") }}>
+
+              <Icon
+                icon={disableCartIcon}
+              />
+            </div>
+          }
           <div>
             <Form onSubmit={sendLogin} className="w-100">
               {showLoginButton == false ? (
@@ -215,7 +226,7 @@ const Login = ({ data }: any) => {
                   type="submit"
                   size="lg"
                   data-testid="loginBtn"
-                  className="button-color fs-6 fw-bold"
+                  className="button-color fs-6 fw-bold "
                 >
                   LOGIN
                 </Button>
@@ -224,31 +235,36 @@ const Login = ({ data }: any) => {
               <div className="p-5 "></div>
               {showModal && (
                 <ModalShow
+                className="modal-login"
                   handleView={showModal}
                   handleClose={() => {
                     setShowModal(false);
                   }}
                   title="Login"
                   title1={
-                    <Form.Control
-                      className="username login-icon"
-                      type="text"
-                      placeholder="Username"
-                      value={loginDataDetails.emp_id.toString()}
-                      onChange={(e) =>
-                        setLoginDataDetails((prevState: any) => ({
-                          ...prevState,
-                          emp_id: e.target.value,
-                        }))
-                      }
-                      required
-                    />
+             <>
+  <Icon icon={userProfile} />
+  <Form.Control
+    className="username login-icon px-5"
+    type="text"
+    placeholder="Enter Employee Id"
+    value={loginDataDetails.emp_id.toString()}
+    onChange={(e) =>
+      setLoginDataDetails((prevState: any) => ({
+        ...prevState,
+        emp_id: e.target.value,
+      }))
+    }
+    required
+    />
+    </>       
+
                   }
                   title2="SUBMIT"
                   handleApi={async () => {
                     const empIdAsNumber = parseInt(loginDataDetails.emp_id, 10);
                     if (!isNaN(empIdAsNumber)) {
-                
+
                       localStorage.setItem("token", empIdAsNumber.toString());
 
                       const loginDataWithNumberEmpId = {
@@ -256,23 +272,43 @@ const Login = ({ data }: any) => {
                         emp_id: empIdAsNumber,
                       };
 
-                      await dispatch(authLogin(loginDataWithNumberEmpId));
-                      setShowModal(false);
-                      setShowModalOtp(true);
+                      try {
+                        const loginResponse = await dispatch(authLogin(loginDataWithNumberEmpId));
+                        console.log(loginResponse, "lololo")
+                        // Assuming loginResponse contains the necessary success flag or data to verify a successful login
+                        if (loginResponse?.payload?.statusCode == 200) {
+
+                          setShowModal(false);
+                          setShowModalOtp(true);
+                        } else {
+                          setShowModal(false);
+                          ToastifyShow("Invalid Employee ID", "error");
+                        }
+                      } catch (error) {
+                        // Handle any potential errors with the API call
+                        ToastifyShow("Login failed. Please try again.", "error");
+                      }
                     } else {
                       ToastifyShow("emp_id is not a valid number", "error");
                     }
                   }}
                 />
               )}
-
+              <p className="loader1 mt-5 ">
+                {loading == "pending" && <FullScreenLoader />}
+              </p>
+              <p className="loader1 mt-5 ">
+                {loadingOtp == "pending" && <FullScreenLoader />}
+              </p>
               {showModalOtp && (
                 <ModalShow
                   handleView={showModalOtp}
                   title="Enter Otp"
                   title1={
+                    <>
+                    <Icon icon={optIcon} />
                     <Form.Control
-                      className="username login-icon"
+                      className="username login-icon px-5"
                       type="text"
                       placeholder="Enter Your Otp here"
                       value={loginDataDetails.otp.toString()}
@@ -283,7 +319,8 @@ const Login = ({ data }: any) => {
                         }))
                       }
                       required
-                    />
+                      />
+                      </>
                   }
                   title2="Verify Otp"
                   handleApi={async () => {
@@ -295,26 +332,36 @@ const Login = ({ data }: any) => {
                       let { token } = x?.payload?.data;
                       let roleUSer = x?.payload?.data?.empDetails?.role;
                       ToastifyShow("Otp Verified Successfully", "success");
+                      setLoginDataDetails((prevState: any) => ({
+                        ...prevState,
+                        emp_id: "",
+                        otp:"" 
+                      }));
 
-                 
                       if (token) {
-                     
+                        setShowModal(false);
+                        setShowModalOtp(false);
+                        setShowLoginButton(false);
                         localStorage.setItem("token", token);
-                        roleUSer === "User" ?  navigate("/") : navigate("/AdminPanel");
+                        roleUSer === "User" ? navigate("/") : navigate("/AdminPanel");
 
                         // localStorage.setItem("emp_id", emp_id);
                         localStorage.setItem(
                           "apiResponse",
                           JSON.stringify(x?.payload)
                         );
-                      
+
+                      }
+                      else {
                         setShowModal(false);
                         setShowModalOtp(false);
                         setShowLoginButton(false);
+                        localStorage.clear()
                       }
                     });
                   }}
                   handleClose={() => {
+
                     setShowModalOtp(false);
                   }}
                 />
@@ -324,19 +371,23 @@ const Login = ({ data }: any) => {
           </div>
         </div>
       </div>
-      <div className="middle-card position-absolute d-flex justify-content-between">
+      <div className="middle-card mt-5">
         <div>
+          <p className="eat  d-flex gap-3">
+            Eat
+            <p className="fresh">
+              Fresh
+            </p>
+
+          </p>
           <div>
-            <Icon icon={eatFresh} />
-          </div>
-          <div>
-            <Icon icon={stayHealthy} />
+            <p className="stay-young">Stay Young</p>
           </div>
           <div className="mt-2">
             <Button
               variant="outline-primary"
               type="submit"
-              className="order-button fs-6"
+              className="order-button fs-6 mt-5"
             >
               Order Now
             </Button>
@@ -347,7 +398,15 @@ const Login = ({ data }: any) => {
             src={juice}
             alt="profile Pic"
             loading={"lazy"}
-            style={{ height: "100px", width: "100px", marginTop: "70px" }}
+            style={{
+              width: '185.923px',
+              marginTop: '235px',
+              height: '185.923px',
+              marginRight: '-87px',
+              marginLeft: '100px',
+              transform: 'rotate(-3.388deg)',
+              flexShrink: 0,
+            }}
             draggable={false}
           />
 
@@ -355,7 +414,13 @@ const Login = ({ data }: any) => {
             src={dummyImage}
             alt="profile Pic"
             loading={"lazy"}
-            style={{ height: "180px" }}
+            style={{
+              width: '484px',
+              height: '454px',
+              marginLeft: '30px',
+              flexShrink: 0
+            }}
+
             draggable={false}
             className="mb-4"
           />
@@ -364,7 +429,15 @@ const Login = ({ data }: any) => {
             src={burger}
             alt="profile Pic"
             loading={"lazy"}
-            style={{ height: "100px", marginTop: "70px" }}
+            style={{
+              width: '225.836px',
+              height: '225.836px',
+              marginTop: '129px',
+              marginLeft: '-80px',
+              transform: 'rotate(0.596deg)',
+              flexShrink: 0
+            }}
+
             draggable={false}
           />
         </div>
@@ -376,30 +449,33 @@ const Login = ({ data }: any) => {
 
         <div className="d-flex justify-content-around mt-4">
           <div
-            className={`coffeeCard ${activeMenu === "Breakfast" ? "active" : ""
-              }`}
+            // className={`coffeeCard ${activeMenu === "Breakfast" ? "active" : ""
+            //   }`}
+            className={activeMenu === "Breakfast" ? "coffeeCardActive" : "coffeeCard"}
             onClick={() => handleMenuClick("Breakfast")}
           >
             <Icon
               icon={activeMenu === "Breakfast" ? activeCoffeeIcon : coffeeIcon}
             />
-            <p>Breakfast</p>
+            <p className="fw-bold fs-4">Breakfast</p>
           </div>
           <div
-            className={`lunchCard ${activeMenu === "Lunch" ? "active" : ""}`}
+            className={activeMenu === "Lunch" ? "coffeeCardActive" : "coffeeCard"}
+
             onClick={() => handleMenuClick("Lunch")}
           >
             <Icon icon={activeMenu === "Lunch" ? activeLunchIcon : lunchIcon} />
-            <p>Lunch</p>
+            <p className="fw-bold fs-4">Lunch</p>
           </div>
           <div
-            className={`snacksCard ${activeMenu === "Snacks" ? "active" : ""}`}
+            className={activeMenu === "Snacks" ? "coffeeCardActive" : "coffeeCard"}
+
             onClick={() => handleMenuClick("Snacks")}
           >
             <Icon
               icon={activeMenu === "Snacks" ? activeSnacksIcon : snacksIcon}
             />
-            <p>Snacks</p>
+            <p className="fw-bold fs-4">Snacks</p>
           </div>
         </div>
       </div>
@@ -414,8 +490,8 @@ const Login = ({ data }: any) => {
         />
         <div className=" d-flex flex-column row gap-5 mx-4 ">
           <div className="d-flex gap-5">
-            <div className="fs-5 fw-bold ">{selectedMenuItem}</div>
-            <div className="gap-5">
+            {/* <div className="fs-3 fw-bold  ">{selectedMenuItem}</div> */}
+            {/* <div className="gap-5 ">
               Timing :{" "}
               {activeMenu == "Breakfast"
                 ? "8am-10am"
@@ -424,16 +500,32 @@ const Login = ({ data }: any) => {
                   : activeMenu == "Lunch"
                     ? "1pm-2pm"
                     : "8am-10am"}
-            </div>
+            </div> */}
           </div>
-          <div className="d-flex gap-5 row">
+          <div className="d-flex gap-3 row">
+            <div className="fs-2 fw-bold d-flex justify-content-between">{selectedMenuItem}
+
+              <div className="gap-5 fs-6 text-secondary">
+                Timing :{" "}
+                {activeMenu == "Breakfast"
+                  ? "8am-10am"
+                  : activeMenu == "Snacks"
+                    ? "4pm-6pm"
+                    : activeMenu == "Lunch"
+                      ? "1pm-2pm"
+                      : "8am-10am"}
+              </div>
+            </div>
             {menusList?.data?.map((menu: any) => {
               if (menu.title === selectedMenuItem) {
                 return menu.items.map((item: any) => (
+
                   <div
                     className="breakfast-box"
-                    onClick={() =>
-                      addItemToOrder(item?.item_name + " ₹" + item?.price)
+                    onClick={() => {
+
+                      showLoginButton == true ? ToastifyShow("Please login to add menu in Cart", "warning") : addItemToOrder(item?.item_name + " ₹" + item?.price)
+                    }
                     }
                     key={item._id}
                   >
@@ -448,48 +540,275 @@ const Login = ({ data }: any) => {
           </div>
         </div>
       </div>
-      <div className="footer-div d-flex  bowl-card">
+      <div className="footer-div d-flex  chef-card mt-5 gap-5">
         <div>
           <img
             src={chef}
             alt="profile Pic"
             loading={"lazy"}
-            style={{ height: "300px", marginRight: "150px" }}
+            // style={{ height: "563px", width: "579px" }}
             draggable={false}
           />
         </div>
         <div>
-          <div className="fs-2 fw-bold">Meet Our Team</div>
-          <div>
+          <div className="meet mb-5">Meet Our Team</div>
+          <div >
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
             and scrambled it to make a type specimen book. It has survived not
             only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
+            remaining essentiaand typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
           </div>
-          <div className="mt-4 w-25">
+          <div >
             <Button
               variant="outline-primary"
               type="submit"
               size="lg"
               // data-testid="loginBtn"
-              className="order-button fs-6"
+              className="order-button fs-6 mt-4"
             >
               Order Now
             </Button>
           </div>
         </div>
-      </div>
+       </div>
       <div className="footer">
         <span>
-          Made with <Icon icon={HeartIcon} /> by OS Team
+          Made with {HeartIcon} by OS Team
         </span>
       </div>
     </div>
+//     <>
+//       <header id="header-b">
+
+//         <div className="container">
+//           <div className="header d-flex justify-content-between">
+//             <p className="seasia-name">Seasia</p>
+//             <div className="d-flex gap-4 mt-2">
+//               <p className="loader1 ">
+//           {loading == "pending" && <FullScreenLoader />}
+//         </p>
+//         <p className="loader1">
+//           {loadingOtp == "pending" && <FullScreenLoader />}
+//         </p>
+//               <div>
+//               <SlideDrawer
+//           show={drawerOpen}
+//           orderItems={orderItems}
+//           onClose={handleBackdropClick}
+//           selectedMenuItem={selectedMenuItem}
+//           addItemToOrder={addItemToOrder}
+//           setOrderItems={setOrderItems}
+//         />
+//               {drawerOpen && <BackDrop closeDrawer={handleBackdropClick} />}
+//               {showLoginButton == false ?
+//             <div >
+//               <Icon
+
+//                 icon={cartIcon}
+//                 action={
+//                   showLoginButton ?
+//                     sendLogin :
+//                     handleOpenDrawerButton
+//                 }
+//               // styleClass={showLoginButton ? "disabled-icon cursor-not-allowed " : "cursor-pointer"}
+//               />{orderItems.length > 0 && (
+//                 <span className="cart-item-count position-absolute">{orderItems.length}</span>
+//               )}
+//             </div> :
+//             <div onClick={() => { ToastifyShow("Please login to add menu in Cart", "warning") }}>
+
+//               <Icon
+//                 icon={disableCartIcon}
+//               />
+//             </div>
+//           }
+              
+//               </div>
+//               <div>
+//               <Form onSubmit={sendLogin} className="w-100">
+//               {showLoginButton == false ? (
+//                 <div>
+//                   <DropDown
+//                     selected={type}
+//                     setSelect={handleSelect}
+//                     selectArray={Options}
+//                   />
+//                 </div>
+//               ) : (
+//                 <Button
+//                   type="submit"
+//                   size="lg"
+//                   data-testid="loginBtn"
+//                   className="button-color fs-6 fw-bold "
+//                 >
+//                   LOGIN
+//                 </Button>
+//               )}
+
+//               <div className="p-5 "></div>
+//               {showModal && (
+//                 <ModalShow
+//                   handleView={showModal}
+//                   handleClose={() => {
+//                     setShowModal(false);
+//                   }}
+//                   title="Login"
+//                   title1={
+//                     <Form.Control
+//                       className="username login-icon"
+//                       type="text"
+//                       placeholder="Username"
+//                       value={loginDataDetails.emp_id.toString()}
+//                       onChange={(e) =>
+//                         setLoginDataDetails((prevState: any) => ({
+//                           ...prevState,
+//                           emp_id: e.target.value,
+//                         }))
+//                       }
+//                       required
+//                     />
+
+//                   }
+//                   title2="SUBMIT"
+//                   handleApi={async () => {
+//                     const empIdAsNumber = parseInt(loginDataDetails.emp_id, 10);
+//                     if (!isNaN(empIdAsNumber)) {
+
+//                       localStorage.setItem("token", empIdAsNumber.toString());
+
+//                       const loginDataWithNumberEmpId = {
+//                         ...loginDataDetails,
+//                         emp_id: empIdAsNumber,
+//                       };
+
+//                       try {
+//                         const loginResponse = await dispatch(authLogin(loginDataWithNumberEmpId));
+//                         console.log(loginResponse, "lololo")
+//                         // Assuming loginResponse contains the necessary success flag or data to verify a successful login
+//                         if (loginResponse?.payload?.statusCode == 200) {
+
+//                           setShowModal(false);
+//                           setShowModalOtp(true);
+//                         } else {
+//                           setShowModal(false);
+//                           ToastifyShow("Invalid Employee ID", "error");
+//                         }
+//                       } catch (error) {
+//                         // Handle any potential errors with the API call
+//                         ToastifyShow("Login failed. Please try again.", "error");
+//                       }
+//                     } else {
+//                       ToastifyShow("emp_id is not a valid number", "error");
+//                     }
+//                   }}
+//                 />
+//               )}
+//               <p className="loader1 mt-5 ">
+//                 {loading == "pending" && <FullScreenLoader />}
+//               </p>
+//               <p className="loader1 mt-5 ">
+//                 {loadingOtp == "pending" && <FullScreenLoader />}
+//               </p>
+//               {showModalOtp && (
+//                 <ModalShow
+//                   handleView={showModalOtp}
+//                   title="Enter Otp"
+//                   title1={
+//                     <Form.Control
+//                       className="username login-icon"
+//                       type="text"
+//                       placeholder="Enter Your Otp here"
+//                       value={loginDataDetails.otp.toString()}
+//                       onChange={(e) =>
+//                         setLoginDataDetails((prevState: any) => ({
+//                           ...prevState,
+//                           otp: e.target.value,
+//                         }))
+//                       }
+//                       required
+//                     />
+//                   }
+//                   title2="Verify Otp"
+//                   handleApi={async () => {
+//                     const emp_id = parseInt(loginDataDetails.emp_id, 10);
+//                     localStorage.setItem("emp_id", emp_id.toString());
+
+//                     const otp = loginDataDetails.otp;
+//                     await dispatch(otpLogin({ emp_id, otp })).then((x: any) => {
+//                       let { token } = x?.payload?.data;
+//                       let roleUSer = x?.payload?.data?.empDetails?.role;
+//                       ToastifyShow("Otp Verified Successfully", "success");
+//                       setLoginDataDetails((prevState: any) => ({
+//                         ...prevState,
+//                         emp_id: "",
+//                         otp:"" 
+//                       }));
+
+//                       if (token) {
+//                         setShowModal(false);
+//                         setShowModalOtp(false);
+//                         setShowLoginButton(false);
+//                         localStorage.setItem("token", token);
+//                         roleUSer === "User" ? navigate("/") : navigate("/AdminPanel");
+
+//                         // localStorage.setItem("emp_id", emp_id);
+//                         localStorage.setItem(
+//                           "apiResponse",
+//                           JSON.stringify(x?.payload)
+//                         );
+
+//                       }
+//                       else {
+//                         setShowModal(false);
+//                         setShowModalOtp(false);
+//                         setShowLoginButton(false);
+//                         localStorage.clear()
+//                       }
+//                     });
+//                   }}
+//                   handleClose={() => {
+
+//                     setShowModalOtp(false);
+//                   }}
+//                 />
+//               )}
+//               <div className="p-5 "></div>
+//             </Form>
+              
+//               </div>
+//             </div>
+         
+//           </div>
+//         </div>
+//       </header>
+//       <section>
+
+//         <div className="container">
+//           <div className="section">
+// hello
+// hello
+// hello
+// hello
+// hello
+// hello
+// hello
+// hello
+//           </div>
+//         </div>
+//       </section>
+//       <footer id="footer">
+
+//         <div className="container">
+//           <div className="w-100">
+//           <p className="footer-name mt-3">
+//           Made with {HeartIcon} by OS Team
+//         </p >
+//           </div>
+//         </div>
+//       </footer>
+//     </>
   );
 };
 export default Login;

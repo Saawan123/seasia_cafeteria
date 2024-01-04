@@ -71,7 +71,7 @@ export const UsersListDetails = async (data: any) => {
   let {currentPage, limit, search} = data;
   try {
     const response = await axios
-      .get(`${BASE_URL}admin/listUsers?currentPage=${currentPage ? currentPage : ""}&limit=${limit? limit :10}&search=${search ? search : ""}`, getToken())
+      .get(`${BASE_URL}admin/listUsers?currentPage=${currentPage ? currentPage : 0}&limit=${limit? limit :10}&search=${search ? search : ""}`, getToken())
       .then((data: any) => {
         return data;
       })

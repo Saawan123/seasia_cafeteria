@@ -38,7 +38,7 @@ const Sidebar = () => {
       link: "orders",
     },
     {
-      name: "Customer Order",
+      name: "Custom Order",
       icon: MarketingIcon,
       link: "custom-order",
     },

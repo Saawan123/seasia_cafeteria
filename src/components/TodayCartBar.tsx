@@ -12,24 +12,13 @@ const TodayCartBar = ({ show, orderItems, onClose, selectedMenuItem, setOrderIte
     //   const { menusList } = useSelector((state: any) => state?.MenuListToday);
     const { subMenus } = useSelector((state: any) => state?.MenuList);
     const handleClose = () => {
+        setOrderItems([])
         onClose(); // Call the onClose function passed from the parent component to close the drawer
     };
     const dispatch = useDispatch<AppDispatch>();
 
     const { addOrder } = useSelector((state: any) => state?.confirmOrderList);
 
-    //   const handleOrderItem = () => {
-    //     const formattedOrderRec = subMenus?.data?.flatMap((menu:any) =>
-    //         menu.items.map((item:any) => {
-    //           return   item?._id 
-    //         })
-    //       )
-    //       .filter(Boolean);
-    //    dispatch(AddTodayOrderedData({ menuType: selectedMenuItem?._id, sub_menu_items: formattedOrderRec }))
-    //     // dispatch(ConfirmOrderedData({ bill_status: "unpaid", order_rec: formattedOrderRec }));
-    //     handleClose();
-    //     ToastifyShow("Items confirmed successfully", "success");
-    //   };
     const handleOrderItem = () => {
         const formattedOrderRec = subMenus?.data?.flatMap((menu: any) =>
             menu.items.map((item: any) => {
@@ -44,6 +33,7 @@ const TodayCartBar = ({ show, orderItems, onClose, selectedMenuItem, setOrderIte
         dispatch(AddTodayOrderedData({ menuType: selectedMenuItem?._id, sub_menu_items: formattedOrderRec }))
         // dispatch(ConfirmOrderedData({ bill_status: "unpaid", order_rec: formattedOrderRec }));
         handleClose();
+        setOrderItems([])
         ToastifyShow("Items confirmed successfully", "success");
     };
 

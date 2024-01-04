@@ -171,7 +171,7 @@ const UserList = () => {
         onChangePage={(data) => {
           setPaginationPerDetails({
             ...paginationPerDetails,
-            currentPage: data,
+            currentPage: data-1,
           });
         }}
       />

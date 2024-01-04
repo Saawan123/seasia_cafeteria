@@ -133,7 +133,7 @@ const Menu = () => {
             <div className="gap-5 ms-5">Timing: {selectedMenuItem.time}</div>
             <div>
           <Icon
-                              icon={cartIcon}b
+                              icon={cartIcon}
                               action={
                                 // showLoginButton ?
                                 //   sendLogin :

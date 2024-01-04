@@ -1,6 +1,51 @@
-.container {
+
+@font-face {
+   font-family: 'PoetsenOne';
+   src: url('../assets/poetsen_one/PoetsenOne-Regular.ttf') format('truetype');
+   /* Add different font formats for wider browser compatibility */
+   font-weight: normal;
+   font-style: normal;
+}
+
+// .container {
+//    width: 100%;
+//    height: 100%;
+// }
+
+.upper-div {
    width: 100%;
-   height: 100%;
+   height: 500px;
+   flex-shrink: 0;
+   display: flex;
+   justify-content: space-between;
+   background: linear-gradient(76deg, #FFCB46 0%, #EEB219 100.74%, #FFDC82 100.75%);
+}
+
+.eat {
+   color: #000;
+   font-family: 'PoetsenOne';
+   font-size: 96px;
+   font-style: normal;
+   font-weight: 400;
+   line-height: normal;
+}
+
+.fresh {
+   color: #9122E8;
+   font-family: "PoetsenOne";
+   font-size: 96px;
+   font-style: normal;
+   font-weight: 400;
+   line-height: normal;
+}
+
+.stay-young {
+   color: #000;
+   font-family: PoetsenOne;
+   font-size: 60px;
+   font-style: normal;
+   font-weight: 400;
+   line-height: normal;
 }
 
 .card-position {
@@ -10,24 +55,41 @@
 }
 
 .button-color {
-   width: 120%;
-   padding: 4px;
+   // width: 120%;
+   // padding: 4px;
    border-radius: 50px;
-   background-color: #6D00C2;
+   background: #6D00C2;
+   width: 140px;
+   height: 46px;
+   flex-shrink: 0;
+}
 
+.seasia {
+   color: #000;
+   font-family: Poppins;
+   font-size: 24px;
+   font-style: normal;
+   font-weight: 400;
+   margin: 100px;
+   line-height: normal;
 }
 
 .button-color:hover {
    border-radius: 50px;
-   background-color: #6D00C2;
-   width: 120%;
-   padding: 4px;
+   background: #6D00C2;
+   width: 140px;
+   height: 46px;
+
+   flex-shrink: 0;
 
 }
 
 .order-button {
-   width: 60%;
-   padding: 4px;
+   width: 200px;
+   height: 50px;
+   flex-shrink: 0;
+
+   // padding: 4px;  
    border-radius: 50px;
    color: #6D00C2;
    border-color: #6D00C2;
@@ -36,13 +98,17 @@
 
 }
 
+
 .order-button:hover {
+   width: 200px;
+   height: 50px;
+   flex-shrink: 0;
+
+   // padding: 4px;  
    border-radius: 50px;
    color: #6D00C2;
    border-color: #6D00C2;
    background-color: white;
-   width: 60%;
-   padding: 4px;
 
 }
 
@@ -50,16 +116,28 @@
 
 .middle-card {
    border-radius: 10px;
-   left: 10%;
+   left: 200px;
    // right:10%;
-   top: 8%;
+   top: 65px;
    // bottom: 60%;
-   width: 80%;
+   // width: 80%;
    padding: 5%;
-   background: white;
-   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+   position: absolute;
+   display: flex;
+   justify-content: space-between;
+   width: 1200px;
+   border-radius: 30px;
+   background: #FFF;
+   box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.10);
+   height: 534px;
+   flex-shrink: 0;
+   // background: white;
+   // box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+// width: 1200px;
+// height: 487px;
+// flex-shrink: 0;
 .coffeeCard {
    border-radius: 10px;
    width: 20%;
@@ -72,13 +150,13 @@
 
 }
 
-.coffeeCard:active {
+.coffeeCardActive {
    border-radius: 10px;
    width: 20%;
    padding: 2%;
    text-align: center;
    background: white;
-   border: 1px solid;
+   border: 2px solid;
    border-color: #6D00C2;
    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
@@ -96,16 +174,19 @@
 }
 
 .bowl-card {
+   // width: 1200px;
+   height: 300px;
+   flex-shrink: 0;
    // border-radius: 10px;
-   margin: 10px;
+   margin: 100px;
    // margin-top: 50px;
-   width: 100%;
+   // width: 100%;
    padding: 4%;
    align-items: center;
-   background: rgb(246, 246, 246);
+   background: #F6F6F6;
    border: 1px solid;
    border-color: beige;
-   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+   // box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .snacksCard {
@@ -119,6 +200,17 @@
    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+.chef-card {
+   // width: 1200px;
+   margin: 100px;
+   height: 563px;
+   border: 1px solid;
+   border-color: beige;
+   // box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+   flex-shrink: 0;
+   background: #F6F6F6
+}
+
 .snacksCard:active {
    border-radius: 10px;
    width: 20%;
@@ -128,6 +220,15 @@
    border: 1px solid;
    border-color: #6D00C2;
    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.meet {
+   color: #000;
+   font-family: PoetsenOne;
+   font-size: 44px;
+   font-style: normal;
+   font-weight: 400;
+   line-height: normal;
 }
 
 .lunchCard {
@@ -184,8 +285,8 @@
 }
 
 .breakfast-box {
-
    width: 148px;
+   cursor: pointer;
    height: 80px;
    border-radius: 5px;
    text-align: center;
@@ -196,7 +297,6 @@
 }
 
 .breakfast-box:active {
-
    width: 148px;
    height: 80px;
    border-color: #6D00C2;
@@ -222,11 +322,10 @@
    align-items: center;
    transition: ease all 0.3s;
    top: 200px;
-
-
 }
 
 .footer {
+   background: #F6F6F6;
    display: flex;
    background-color: #484848;
    // text-align: center;
@@ -235,11 +334,20 @@
    height: 70px;
    color: aliceblue;
 }
-.cartIconColor{
+
+.cartIconColor {
    color: grey;
 }
+.modal-login{
 
-.nav-pills .nav-link.active{
+height: 500px;
+flex-shrink: 0;
+
+border-radius: 10px;
+
+}
+ 
+.nav-pills .nav-link.active {
    // width: 100%;
    // height: 100%;
    // padding: 4px;
@@ -249,4 +357,56 @@
    // box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
    background-color: #6D00C2;
 }
+// .container{
 
+// }
+// #header-b{
+//    width: 100%;
+// height: 465px;
+// top: -1px;
+// background: linear-gradient(75.98deg, #FFCB46 0%, #EEB219 100.74%, #FFDC82 100.75%);
+
+
+//    // width: 1600px;
+
+   
+// }
+// .header{
+// width: 100%;
+// }
+// .seasia-name{
+//    font-family: Poppins;
+//    font-size: 24px;
+//    font-weight: 400;
+//    line-height: 36px;
+//    letter-spacing: 0em;
+//    text-align: left;
+   
+   
+// }
+// .upper-div{
+//    width: 1200px;
+//    position: absolute;
+// height:400px;
+// margin-top: 100px;
+// flex-shrink: 0;
+// border-radius: 30px;
+// background: #FFF;
+// box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.10);
+// }
+// #footer{
+//    display: flex;
+//    align-items: center;
+//    justify-content: center;
+//    text-align: center;
+//       // width: 1600px;
+// height: 70px;
+// // top: 2040px;
+// background: #2F2F2F;
+
+
+// }
+// .footer-name{
+// color: white;
+
+// }

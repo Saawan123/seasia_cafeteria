@@ -14,6 +14,7 @@ const SlideDrawerCustom = ({ show, orderItems, onClose, selectedMenuItem,  setOr
   const { subMenus } = useSelector((state: any) => state?.MenuList);
   console.log(subMenus,"siubmenussssss")
   const handleClose = () => {
+    setOrderItems([])
     onClose(); // Call the onClose function passed from the parent component to close the drawer
   };
   const dispatch = useDispatch<AppDispatch>();
@@ -35,6 +36,7 @@ const SlideDrawerCustom = ({ show, orderItems, onClose, selectedMenuItem,  setOr
     dispatch(ConfirmOrderedData({ bill_status: "unpaid", order_rec: formattedOrderRec }));
     handleClose();
     ToastifyShow("Items confirmed successfully", "success");
+    setOrderItems([])
   };
   
   

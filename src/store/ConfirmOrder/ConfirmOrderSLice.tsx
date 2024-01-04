@@ -19,7 +19,7 @@ const initialState = {
     error: false,
 } as UsersState;
 
-export const ConfirmOrderedData = createAsyncThunk(
+export const ConfirmOrderedData:any = createAsyncThunk(
     "orderAdd",
     async (data: any, thunkAPI: any) => {
         try {
