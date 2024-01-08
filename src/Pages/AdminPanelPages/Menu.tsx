@@ -31,15 +31,17 @@ const Menu = () => {
     dispatch(SubMenuListData({}));
   }, [dispatch]);
 
-  const handleMenuClick = (menuItem: string) => {
+  const handleMenuClick:any = (menuItem: string) => {
     const selectedMenu = subMenus?.data?.find((menu: any) => menu.title === menuItem);
     if (selectedMenu) {
-      console.log(selectedMenu._id, "selectedMenu._id")
       setSelectedMenuItem(selectedMenu);
       setActiveMenu(menuItem);
-      dispatch(SubMenuListData({ menu_id: selectedMenu._id }));
+      // dispatch(SubMenuListData({ menu_id: selectedMenu._id }));
     }
   };
+  useEffect(()=>{
+    handleMenuClick()
+  },[])
   function handleOpenDrawerButton() {
 
     setDrawerOpen(!drawerOpen);
@@ -51,7 +53,6 @@ const Menu = () => {
     const updatedOrder = [...orderItems, itemName];
     setOrderItems(updatedOrder);
   };
-  console.log('idd', idd)
   return (
     <div>
       <TodayCartBar
@@ -163,7 +164,6 @@ const Menu = () => {
                   }} />
                   <Icon icon={deleteIcon} action={() => {
                     setShowDeleteModal(true);
-                    console.log(item?._id, "klklklkl")
                     setIdd(item?._id);
                   }} />
                 </div>

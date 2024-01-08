@@ -16,7 +16,6 @@ const UserList = () => {
   const [showModal, setShowModal] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const { userLists, loading } = useSelector((state: any) => state?.MenuListToday);
-  console.log(userLists?.data, "userrrrrr");
   const [paginationPerDetails, setPaginationPerDetails] = useState({
     perPage: 10,
     currentPage: 0,
@@ -131,7 +130,6 @@ const UserList = () => {
         responsive
         paginationServer
         onChangeRowsPerPage={(data) => {
-          console.log(data, 'dataaaa11111')
           setPaginationPerDetails({
             ...paginationPerDetails,
             perPage: data,
@@ -150,7 +148,6 @@ const UserList = () => {
         fixedHeader
         fixedHeaderScrollHeight="550px"
         onChangePage={(data) => {
-          console.log(data, "data222222")
           setPaginationPerDetails({
             ...paginationPerDetails,
             currentPage: data-1,

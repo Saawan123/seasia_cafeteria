@@ -7,22 +7,20 @@ import ToastifyShow from "../../components/ToastifyShow";
 // Login API in ApiService file
 const authLogin = async (data: { emp_id: number }) => {
     try {
-        const response = await axios.post(`${BASE_URL}login`, data);
+        const response = await axios.post(`${BASE_URL}user/modules/v1/auth/login`, data);
         return response.data;
     } catch (err:any) {
-        console.error('Error in login');
         throw err;
     }
 };
 
 const otpLogin = async (data: { otp: number }) => {
     try {
-        const response = await axios.post(`${BASE_URL}verifyOTP`, data);
+        const response = await axios.post(`${BASE_URL}user/modules/v1/auth/verify-otp`, data);
         return response.data;
     } catch (err:any) {
         localStorage.clear()
         ToastifyShow("Please Enter Valid Otp","error")
-        console.error('Error in login');
         throw err;
     }
 }; 

@@ -20,7 +20,6 @@ const Dashboard = () => {
     const dispatch = useDispatch<AppDispatch>();
     const [leadType, setLeadType] = useState("transactions");
     const { dashboardList, loading } = useSelector((state: any) => state?.dashboardDataShow);
-    console.log(dashboardList, "jujuj")
     const [searchValue, setSearchValue] = useState("");
     useEffect(() => {
         dispatch(DashboardData({ search: searchValue }))
@@ -36,10 +35,10 @@ const Dashboard = () => {
                 name: "Quantity",
                 cell: ({ count }: any) => count,
             },
-            {
-                name: "Total Price",
-                cell: ({  }: any) => "₹" + 20
-            },
+            // {
+            //     name: "Total Price",
+            //     cell: ({  }: any) => "₹" + 20
+            // },
         ],
         []
     );

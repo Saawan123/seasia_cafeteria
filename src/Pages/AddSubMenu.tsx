@@ -23,7 +23,6 @@ const AddSubMenu = ({ closeModal, menuId, data }: any) => {
         }));
     }, [data, menuId]);;
     
-console.log(data,"datadata")
     const validationSchema = Yup.object().shape({
         item_name: Yup.string().required('Item name is required'),
         // menu_id: Yup.string().required('Menu_Id is required'),
@@ -32,8 +31,6 @@ console.log(data,"datadata")
     });
 
 //     const onSubmit: any = async (values: any, { resetForm }: any) => {
-//         console.log(values, "valuesssss")
-//         console.log('Submit button clicked');
 //         try {
 // if (data){
 
@@ -46,13 +43,10 @@ console.log(data,"datadata")
 //             ToastifyShow("Sub Menu Add Successfully", "success")
 //             resetForm();
 //         } catch (error) {
-//             console.error('Error creating user:', error);
 //             // Handle error if needed
 //         }
 //     };
 const onSubmit = async (values:any, { resetForm }:any) => {
-    console.log(values, "valuesssss");
-    console.log('Submit button clicked');
     
     try {
         if (data) {
@@ -74,12 +68,10 @@ const onSubmit = async (values:any, { resetForm }:any) => {
         closeModal();
         resetForm();
     } catch (error) {
-        console.error('Error:', error);
         // Handle error if needed
     }
 };
 
-    console.log('data', data)
 
     return (
         <div className="form-container">

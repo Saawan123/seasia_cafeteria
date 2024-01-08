@@ -8,7 +8,7 @@ export const DashboardDataList = async (data: any) => {
   try {
     let {search}:any = data;
     const response = await axios
-      .get(`${BASE_URL}admin/count?search=${search?search:""}`, getToken())
+      .get(`${BASE_URL}admin/modules/v1/dashboard/dashboard-list?search=${search?search:""}`, getToken())
       .then((data: any) => {
         return data;
       })

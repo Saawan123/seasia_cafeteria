@@ -7,7 +7,7 @@ export const BASE_URL = import.meta.env.VITE_BASE_URL;
 export const ConfirmOrder = async (data: any) => {
   try {
     const response = await axios
-      .post(`${BASE_URL}addorder`,data, getToken())
+      .post(`${BASE_URL}/user/modules/v1/order/add-order`,data, getToken())
       .then((data: any) => {
         return data;
       })
@@ -60,7 +60,7 @@ export const addTodayMenuOrder = async (data: any) => {
   try {
  
     const response = await axios
-      .post(`${BASE_URL}admin/addTodayMenu`,data, getToken())
+      .post(`${BASE_URL}admin/modules/v1/today-menu/add-today-menu`,data, getToken())
       .then((data: any) => {
         return data;
       })

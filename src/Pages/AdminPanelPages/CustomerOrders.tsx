@@ -39,15 +39,18 @@ const CustomerOrders = () => {
   function handleBackdropClick() {
     setDrawerOpen(false);
   }
-  const handleMenuClick = (menuItem: string) => {
+  const handleMenuClick:any = (menuItem: string) => {
     const selectedMenu = subMenus?.data?.find((menu: any) => menu.title === menuItem);
     if (selectedMenu) {
       setSelectedMenuItem(selectedMenu);
       setActiveMenu(menuItem);
-      dispatch(SubMenuListData({ menu_id: selectedMenu._id }));
+      // dispatch(SubMenuListData({ menu_id: selectedMenu._id }));
+
     }
   };
-
+useEffect(()=>{
+  handleMenuClick()
+},[])
   const addItemToOrder = (itemName: string) => {
     const updatedOrder = [...orderItems, itemName];
     setOrderItems(updatedOrder);

@@ -17,9 +17,7 @@ const SlideDrawer = ({ show, orderItems, onClose, selectedMenuItem,  setOrderIte
   };
   const dispatch = useDispatch<AppDispatch>();
   const handleOrderItem = () => {
-    console.log(menusList,"menusList");
     const order_rec = menusList?.data?.flatMap((menu: any) => {
-      console.log(menu,"menumenu")
       if (menu?.title === selectedMenuItem) {
         return menu?.items?.map((item: any) => {
           // Check if the item exists in the orderItems array

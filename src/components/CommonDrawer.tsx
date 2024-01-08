@@ -8,18 +8,16 @@ import Icon from "./Icon";
 import { deleteIcon } from "../lib/icon";
 
 const CommonDrawer = ({ show, orderItems, onClose, selectedMenuItem,  setOrderItems }: any) => {
-  console.log(selectedMenuItem, "selecteeeeeeeeeeeeee")
+
   
 //   const { menusList } = useSelector((state: any) => state?.MenuListToday);
   const { subMenus } = useSelector((state: any) => state?.MenuList);
-  console.log(subMenus,"siubmenussssss")
   const handleClose = () => {
     onClose(); // Call the onClose function passed from the parent component to close the drawer
   };
   const dispatch = useDispatch<AppDispatch>();
 
   const { addOrder } = useSelector((state: any) => state?.confirmOrderList);
-  // console.log(addOrder, "jjjjjj")
   const handleOrderItem = () => {
     const formattedOrderRec = subMenus?.data?.flatMap((menu:any) =>
         menu.items.map((item:any) => {
@@ -39,13 +37,10 @@ const CommonDrawer = ({ show, orderItems, onClose, selectedMenuItem,  setOrderIt
   
 
   const totalPrice = orderItems.reduce((total: number, item: any) => {
-    console.log(total, "eeeeee", item)
     // Extract the price from the item string and add it to the total
     const price = parseFloat(item.split('₹')[1]); // Extract the price from the item string
-    console.log(price, "priceeeeeee", item, total)
     return total + price;
   }, 0);
-  console.log(orderItems, "orderItemssss")
   let drawerClasses = show ? "side-drawer open" : "side-drawer";
   const handleDeleteItem = (index: number) => {
     const updatedOrderItems = [...orderItems];
@@ -59,7 +54,6 @@ const CommonDrawer = ({ show, orderItems, onClose, selectedMenuItem,  setOrderIt
         {orderItems?.map((item: any, index: any) => (
 
           <div className="inputField " key={index}>
-            {console.log(orderItems, "orderItems")}
             {item}
             <Icon
               icon={deleteIcon}

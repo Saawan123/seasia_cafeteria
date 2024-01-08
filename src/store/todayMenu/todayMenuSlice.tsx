@@ -65,14 +65,10 @@ export const UsersListData = createAsyncThunk(
 export const CustomerListData = createAsyncThunk(
   "customer/lists",
   async (data: any, thunkAPI: any) => {
-    console.log(data,"dataaaaaa")
     try {
-console.log(data,"111111")
       const response = await CustomerListDetails(data);
-      console.log(response,"gfgfgfgfgf")
       return response;
     } catch (error: any) {
-      console.log("22222")
 
       const message =
         (error.response &&
@@ -89,14 +85,10 @@ console.log(data,"111111")
 export const PendingOrderListData = createAsyncThunk(
   "pendingOrder/lists",
   async (data: any, thunkAPI: any) => {
-    console.log(data,"dataaaaaa")
     try {
-console.log(data,"111111")
       const response = await PendingListDetails(data);
-      console.log(response,"gfgfgfgfgf")
       return response;
     } catch (error: any) {
-      console.log("22222")
 
       const message =
         (error.response &&

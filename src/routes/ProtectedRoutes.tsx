@@ -1,10 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
 import Sidebar from "../components/SideBar";
+import { useSelector } from "react-redux";
 
 export const useAuth = () => {
   const userdata = localStorage.getItem("token");
   const user = userdata ? { loggedIn: true } : { loggedIn: false };
-
   return user.loggedIn;
 };
 
@@ -16,12 +16,13 @@ export const getToken = () => {
   };
 };
 
-export const ProtectedRouteCheck = ({ children }: any) => {
-  const isAuth = useAuth();
-  return isAuth ? <Navigate to="/" /> : children;
+export const ProtectedRouteCheck:any = () => {
+  // const isAuth = useAuth();
+ const role = localStorage.getItem("apiResponse")
+  return role ? <Navigate to="/UserProfile" /> : <Navigate to ="/"/>;
 };
 
-const ProtectedRoute = () => {
+const ProtectedRoute :any = () => {
   const isAuth = useAuth();
   return isAuth ? (
     <>

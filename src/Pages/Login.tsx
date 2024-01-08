@@ -61,7 +61,7 @@ const Login = ({ data }: any) => {
 
   useEffect(() => {
     dispatch(TodaysMenuListData({ data }));
-    dispatch(MenuListData({ data }));
+    // dispatch(MenuListData({ data }));
   }, [loginData]);
   // useEffect(() => {
   //   const clearLocalStorage = () => {
@@ -235,29 +235,29 @@ const Login = ({ data }: any) => {
               <div className="p-5 "></div>
               {showModal && (
                 <ModalShow
-                className="modal-login"
+                  className="modal-login "
                   handleView={showModal}
                   handleClose={() => {
                     setShowModal(false);
                   }}
                   title="Login"
                   title1={
-             <>
-  <Icon icon={userProfile} />
-  <Form.Control
-    className="username login-icon px-5"
-    type="text"
-    placeholder="Enter Employee Id"
-    value={loginDataDetails.emp_id.toString()}
-    onChange={(e) =>
-      setLoginDataDetails((prevState: any) => ({
-        ...prevState,
-        emp_id: e.target.value,
-      }))
-    }
-    required
-    />
-    </>       
+                    <>
+                      <Icon icon={userProfile} />
+                      <Form.Control
+                        className="username login-icon px-5"
+                        type="text"
+                        placeholder="Enter Employee Id"
+                        value={loginDataDetails.emp_id.toString()}
+                        onChange={(e) =>
+                          setLoginDataDetails((prevState: any) => ({
+                            ...prevState,
+                            emp_id: e.target.value,
+                          }))
+                        }
+                        required
+                      />
+                    </>
 
                   }
                   title2="SUBMIT"
@@ -274,8 +274,6 @@ const Login = ({ data }: any) => {
 
                       try {
                         const loginResponse = await dispatch(authLogin(loginDataWithNumberEmpId));
-                        console.log(loginResponse, "lololo")
-                        // Assuming loginResponse contains the necessary success flag or data to verify a successful login
                         if (loginResponse?.payload?.statusCode == 200) {
 
                           setShowModal(false);
@@ -285,6 +283,7 @@ const Login = ({ data }: any) => {
                           ToastifyShow("Invalid Employee ID", "error");
                         }
                       } catch (error) {
+                        
                         // Handle any potential errors with the API call
                         ToastifyShow("Login failed. Please try again.", "error");
                       }
@@ -306,21 +305,21 @@ const Login = ({ data }: any) => {
                   title="Enter Otp"
                   title1={
                     <>
-                    <Icon icon={optIcon} />
-                    <Form.Control
-                      className="username login-icon px-5"
-                      type="text"
-                      placeholder="Enter Your Otp here"
-                      value={loginDataDetails.otp.toString()}
-                      onChange={(e) =>
-                        setLoginDataDetails((prevState: any) => ({
-                          ...prevState,
-                          otp: e.target.value,
-                        }))
-                      }
-                      required
+                      <Icon icon={optIcon} />
+                      <Form.Control
+                        className="username login-icon px-5"
+                        type="text"
+                        placeholder="Enter Your Otp here"
+                        value={loginDataDetails.otp.toString()}
+                        onChange={(e) =>
+                          setLoginDataDetails((prevState: any) => ({
+                            ...prevState,
+                            otp: e.target.value,
+                          }))
+                        }
+                        required
                       />
-                      </>
+                    </>
                   }
                   title2="Verify Otp"
                   handleApi={async () => {
@@ -332,18 +331,18 @@ const Login = ({ data }: any) => {
                       let { token } = x?.payload?.data;
                       let roleUSer = x?.payload?.data?.empDetails?.role;
                       ToastifyShow("Otp Verified Successfully", "success");
-                      setLoginDataDetails((prevState: any) => ({
-                        ...prevState,
-                        emp_id: "",
-                        otp:"" 
-                      }));
+                      // setLoginDataDetails((prevState: any) => ({
+                      //   ...prevState,
+                      //   emp_id: "",
+                      //   otp: ""
+                      // }));
 
                       if (token) {
                         setShowModal(false);
                         setShowModalOtp(false);
                         setShowLoginButton(false);
                         localStorage.setItem("token", token);
-                        roleUSer === "User" ? navigate("/") : navigate("/AdminPanel");
+                        roleUSer === "User" ? navigate("/UserProfile") : navigate("/AdminPanel");
 
                         // localStorage.setItem("emp_id", emp_id);
                         localStorage.setItem(
@@ -572,243 +571,242 @@ const Login = ({ data }: any) => {
             </Button>
           </div>
         </div>
-       </div>
+      </div>
       <div className="footer">
         <span>
           Made with {HeartIcon} by OS Team
         </span>
       </div>
     </div>
-//     <>
-//       <header id="header-b">
+    //     <>
+    //       <header id="header-b">
 
-//         <div className="container">
-//           <div className="header d-flex justify-content-between">
-//             <p className="seasia-name">Seasia</p>
-//             <div className="d-flex gap-4 mt-2">
-//               <p className="loader1 ">
-//           {loading == "pending" && <FullScreenLoader />}
-//         </p>
-//         <p className="loader1">
-//           {loadingOtp == "pending" && <FullScreenLoader />}
-//         </p>
-//               <div>
-//               <SlideDrawer
-//           show={drawerOpen}
-//           orderItems={orderItems}
-//           onClose={handleBackdropClick}
-//           selectedMenuItem={selectedMenuItem}
-//           addItemToOrder={addItemToOrder}
-//           setOrderItems={setOrderItems}
-//         />
-//               {drawerOpen && <BackDrop closeDrawer={handleBackdropClick} />}
-//               {showLoginButton == false ?
-//             <div >
-//               <Icon
+    //         <div className="container">
+    //           <div className="header d-flex justify-content-between">
+    //             <p className="seasia-name">Seasia</p>
+    //             <div className="d-flex gap-4 mt-2">
+    //               <p className="loader1 ">
+    //           {loading == "pending" && <FullScreenLoader />}
+    //         </p>
+    //         <p className="loader1">
+    //           {loadingOtp == "pending" && <FullScreenLoader />}
+    //         </p>
+    //               <div>
+    //               <SlideDrawer
+    //           show={drawerOpen}
+    //           orderItems={orderItems}
+    //           onClose={handleBackdropClick}
+    //           selectedMenuItem={selectedMenuItem}
+    //           addItemToOrder={addItemToOrder}
+    //           setOrderItems={setOrderItems}
+    //         />
+    //               {drawerOpen && <BackDrop closeDrawer={handleBackdropClick} />}
+    //               {showLoginButton == false ?
+    //             <div >
+    //               <Icon
 
-//                 icon={cartIcon}
-//                 action={
-//                   showLoginButton ?
-//                     sendLogin :
-//                     handleOpenDrawerButton
-//                 }
-//               // styleClass={showLoginButton ? "disabled-icon cursor-not-allowed " : "cursor-pointer"}
-//               />{orderItems.length > 0 && (
-//                 <span className="cart-item-count position-absolute">{orderItems.length}</span>
-//               )}
-//             </div> :
-//             <div onClick={() => { ToastifyShow("Please login to add menu in Cart", "warning") }}>
+    //                 icon={cartIcon}
+    //                 action={
+    //                   showLoginButton ?
+    //                     sendLogin :
+    //                     handleOpenDrawerButton
+    //                 }
+    //               // styleClass={showLoginButton ? "disabled-icon cursor-not-allowed " : "cursor-pointer"}
+    //               />{orderItems.length > 0 && (
+    //                 <span className="cart-item-count position-absolute">{orderItems.length}</span>
+    //               )}
+    //             </div> :
+    //             <div onClick={() => { ToastifyShow("Please login to add menu in Cart", "warning") }}>
 
-//               <Icon
-//                 icon={disableCartIcon}
-//               />
-//             </div>
-//           }
-              
-//               </div>
-//               <div>
-//               <Form onSubmit={sendLogin} className="w-100">
-//               {showLoginButton == false ? (
-//                 <div>
-//                   <DropDown
-//                     selected={type}
-//                     setSelect={handleSelect}
-//                     selectArray={Options}
-//                   />
-//                 </div>
-//               ) : (
-//                 <Button
-//                   type="submit"
-//                   size="lg"
-//                   data-testid="loginBtn"
-//                   className="button-color fs-6 fw-bold "
-//                 >
-//                   LOGIN
-//                 </Button>
-//               )}
+    //               <Icon
+    //                 icon={disableCartIcon}
+    //               />
+    //             </div>
+    //           }
 
-//               <div className="p-5 "></div>
-//               {showModal && (
-//                 <ModalShow
-//                   handleView={showModal}
-//                   handleClose={() => {
-//                     setShowModal(false);
-//                   }}
-//                   title="Login"
-//                   title1={
-//                     <Form.Control
-//                       className="username login-icon"
-//                       type="text"
-//                       placeholder="Username"
-//                       value={loginDataDetails.emp_id.toString()}
-//                       onChange={(e) =>
-//                         setLoginDataDetails((prevState: any) => ({
-//                           ...prevState,
-//                           emp_id: e.target.value,
-//                         }))
-//                       }
-//                       required
-//                     />
+    //               </div>
+    //               <div>
+    //               <Form onSubmit={sendLogin} className="w-100">
+    //               {showLoginButton == false ? (
+    //                 <div>
+    //                   <DropDown
+    //                     selected={type}
+    //                     setSelect={handleSelect}
+    //                     selectArray={Options}
+    //                   />
+    //                 </div>
+    //               ) : (
+    //                 <Button
+    //                   type="submit"
+    //                   size="lg"
+    //                   data-testid="loginBtn"
+    //                   className="button-color fs-6 fw-bold "
+    //                 >
+    //                   LOGIN
+    //                 </Button>
+    //               )}
 
-//                   }
-//                   title2="SUBMIT"
-//                   handleApi={async () => {
-//                     const empIdAsNumber = parseInt(loginDataDetails.emp_id, 10);
-//                     if (!isNaN(empIdAsNumber)) {
+    //               <div className="p-5 "></div>
+    //               {showModal && (
+    //                 <ModalShow
+    //                   handleView={showModal}
+    //                   handleClose={() => {
+    //                     setShowModal(false);
+    //                   }}
+    //                   title="Login"
+    //                   title1={
+    //                     <Form.Control
+    //                       className="username login-icon"
+    //                       type="text"
+    //                       placeholder="Username"
+    //                       value={loginDataDetails.emp_id.toString()}
+    //                       onChange={(e) =>
+    //                         setLoginDataDetails((prevState: any) => ({
+    //                           ...prevState,
+    //                           emp_id: e.target.value,
+    //                         }))
+    //                       }
+    //                       required
+    //                     />
 
-//                       localStorage.setItem("token", empIdAsNumber.toString());
+    //                   }
+    //                   title2="SUBMIT"
+    //                   handleApi={async () => {
+    //                     const empIdAsNumber = parseInt(loginDataDetails.emp_id, 10);
+    //                     if (!isNaN(empIdAsNumber)) {
 
-//                       const loginDataWithNumberEmpId = {
-//                         ...loginDataDetails,
-//                         emp_id: empIdAsNumber,
-//                       };
+    //                       localStorage.setItem("token", empIdAsNumber.toString());
 
-//                       try {
-//                         const loginResponse = await dispatch(authLogin(loginDataWithNumberEmpId));
-//                         console.log(loginResponse, "lololo")
-//                         // Assuming loginResponse contains the necessary success flag or data to verify a successful login
-//                         if (loginResponse?.payload?.statusCode == 200) {
+    //                       const loginDataWithNumberEmpId = {
+    //                         ...loginDataDetails,
+    //                         emp_id: empIdAsNumber,
+    //                       };
 
-//                           setShowModal(false);
-//                           setShowModalOtp(true);
-//                         } else {
-//                           setShowModal(false);
-//                           ToastifyShow("Invalid Employee ID", "error");
-//                         }
-//                       } catch (error) {
-//                         // Handle any potential errors with the API call
-//                         ToastifyShow("Login failed. Please try again.", "error");
-//                       }
-//                     } else {
-//                       ToastifyShow("emp_id is not a valid number", "error");
-//                     }
-//                   }}
-//                 />
-//               )}
-//               <p className="loader1 mt-5 ">
-//                 {loading == "pending" && <FullScreenLoader />}
-//               </p>
-//               <p className="loader1 mt-5 ">
-//                 {loadingOtp == "pending" && <FullScreenLoader />}
-//               </p>
-//               {showModalOtp && (
-//                 <ModalShow
-//                   handleView={showModalOtp}
-//                   title="Enter Otp"
-//                   title1={
-//                     <Form.Control
-//                       className="username login-icon"
-//                       type="text"
-//                       placeholder="Enter Your Otp here"
-//                       value={loginDataDetails.otp.toString()}
-//                       onChange={(e) =>
-//                         setLoginDataDetails((prevState: any) => ({
-//                           ...prevState,
-//                           otp: e.target.value,
-//                         }))
-//                       }
-//                       required
-//                     />
-//                   }
-//                   title2="Verify Otp"
-//                   handleApi={async () => {
-//                     const emp_id = parseInt(loginDataDetails.emp_id, 10);
-//                     localStorage.setItem("emp_id", emp_id.toString());
+    //                       try {
+    //                         const loginResponse = await dispatch(authLogin(loginDataWithNumberEmpId));
+    //                         // Assuming loginResponse contains the necessary success flag or data to verify a successful login
+    //                         inResponse?.payload?.statusCode == 200) {
 
-//                     const otp = loginDataDetails.otp;
-//                     await dispatch(otpLogin({ emp_id, otp })).then((x: any) => {
-//                       let { token } = x?.payload?.data;
-//                       let roleUSer = x?.payload?.data?.empDetails?.role;
-//                       ToastifyShow("Otp Verified Successfully", "success");
-//                       setLoginDataDetails((prevState: any) => ({
-//                         ...prevState,
-//                         emp_id: "",
-//                         otp:"" 
-//                       }));
+    //                           setShowModal(false);
+    //                           setShowModalOtp(true);
+    //                         } else {
+    //                           setShowModal(false);
+    //                           ToastifyShow("Invalid Employee ID", "error");
+    //                         }
+    //                       } catch (error) {
+    //                         // Handle any potential errors with the API call
+    //                         ToastifyShow("Login failed. Please try again.", "error");
+    //                       }
+    //                     } else {
+    //                       ToastifyShow("emp_id is not a valid number", "error");
+    //                     }
+    //                   }}
+    //                 />
+    //               )}
+    //               <p className="loader1 mt-5 ">
+    //                 {loading == "pending" && <FullScreenLoader />}
+    //               </p>
+    //               <p className="loader1 mt-5 ">
+    //                 {loadingOtp == "pending" && <FullScreenLoader />}
+    //               </p>
+    //               {showModalOtp && (
+    //                 <ModalShow
+    //                   handleView={showModalOtp}
+    //                   title="Enter Otp"
+    //                   title1={
+    //                     <Form.Control
+    //                       className="username login-icon"
+    //                       type="text"
+    //                       placeholder="Enter Your Otp here"
+    //                       value={loginDataDetails.otp.toString()}
+    //                       onChange={(e) =>
+    //                         setLoginDataDetails((prevState: any) => ({
+    //                           ...prevState,
+    //                           otp: e.target.value,
+    //                         }))
+    //                       }
+    //                       required
+    //                     />
+    //                   }
+    //                   title2="Verify Otp"
+    //                   handleApi={async () => {
+    //                     const emp_id = parseInt(loginDataDetails.emp_id, 10);
+    //                     localStorage.setItem("emp_id", emp_id.toString());
 
-//                       if (token) {
-//                         setShowModal(false);
-//                         setShowModalOtp(false);
-//                         setShowLoginButton(false);
-//                         localStorage.setItem("token", token);
-//                         roleUSer === "User" ? navigate("/") : navigate("/AdminPanel");
+    //                     const otp = loginDataDetails.otp;
+    //                     await dispatch(otpLogin({ emp_id, otp })).then((x: any) => {
+    //                       let { token } = x?.payload?.data;
+    //                       let roleUSer = x?.payload?.data?.empDetails?.role;
+    //                       ToastifyShow("Otp Verified Successfully", "success");
+    //                       setLoginDataDetails((prevState: any) => ({
+    //                         ...prevState,
+    //                         emp_id: "",
+    //                         otp:"" 
+    //                       }));
 
-//                         // localStorage.setItem("emp_id", emp_id);
-//                         localStorage.setItem(
-//                           "apiResponse",
-//                           JSON.stringify(x?.payload)
-//                         );
+    //                       if (token) {
+    //                         setShowModal(false);
+    //                         setShowModalOtp(false);
+    //                         setShowLoginButton(false);
+    //                         localStorage.setItem("token", token);
+    //                         roleUSer === "User" ? navigate("/") : navigate("/AdminPanel");
 
-//                       }
-//                       else {
-//                         setShowModal(false);
-//                         setShowModalOtp(false);
-//                         setShowLoginButton(false);
-//                         localStorage.clear()
-//                       }
-//                     });
-//                   }}
-//                   handleClose={() => {
+    //                         // localStorage.setItem("emp_id", emp_id);
+    //                         localStorage.setItem(
+    //                           "apiResponse",
+    //                           JSON.stringify(x?.payload)
+    //                         );
 
-//                     setShowModalOtp(false);
-//                   }}
-//                 />
-//               )}
-//               <div className="p-5 "></div>
-//             </Form>
-              
-//               </div>
-//             </div>
-         
-//           </div>
-//         </div>
-//       </header>
-//       <section>
+    //                       }
+    //                       else {
+    //                         setShowModal(false);
+    //                         setShowModalOtp(false);
+    //                         setShowLoginButton(false);
+    //                         localStorage.clear()
+    //                       }
+    //                     });
+    //                   }}
+    //                   handleClose={() => {
 
-//         <div className="container">
-//           <div className="section">
-// hello
-// hello
-// hello
-// hello
-// hello
-// hello
-// hello
-// hello
-//           </div>
-//         </div>
-//       </section>
-//       <footer id="footer">
+    //                     setShowModalOtp(false);
+    //                   }}
+    //                 />
+    //               )}
+    //               <div className="p-5 "></div>
+    //             </Form>
 
-//         <div className="container">
-//           <div className="w-100">
-//           <p className="footer-name mt-3">
-//           Made with {HeartIcon} by OS Team
-//         </p >
-//           </div>
-//         </div>
-//       </footer>
-//     </>
+    //               </div>
+    //             </div>
+
+    //           </div>
+    //         </div>
+    //       </header>
+    //       <section>
+
+    //         <div className="container">
+    //           <div className="section">
+    // hello
+    // hello
+    // hello
+    // hello
+    // hello
+    // hello
+    // hello
+    // hello
+    //           </div>
+    //         </div>
+    //       </section>
+    //       <footer id="footer">
+
+    //         <div className="container">
+    //           <div className="w-100">
+    //           <p className="footer-name mt-3">
+    //           Made with {HeartIcon} by OS Team
+    //         </p >
+    //           </div>
+    //         </div>
+    //       </footer>
+    //     </>
   );
 };
 export default Login;

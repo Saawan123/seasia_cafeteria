@@ -37,7 +37,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute, { ProtectedRouteCheck } from "./ProtectedRoutes";;
 const Dashboard = React.lazy(() => import("../Pages/AdminPanelPages/Dashboard"))
 const Login = React.lazy(() => import("../Pages/Login"));
-
+const User = React.lazy(()=>import("../Pages/UserPanel/UserProfile"))
 const AdminPanel = React.lazy(() => import("../Pages/AdminPanel"));
 const Orders = React.lazy(() => import("../Pages/AdminPanelPages/Orders"));
 const CustomerOrders = React.lazy(() => import("../Pages/AdminPanelPages/CustomerOrders"));
@@ -47,20 +47,21 @@ const Menu = React.lazy(() => import("../Pages/AdminPanelPages/Menu"));
 export default function RouteFile() {
   return (
     <Routes>
-        {/* <Route path="/login" element={<Login/>}/> */}
-
+  
       {/* Use ProtectedRoute for routes that require authentication */}
+      <Route path="/" element={<Login />} />
       <Route
-        path="/"
+        path="/UserProfile"
         element={
-          <ProtectedRouteCheck>
-            <Login />
-          </ProtectedRouteCheck>
+    
+            <User />
+       
         }
       />
+       
       <Route
         path="/AdminPanel"
-        element={<ProtectedRoute />} // Wrap the ProtectedRoute around the routes that require authentication
+        element={<ProtectedRoute />} 
       >
         {/* Define your nested routes here */}
         <Route path="/AdminPanel" element={<AdminPanel />} />
@@ -72,7 +73,6 @@ export default function RouteFile() {
       </Route>
 
       {/* Public routes that don't require authentication */}
-      {/* <Route path="/login" element={<Login />} /> */}
     </Routes>
   );
 }

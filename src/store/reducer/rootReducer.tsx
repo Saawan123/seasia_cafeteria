@@ -5,11 +5,13 @@ import menuReducer from "../Menu/menuSlice";
 import ConfirmOrderReducer from "../ConfirmOrder/ConfirmOrderSLice";
 import CreateUserReducer from "../CreateUser/CreateUserSlice";
 import dashboardReducer from "../Dashboard/dashboardSlice";
+import UserReducer from "../User/UserSlice";
 
 
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  userProfile:UserReducer,
   MenuListToday:todayMenuReducer,
   MenuList:menuReducer,
   confirmOrderList:ConfirmOrderReducer,
