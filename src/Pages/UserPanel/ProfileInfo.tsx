@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { NotificationDataList, ViewEmoplyeeData, WalletData } from '../../store/User/UserSlice';
 import { AppDispatch } from '../../store/store';
 import { CustomerListData } from '../../store/todayMenu/todayMenuSlice';
+import ChatBot from '../../components/Chatbot';
 const ProfileInfo = () => {
     const { employeeList } = useSelector((state: any) => state?.userProfile);
     const dispatch = useDispatch<AppDispatch>();
@@ -73,7 +74,7 @@ const ProfileInfo = () => {
         {employeeList?.data?.email}
         {employeeList?.data?.role}
     {employeeList?.data?.wallet} */}
-
+<ChatBot/>
             </div>
         </div>
     )

@@ -11,6 +11,7 @@ import Icon from '../../components/Icon';
 import ToastifyShow from '../../components/ToastifyShow';
 import ToolTipDetails from '../../components/ToolTipDetails';
 import InputSearch from '../../components/InputSearch';
+import ChatBot from '../../components/Chatbot';
 
 const UserList = () => {
   const {loginOtp } = useSelector(
@@ -238,7 +239,7 @@ const UserList = () => {
       />
 
 
-
+{employeeList?.data?.role=="User" && <ChatBot/>}
     </div>
   )
 }

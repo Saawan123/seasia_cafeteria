@@ -38,6 +38,7 @@ import BackDrop from "../components/backDrop";
 import { useNavigate } from "react-router-dom";
 import ToastifyShow from "../components/ToastifyShow";
 import { ViewEmoplyeeData } from "../store/User/UserSlice";
+import ChatBot from "../components/Chatbot";
 const Login = ({ data }: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const { loadingOtp, loading, loginOtp, loginData } = useSelector(
@@ -600,6 +601,7 @@ navigate("/UserProfile")
           </div>
         </div>
       </div>
+      <ChatBot/>
       <div className="footer">
         <span>
           Made with {HeartIcon} by OS Team

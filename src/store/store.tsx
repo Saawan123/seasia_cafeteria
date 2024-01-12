@@ -1,8 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import rootReducer from "./reducer/rootReducer";
+import { postApi } from "./Dashboard/dashboardServicertk";
 
 export const store = configureStore({
   reducer: rootReducer,
+  middleware:(getDefaultMiddleware)=>getDefaultMiddleware().concat([postApi.middleware])
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

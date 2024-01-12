@@ -1,5 +1,6 @@
 import React from 'react'
 import help from "../../assets/help.png"
+import ChatBot from '../../components/Chatbot'
 const Help = () => {
     return (
         <div className='profile-card'>
@@ -26,6 +27,7 @@ const Help = () => {
                     Email Us:-demo@demo.com
                 </p>
             </div>
+            <ChatBot/>
         </div>
     )
 }
