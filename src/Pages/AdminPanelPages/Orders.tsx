@@ -1,20 +1,30 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Nav, NavItem, NavLink, Spinner } from 'react-bootstrap';
+import { Nav, Spinner } from 'react-bootstrap';
 import "../login.scss"
+import ModalShow from '../../components/ModalShow';
 import DataTable from "react-data-table-component";
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store/store';
 import { CustomerListData, PendingOrderListData, UpdateStatusOrderListData } from '../../store/todayMenu/todayMenuSlice';
-import { EditIcon, cancelledButtonIcon, confirmedButton } from '../../lib/icon';
+import {  cancelledButtonIcon, confirmedButton } from '../../lib/icon';
 import Icon from '../../components/Icon';
 import ToastifyShow from '../../components/ToastifyShow';
 import ToolTipDetails from '../../components/ToolTipDetails';
 import InputSearch from '../../components/InputSearch';
 
 const UserList = () => {
+  const {loginOtp } = useSelector(
+    (state: any) => state?.auth
+  );
+  const { employeeList } = useSelector((state: any) => state?.userProfile);
+
+  console.log(loginOtp?.data?.empDetails?.role,"plplplpi988887")
   const [activeTab, setActiveTab] = useState('customerOrders');
   const dispatch = useDispatch<AppDispatch>();
   const [searchValue, setSearchValue] = useState("");
+  const [showModal , setShowModal] = useState(false)
+  const [showConfirmModal , setShowConfirmModal] = useState(false)
+  const [idd, setIdd] = useState("");
   const { customerOrders, loading, pendingOrders } = useSelector((state: any) => state?.MenuListToday);
   const [paginationPerDetails, setPaginationPerDetails] = useState({
     perPage: 10,
@@ -69,7 +79,7 @@ const UserList = () => {
       },
     ];
 
-    if (activeTab === 'pendingOrders') {
+    if (activeTab === 'pendingOrders' ) {
       dynamicColumns.push({
         name: "Operations",
         cell: ({ _id }: any) => (
@@ -81,8 +91,8 @@ const UserList = () => {
                   icon={cancelledButtonIcon}
                   className="cursor-pointer"
                   action={() => {
-                    dispatch(UpdateStatusOrderListData({ status: "cancelled", order_id: _id }))
-                    ToastifyShow("Order Cancelled", "success");
+                    setShowModal(true)
+                    setIdd(_id)
 
                   }}
                 />} />
@@ -92,8 +102,9 @@ const UserList = () => {
                 <Icon
                   icon={confirmedButton}
                   action={() => {
-                    dispatch(UpdateStatusOrderListData({ status: "confirm", order_id: _id }))
-                    ToastifyShow("Order Confirmed", "success");
+                    setShowConfirmModal(true)
+                    setIdd(_id)
+
                   }}
                 />} />
           </div>
@@ -109,17 +120,64 @@ const UserList = () => {
     setActiveTab(tabName);
     if (tabName === 'customerOrders') {
       dispatch(CustomerListData({}));
-    } else if (tabName === 'pendingOrders') {
+    } else if (tabName === 'pendingOrders' && employeeList?.data?.role!="User") {
       dispatch(PendingOrderListData({}));
     }
   };
   useEffect(() => {
 
     dispatch(CustomerListData({ limit: perPage, currentPage: currentPage, search: searchValue }));
-    dispatch(PendingOrderListData({ limit: perPage, currentPage: currentPage, search: searchValue }));
+    if(employeeList?.data?.role!="User"){
+
+      dispatch(PendingOrderListData({ limit: perPage, currentPage: currentPage, search: searchValue }));
+    }
   }, [paginationPerDetails, searchValue]);
   return (
     <div className='p-4 '>
+
+
+      {showModal && (
+        //modal for cancel order
+                <ModalShow
+                  handleView={showModal}
+                  title="Cancel Order"
+                  title1={
+                   "Are You Sure You Want to Cancel Order?"
+                  }
+                  title2="Cancel"
+                  handleApi={(_id:any)=>{
+                    dispatch(UpdateStatusOrderListData({ status: "cancelled", order_id:idd }))
+                    ToastifyShow("Order Cancelled", "success");
+                    setShowModal(false);
+
+                  }}
+                  handleClose={() => {
+
+                    setShowModal(false);
+                  }}
+                />
+              )}
+        {showConfirmModal && (
+        //modal for confirm order
+                <ModalShow
+                  handleView={showConfirmModal}
+                  title="Confirm Order"
+                  title1={
+                   "Are You Sure You Want to Confirm Order?"
+                  }
+                  title2="Confirm"
+                  handleApi={(_id:any)=>{
+                    dispatch(UpdateStatusOrderListData({ status: "confirm", order_id:idd }))
+                    ToastifyShow("Order Confirmed", "success");
+                    setShowConfirmModal(false);
+
+                  }}
+                  handleClose={() => {
+
+                    setShowConfirmModal(false);
+                  }}
+                />
+              )}
       <Nav variant="pills" defaultActiveKey="customerOrders" onSelect={handleTabClick} className='gap-5 '>
         <Nav.Item>
 
@@ -128,7 +186,10 @@ const UserList = () => {
 
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="pendingOrders"  >Pending Orders</Nav.Link>
+          {
+           employeeList?.data?.role!="User" &&
+            <Nav.Link eventKey="pendingOrders"  >Pending Orders</Nav.Link>
+          }
         </Nav.Item>
       </Nav>
       <div className='justify-content-end d-flex'>

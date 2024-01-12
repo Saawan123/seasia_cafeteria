@@ -20,12 +20,12 @@ const CreateUser = ({ closeModal }: any) => {
   const onSubmit: any = async (values: any, { resetForm }: any) => {
  
     try {
-
+      values.emp_id = parseInt(values.emp_id, 10);
       await dispatch(CreateUserData(values));
 
 
       closeModal(); 
-      ToastifyShow("User Create Successfully","success")
+ 
       resetForm();
     } catch (error) {
 
@@ -56,7 +56,7 @@ const CreateUser = ({ closeModal }: any) => {
             <div className='col-md-12'>
 
             <label htmlFor="emp_id">Employee ID:</label>
-            <Field type="number" id="emp_id" name="emp_id" className={errors.emp_id && touched.emp_id ? 'input-error' : 'ms-5'} />
+            <Field type="text" id="emp_id" name="emp_id" className={errors.emp_id && touched.emp_id ? 'input-error' : 'ms-5'} />
             <ErrorMessage name="emp_id" component="div" className="error-message" />
             </div>
             <div className='col-md-6'>
@@ -73,7 +73,7 @@ const CreateUser = ({ closeModal }: any) => {
               </div>
               <div className='col-md-6'>
   <label htmlFor="role">Role:</label><br/>
-  <Field as="select" id="role" name="role" className={errors.role && touched.role ? 'input-error' : 'mt-2 w-100 hh'}>
+  <Field as="select" id="role" name="role" className={errors.role && touched.role ? 'input-error' : 'mt-1 w-100 hh'}>
     <option value="">Select a role</option>
     <option value="Admin">Admin</option>
     <option value="User">User</option>

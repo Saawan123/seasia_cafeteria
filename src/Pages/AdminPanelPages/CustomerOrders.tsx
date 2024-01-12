@@ -16,7 +16,6 @@ import AddSubMenu from "../AddSubMenu";
 import SlideDrawerCustom from "../../components/SlideDrawerCustom";
 
 
-
 const CustomerOrders = () => {
   const { subMenus } = useSelector((state: any) => state?.MenuList);
   const [selectedMenuItem, setSelectedMenuItem]: any = useState("Breakfast");
@@ -26,20 +25,29 @@ const CustomerOrders = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [drawerOpen, setDrawerOpen] = useState(false);
   // const [idd, setIdd]:any = useState("");
-
+  console.log(selectedMenuItem, "selecteddddd")
   useEffect(() => {
     dispatch(MenuListData({}));
     dispatch(SubMenuListData({}));
   }, [dispatch]);
+  useEffect(() => {
+    const defaultMenu = subMenus?.data?.find((menu: any) => menu.title === activeMenu);
+    if (defaultMenu) {
+      setSelectedMenuItem(defaultMenu);
+    }
+  }, [subMenus, activeMenu]);
+
+
+
   function handleOpenDrawerButton() {
-   
+
 
     setDrawerOpen(!drawerOpen);
   }
   function handleBackdropClick() {
     setDrawerOpen(false);
   }
-  const handleMenuClick:any = (menuItem: string) => {
+  const handleMenuClick: any = (menuItem: string) => {
     const selectedMenu = subMenus?.data?.find((menu: any) => menu.title === menuItem);
     if (selectedMenu) {
       setSelectedMenuItem(selectedMenu);
@@ -48,9 +56,9 @@ const CustomerOrders = () => {
 
     }
   };
-useEffect(()=>{
-  handleMenuClick()
-},[])
+  useEffect(() => {
+    handleMenuClick()
+  }, [])
   const addItemToOrder = (itemName: string) => {
     const updatedOrder = [...orderItems, itemName];
     setOrderItems(updatedOrder);

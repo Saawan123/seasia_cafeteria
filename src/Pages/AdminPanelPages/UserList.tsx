@@ -60,7 +60,6 @@ const UserList = () => {
       },
       {
         name: "EmployeeId",
-
         cell: ({ EmployeeId }: any) => EmployeeId,
 
 

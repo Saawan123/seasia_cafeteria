@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getToken } from "../../routes/ProtectedRoutes";
+import ToastifyShow from "../../components/ToastifyShow";
 export const BASE_URL = import.meta.env.VITE_BASE_URL;
 // const userTypeCheck=UserTypeCheck()
 // let userIdCheck=UserTypeId()
@@ -36,12 +37,16 @@ export const todaysMenu = async (data: any) => {
 // };
 export const addSubMenu = async (data: any) => {
   try {
+    // console.log(data,"data==090")
     const response = await axios
       .post(`${BASE_URL}admin/modules/v1/submenu/add-submenu`,data, getToken())
       .then((data: any) => {
+        ToastifyShow("Sub Menu Added Successfully", "success");
         return data;
       })
       .catch((error: any) => {
+        ToastifyShow(error?.response?.data?.message, "error");
+        // console.log(error?.reponse?.data?.message,"error")
         return error;
       });
     return response.data;
@@ -132,7 +137,7 @@ export const UpdateStatusListDetails = async (data: any) => {
   try {
     let {status} = data;
     const token = `Bearer ${localStorage.getItem('token')}`;
-    const response = await axios.post(`${BASE_URL}admin/modules/v1/order/update-statuss?status=${status ? status : ""}`, data,{
+    const response = await axios.post(`${BASE_URL}admin/modules/v1/order/update-status?status=${status ? status : ""}`, data,{
       headers: {
         Authorization: token,
       }})

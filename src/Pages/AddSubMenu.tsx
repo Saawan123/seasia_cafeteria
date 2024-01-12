@@ -8,6 +8,7 @@ import { AddSubMenuListData, UpdateSubMenuListData, reset } from '../store/today
 import { SubMenuListData } from '../store/Menu/menuSlice';
 import { useEffect, useState } from 'react';
 const AddSubMenu = ({ closeModal, menuId, data }: any) => {
+    console.log(data,"dataaaaa")
     const dispatch = useDispatch<AppDispatch>();
     // const { subMenuAddList, menusList } = useSelector((state: any) => state?.MenuListToday);
     const [updateState, setUpdateState]: any = useState()
@@ -30,22 +31,6 @@ const AddSubMenu = ({ closeModal, menuId, data }: any) => {
         quantity: Yup.string().required('Quantity is required'),
     });
 
-//     const onSubmit: any = async (values: any, { resetForm }: any) => {
-//         try {
-// if (data){
-
-//     await dispatch(UpdateSubMenuListData(values));
-// }
-//             await dispatch(AddSubMenuListData(values));
-//             closeModal();
-//             await dispatch(SubMenuListData(values));
-
-//             ToastifyShow("Sub Menu Add Successfully", "success")
-//             resetForm();
-//         } catch (error) {
-//             // Handle error if needed
-//         }
-//     };
 const onSubmit = async (values:any, { resetForm }:any) => {
     
     try {
@@ -57,8 +42,9 @@ const onSubmit = async (values:any, { resetForm }:any) => {
 
         } else {
             // Create new data
+            
             await dispatch(AddSubMenuListData(values));
-            ToastifyShow("Sub Menu Added Successfully", "success");
+            // ToastifyShow("Sub Menu Added Successfully", "success");
         }
 
         // Fetch updated/complete data after action

@@ -18,7 +18,7 @@ import BackDrop from "../../components/backDrop";
 const Menu = () => {
   const { subMenus } = useSelector((state: any) => state?.MenuList);
   const [selectedMenuItem, setSelectedMenuItem]: any = useState("Breakfast");
-  const [orderItems, setOrderItems] = useState<string[]>([]);
+  const [orderItems, setOrderItems]:any = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [idd, setIdd] = useState("");
@@ -39,6 +39,12 @@ const Menu = () => {
       // dispatch(SubMenuListData({ menu_id: selectedMenu._id }));
     }
   };
+  useEffect(() => {
+    const defaultMenu = subMenus?.data?.find((menu: any) => menu.title === activeMenu);
+    if (defaultMenu) {
+      setSelectedMenuItem(defaultMenu);
+    }
+  }, [subMenus, activeMenu]);
   useEffect(()=>{
     handleMenuClick()
   },[])
@@ -49,9 +55,29 @@ const Menu = () => {
   function handleBackdropClick() {
     setDrawerOpen(false);
   }
-  const addItemToOrder = (itemName: string) => {
-    const updatedOrder = [...orderItems, itemName];
-    setOrderItems(updatedOrder);
+  // const addItemToOrder = (itemName: string) => {
+  //   const updatedOrder = [...orderItems, itemName];
+  //   setOrderItems(updatedOrder);
+  // };
+
+  const addItemToOrder = (itemDetails:any) => {
+    const { itemName, itemPrice }:any = itemDetails;
+  
+    const existingItemIndex = orderItems.findIndex(
+      (item:any) => item.itemName === itemName
+    );
+  
+    if (existingItemIndex !== -1) {
+      const updatedOrderItems:any = [...orderItems];
+      updatedOrderItems[existingItemIndex].quantity += 1;
+      updatedOrderItems[existingItemIndex].itemPrice += parseFloat(itemPrice);
+      setOrderItems(updatedOrderItems);
+    } else {
+      setOrderItems([
+        ...orderItems,
+        { itemName: itemName, itemPrice: itemPrice, quantity: 1 },
+      ]);
+    }
   };
   return (
     <div>
@@ -95,7 +121,10 @@ const Menu = () => {
             <div className="fs-5 fw-bold">{selectedMenuItem.title}</div>
             <Button
               type="submit"
-              onClick={() => setShowModal(true)}
+              onClick={() => {setShowModal(true)
+              setIdd("")
+              }
+              }
               size="lg"
               data-testid="loginBtn"
               className="button-color fs-6 fw-bold w-25 mt-4 ms-3"
@@ -151,21 +180,51 @@ const Menu = () => {
             {selectedMenuItem?.items?.map((item: any) => (
               <div
                 className="breakfast-box h-100"
-                onClick={() => addItemToOrder(`${item.item_name} ₹${item.price}`)}
+                onClick={() =>   addItemToOrder({ itemName: item?.item_name, itemPrice: item?.price })}
                 key={item._id}
               >
                 <p className="color">{item.item_name}</p>
                 {/* <p className="color">{item._id}</p> */}
-                <p>Price: ${item.price}</p>
-                <div className="d-flex justify-content-center gap-2 mb-2">
-                  <Icon icon={EditIcon} action={() => {
-                    setShowModal(true);
-                    setIdd(item);
-                  }} />
-                  <Icon icon={deleteIcon} action={() => {
-                    setShowDeleteModal(true);
-                    setIdd(item?._id);
-                  }} />
+                <p>Price: ₹{item.price}</p>
+                <div className="d-flex mt-2 gap-4 justify-content-center align-items-center m-3  mb-2">
+                <Icon
+  icon={EditIcon}
+  action={(e:any) => {
+    e.stopPropagation(); 
+    setShowModal(true);
+    setIdd(item);
+  }}
+/>
+<Icon
+  icon={deleteIcon}
+  action={(e:any) => {
+    e.stopPropagation(); 
+    setShowDeleteModal(true);
+    setIdd(item?._id);
+  }}
+/>
+
+                    {/* <Button
+              type="submit"
+              onClick={() => { setShowModal(true);
+                setIdd(item);}}
+              size="sm"
+             className="button-color-menu-edit"
+      
+            >
+              Edit
+            </Button>
+            <Button
+              type="submit"
+              onClick={() =>  {setShowDeleteModal(true);
+                setIdd(item?._id);}}
+              size="sm"
+              className="button-color-menu-delete"
+          
+            
+            >
+              Delete
+            </Button> */}
                 </div>
               </div>
             ))}
@@ -177,3 +236,6 @@ const Menu = () => {
 };
 
 export default Menu;
+
+
+

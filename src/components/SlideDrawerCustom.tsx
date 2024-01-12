@@ -5,7 +5,8 @@ import {  ConfirmOrderedData } from "../store/ConfirmOrder/ConfirmOrderSLice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store/store";
 import Icon from "./Icon";
-import { deleteIcon } from "../lib/icon";
+import { deleteIcon, emptyCart } from "../lib/icon";
+import { Button } from "react-bootstrap";
 
 const SlideDrawerCustom = ({ show, orderItems, onClose, selectedMenuItem,  setOrderItems }: any) => {
   
@@ -53,7 +54,7 @@ const SlideDrawerCustom = ({ show, orderItems, onClose, selectedMenuItem,  setOr
   };
   return (
     <div className={drawerClasses}>
-      <p>Order Details</p>
+     { orderItems.length != 0 && <p>Order Details</p>}
       <div className="gap-3  p-4 row" >
         {orderItems?.map((item: any, index: any) => (
 
@@ -68,16 +69,28 @@ const SlideDrawerCustom = ({ show, orderItems, onClose, selectedMenuItem,  setOr
 
         ))}
       </div>
-      <div className="inputField d0">Total : ₹{totalPrice.toFixed(2)}</div>
+      {orderItems.length === 0 &&
+      <div className="text-center mt-5 ">
+      <p className="mt-5">
+
+        {emptyCart}
+      </p>
+        <p className="eat fs-3 ">
+      Your cart is empty !</p>
+      <Button onClick={()=>{onClose()}}           className="button-color fs-6 fw-bold w-25 mt-4"
+> Add Items </Button> 
+      </div>}
+
+      {orderItems.length != 0 && <div className="inputField d0">Total : ₹{totalPrice.toFixed(2)}</div>}
       {/* {activeMenu === "custom" && <div >
         <label>Enter Employee ID</label>
         <input name="emp_id" type="text" />
       </div>} */}
-      <div className="d-flex gap-5">
+      {orderItems.length != 0 && <div className="d-flex gap-5">
 
         <button type="submit" className="order-button" onClick={handleOrderItem}>Confirm Order</button>
         <button type="submit" className="order-button" onClick={handleClose} >Cancel</button>
-      </div>
+      </div>}
     </div>
   );
 };

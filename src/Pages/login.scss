@@ -83,7 +83,24 @@
    flex-shrink: 0;
 
 }
-
+.button-color-menu-edit{
+   border-radius: 50px;
+   // background: green;
+   background: #6D00C2;
+   width: 70px;
+   color: black;
+   height: 30px;
+   flex-shrink: 0;
+}
+.button-color-menu-delete{
+   border-radius: 50px;
+   // background: red;
+   background: #FFCB46;
+   width: 70px;
+   color: black;
+   height: 30px;
+   flex-shrink: 0;
+}
 .order-button {
    width: 200px;
    height: 50px;
@@ -291,7 +308,7 @@
    border-radius: 5px;
    text-align: center;
    // padding: 20px;
-   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+   box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 15px;
 
 
 }

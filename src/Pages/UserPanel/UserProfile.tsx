@@ -1,214 +1,148 @@
-// import { useEffect, useMemo, useState } from 'react'
-// import { Button, Spinner } from 'react-bootstrap';
-// import DataTable from "react-data-table-component";
-// import { useDispatch, useSelector } from 'react-redux';
-// import { AppDispatch } from '../../store/store';
-// import ModalShow from '../../components/ModalShow';
-// import CreateUser from '../CreateUser';
-// import "../login.scss"
-// import InputSearch from '../../components/InputSearch';
-// import { NotificationDataList, ViewEmoplyeeData, WalletData } from '../../store/User/UserSlice';
-// import { UsersOrderedData } from '../../store/ConfirmOrder/ConfirmOrderSLice';
-// import { CustomerListData } from '../../store/todayMenu/todayMenuSlice';
-// import ToastifyShow from '../../components/ToastifyShow';
-// import { Navigate, useNavigate } from 'react-router-dom';
-// const UserProfile = () => {
-//   const dispatch = useDispatch<AppDispatch>();
-// const navigate = useNavigate()
-//   const [showModal, setShowModal] = useState(false);
-//   const [searchValue, setSearchValue] = useState("");
-//   const { userLists, loading } = useSelector((state: any) => state?.MenuListToday);
-//   const [paginationPerDetails, setPaginationPerDetails] = useState({
-//     perPage: 10,
-//     currentPage: 0,
-//   });
-
-// const{ walletList,    employeeList,    notificationList} = useSelector((state:any)=>state?.userProfile)
-//   const columns: any = useMemo(
-//     () => [
-//       // {
-//       //   name: "_id",
-//       //   sortable: true,
-
-//       //   cell: ({ _id }: any) => _id,
-//       // },
-//       {
-//         name: "EmployeeId",
-
-//         cell: ({ EmployeeId }: any) => EmployeeId,
-
-
-//       },
-//       {
-//         name: "Name",
-
-//         cell: ({ FirstName, LastName }: any) => FirstName + " " + LastName,
-
-//       },
-//       {
-//         name: "balance",
-
-//         cell: ({ balance }: any) => balance,
-
-
-//       },
-
-//       {
-//         name: "Wallet",
-
-//         cell: ({ wallet }: any) => wallet,
-
-//       },
-//       {
-//         name: "EmployeeId",
-
-//         cell: ({ EmployeeId }: any) => EmployeeId,
-
-
-//       },
-
-
-//     ],
-//     []
-//   );
-// // all apis dispatch here for userProfile
-//   useEffect(() => {
-//     dispatch(WalletData({ }));
-//     dispatch(NotificationDataList({}))
-//     dispatch(ViewEmoplyeeData({emp_id:3657}))
-//     dispatch(CustomerListData({}))
-//   }, [])
-
-
-//   return (
-//     <div>
-//       <div className='d-flex justify-content-between p-2 m-2'>
-
-//         <div className='mt-4'>
-        // <Button
-        //     // type="submit"
-        //     onClick={() => {
-        //         localStorage.clear();
-        // navigate("/")
-        //         ToastifyShow("Logout Successfully","success")
-        //     }}
-        //     size="lg"
-        //     data-testid="loginBtn"
-        //     className="button-color"
-        //   >
-        //    Logout
-        //   </Button>
-       
-//         </div>
-//         <div className='mt-2'>
-
-//           <InputSearch
-//             placeholder="Search here"
-//             className="text-center "
-//             showValue={searchValue}
-//             addValue={(e: any) => setSearchValue(e.target.value)}
-//           />
-//         </div>
-//       </div>
-//       <ModalShow
-//         handleView={showModal}
-//         size="md"
-//         handleClose={() => {
-//           setShowModal(false)
-//         }}
-//         title="Login"
-//         title1={
-//           <CreateUser closeModal={() => setShowModal(false)} />
-
-//         }
-//         // title2="Submit"
-//         handleApi={
-
-//           ""
-//         }
-//       />
-
-//       <DataTable
-//         columns={columns}
-//         data={userLists?.data}
-//         pagination
-//         paginationPerPage={paginationPerDetails?.perPage}
-//         noDataComponent="No items found matching the search criteria"
-
-//         responsive
-//         paginationServer
-//         onChangeRowsPerPage={(data) => {
-//           setPaginationPerDetails({
-//             ...paginationPerDetails,
-//             perPage: data,
-//           });
-//         }}
-//         progressPending={loading == "pending" ? true : false}
-//         progressComponent={
-//           <div className="py-5 my-5">
-//             <Spinner animation="border" variant="primary" />
-//           </div>
-//         }
-//         selectableRowsHighlight={true}
-//         paginationRowsPerPageOptions={[10, 20, 30, 40, 50]}
-//         paginationTotalRows={userLists?.totalRecords}
-//         highlightOnHover={true}
-//         fixedHeader
-//         fixedHeaderScrollHeight="550px"
-//         onChangePage={(data) => {
-//           setPaginationPerDetails({
-//             ...paginationPerDetails,
-//             currentPage: data-1,
-//           });
-//         }}
-//       />
-//     </div>
-//   )
-// }
-
-// export default UserProfile
-
-import React, { useEffect } from 'react'
-import { Button } from 'react-bootstrap';
+import  { useState } from 'react';
+import { Button, Nav } from 'react-bootstrap';
+import "../UserPanel/UserProfile.scss";
+import Orders from '../AdminPanelPages/Orders';
+import dummyImage from "../../assets/dummyImage.png"
+import ProfileInfo from './ProfileInfo';
 import ToastifyShow from '../../components/ToastifyShow';
 import { useNavigate } from 'react-router-dom';
-import { NotificationDataList, ViewEmoplyeeData, WalletData } from '../../store/User/UserSlice';
-import { CustomerListData } from '../../store/todayMenu/todayMenuSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../store/store';
+import { notificationIcon, uploadIcon } from '../../lib/icon';
+import Help from './Help';
 
 const UserProfile = () => {
-  const navigate = useNavigate();
-  const {employeeList} = useSelector((state:any)=>state?.userProfile)
-  console.log(employeeList,"lllll")
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-
-         dispatch(ViewEmoplyeeData({ emp_id: employeeList?.data?.EmployeeId }));
-         dispatch(WalletData({}));
-         dispatch(NotificationDataList({}));
-         dispatch(CustomerListData({}));
+  const [activeSection, setActiveSection] = useState('Profile Info');
+  const [selectedImage, setSelectedImage]:any = useState(() => {
    
-  }, [dispatch,]);
-  
+    const savedImage = localStorage.getItem('userImage');
+    return savedImage ? savedImage : null;
+  });
+
+  const handleImageChange = (event:any) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader:any = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+        localStorage.setItem('userImage', reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+    else{
+      localStorage.clear()
+    }
+  };
+
+  const navigate = useNavigate()
+
+  const handleMenuClick = (section: any) => {
+    setActiveSection(section);
+  };
+
+
   return (
     <div>
-              <Button
-            // type="submit"
-            onClick={() => {
+      <div className=''>
+        <div className='text-center m-5 profile-upper-card'>
+          <div className='d-flex justify-content-between'>
+            <p className='ms-5 mt-3'>{notificationIcon}</p>
+            <Button
+              // type="submit"
+              onClick={() => {
                 localStorage.clear();
-        navigate("/")
-                ToastifyShow("Logout Successfully","success")
-            }}
-            size="lg"
-            data-testid="loginBtn"
-            className="button-color"
-          >
-           Logout
-          </Button>
-    </div>
-  )
-}
+                navigate("/")
+                ToastifyShow("Logout Successfully", "success")
+              }}
+              size="lg"
+              data-testid="loginBtn"
+              className="button-color mt-4 m-5"
+            >
+              Logout
+            </Button>
+          </div>
+    
+<div
+  style={{
+    position: 'absolute',
+    top: '478px',
+    left: '761px',
+    cursor: 'pointer',
+    zIndex: '99999',
+  }}
+  onClick={() => {
+    // Click the hidden file input when the upload icon is clicked
+    const fileInput:any = document.querySelector('input[type="file"]');
+    if (fileInput) fileInput.click();
+  }}
+>
+<input type="file" onChange={handleImageChange} style={{ display: 'none' }} />
 
-export default UserProfile
+  {uploadIcon}
+</div>
+           
+           <img
+          src={selectedImage ? selectedImage : dummyImage}
+          alt="Selected"
+          style={{
+            borderRadius: "300px",
+            position: "relative",
+            top: "50px",
+            background: "white",
+            boxShadow: "1px 2px 3px black",
+            height: "300px",
+            textAlign: "center",
+            width: "300px"
+          }}
+        />
+
+        </div>
+
+
+        <Nav variant="pills" className="justify-content-around  header">
+          <Nav.Item>
+            <Nav.Link onClick={() => handleMenuClick('Profile Info')} active={activeSection === 'Profile Info'}>
+              Profile Info
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link onClick={() => handleMenuClick('Order History')} active={activeSection === 'Order History'}>
+              Order History
+            </Nav.Link>
+          </Nav.Item>
+          {/* <Nav.Item>
+            <Nav.Link onClick={() => handleMenuClick('Wallet History')} active={activeSection === 'Wallet History'}>
+              Wallet History
+            </Nav.Link>
+          </Nav.Item> */}
+          <Nav.Item>
+            <Nav.Link onClick={() => handleMenuClick('Help and Support')} active={activeSection === 'Help and Support'}>
+              Help and Support
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+      </div>
+
+      {activeSection === 'Profile Info' && (
+        <div>
+          <ProfileInfo />
+        </div>
+      )}
+      {activeSection === 'Order History' && (
+        <div>
+          <Orders />
+        </div>
+      )}
+      {activeSection === 'Wallet History' && (
+        <div>
+          data for Wallet History
+        </div>
+      )}
+      {activeSection === 'Help and Support' && (
+        <div>
+          <Help />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default UserProfile;

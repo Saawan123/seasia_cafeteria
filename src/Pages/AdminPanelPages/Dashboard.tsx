@@ -1,5 +1,5 @@
 
-import './Dashboard.scss'; // Import your CSS file for styling
+import './Dashboard.scss'; 
 import HighChartDetails from '../../components/HighCharts';
 import { DashboardData } from '../../store/Dashboard/dashboardSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,17 +13,22 @@ import burger from "../../assets/burger.png"
 import dummyImage from "../../assets/dummyImage.png";
 import juice from "../../assets/juice.png";
 import '../login.scss'
-import { TotalMenusIcon, TotalOrdersIcon, eatFresh, pendingOrderIcon, stayHealthy, totalCustomerIcon } from '../../lib/icon';
-import Icon from '../../components/Icon';
+import { TotalMenusIcon, TotalOrdersIcon, pendingOrderIcon, totalCustomerIcon } from '../../lib/icon';
+
 
 const Dashboard = () => {
     const dispatch = useDispatch<AppDispatch>();
     const [leadType, setLeadType] = useState("transactions");
     const { dashboardList, loading } = useSelector((state: any) => state?.dashboardDataShow);
     const [searchValue, setSearchValue] = useState("");
+    const [paginationPerDetails, setPaginationPerDetails] = useState({
+        perPage: 10,
+        currentPage: 0,
+      });
+      const { perPage, currentPage } = paginationPerDetails;
     useEffect(() => {
-        dispatch(DashboardData({ search: searchValue }))
-    }, [searchValue])
+        dispatch(DashboardData({ search: searchValue, limit: perPage, currentPage: currentPage }))
+    }, [searchValue, paginationPerDetails])
 
     const columns = useMemo(
         () => [
@@ -95,51 +100,6 @@ const Dashboard = () => {
                         addValue={(e: any) => setSearchValue(e.target.value)}
                     />
                 </div>
-                {/* <div className="middle-card w-100 d-flex justify-content-between">
-                    <div>
-                        <div>
-                            <Icon icon={eatFresh} />
-                        </div>
-                        <div>
-                            <Icon icon={stayHealthy} />
-                        </div>
-                        <div className="mt-2">
-                            <Button
-                                variant="outline-primary"
-                                type="submit"
-                                className="order-button fs-6"
-                            >
-                                Order Now
-                            </Button>
-                        </div>
-                    </div>
-                    <div className="d-flex justify-content-between ">
-                        <img
-                            src={juice}
-                            alt="profile Pic"
-                            loading={"lazy"}
-                            style={{ height: "130px", width: "130px", marginTop: "70px" }}
-                            draggable={false}
-                        />
-
-                        <img
-                            src={dummyImage}
-                            alt="profile Pic"
-                            loading={"lazy"}
-                            style={{ height: "250px" }}
-                            draggable={false}
-                            className="mb-4"
-                        />
-
-                        <img
-                            src={burger}
-                            alt="profile Pic"
-                            loading={"lazy"}
-                            style={{ height: "120px", marginTop: "80px" }}
-                            draggable={false}
-                        />
-                    </div>
-                </div> */}
                 <div className="mt-3 upper-card m-4 p-4 ">
         <div>
           <p className="eat  d-flex gap-3">
@@ -240,15 +200,16 @@ const Dashboard = () => {
                     columns={columns}
                     data={dashboardList?.data?.[0]?.mostOrderItem}
                     pagination
-                    // paginationPerPage={FranchiseDocList?.per_page}
+        paginationPerPage={paginationPerDetails?.perPage}
+
                     responsive
                     paginationServer
-                    // onChangeRowsPerPage={(data) => {
-                    //   setPaginationPerDetails({
-                    //     ...paginationPerDetails,
-                    //     perPage: data,
-                    //   });
-                    // }}
+                    onChangeRowsPerPage={(data) => {
+                      setPaginationPerDetails({
+                        ...paginationPerDetails,
+                        perPage: data,
+                      });
+                    }}
                     progressPending={loading == "pending" ? true : false}
                     progressComponent={
                         <div className="py-5 my-5">
@@ -256,17 +217,19 @@ const Dashboard = () => {
                         </div>
                     }
                     selectableRowsHighlight={true}
+        paginationTotalRows={dashboardList?.totalRecords}
+
                     paginationRowsPerPageOptions={[5, 10, 15, 20, 25]}
                     // paginationTotalRows={FranchiseDocList?.total}
                     highlightOnHover={true}
                     fixedHeader
                     fixedHeaderScrollHeight="550px"
-                // onChangePage={(data) => {
-                //   setPaginationPerDetails({
-                //     ...paginationPerDetails,
-                //     page: data,
-                //   });
-                // }}
+                onChangePage={(data) => {
+                  setPaginationPerDetails({
+                    ...paginationPerDetails,
+                    currentPage: data-1,
+                  });
+                }}
                 />
             </div>
         </div>
