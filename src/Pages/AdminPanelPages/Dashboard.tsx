@@ -19,19 +19,20 @@ import { useGetPostQuery } from '../../store/Dashboard/dashboardServicertk';
 
 const Dashboard = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const {data, isLoading}:any = useGetPostQuery()
-    console.log(data?.data,"dashdata",useGetPostQuery)
+    // const {data, isLoading}:any = useGetPostQuery()
+    // console.log(data?.data,"dashdata",useGetPostQuery)
     const [leadType, setLeadType] = useState("transactions");
-    // const { dashboardList, loading } = useSelector((state: any) => state?.dashboardDataShow);
+    const { dashboardList, loading } = useSelector((state: any) => state?.dashboardDataShow);
     const [searchValue, setSearchValue] = useState("");
     const [paginationPerDetails, setPaginationPerDetails] = useState({
         perPage: 10,
         currentPage: 0,
       });
-    //   const { perPage, currentPage } = paginationPerDetails;
-    // useEffect(() => {
-    //     dispatch(DashboardData({ search: searchValue, limit: perPage, currentPage: currentPage }))
-    // }, [searchValue, paginationPerDetails])
+      const { perPage, currentPage } = paginationPerDetails;
+    useEffect(() => {
+        dispatch(DashboardData({ search: searchValue, limit: perPage, currentPage: currentPage }))
+    }, [searchValue, paginationPerDetails])
+
 
     const columns = useMemo(
         () => [
@@ -56,7 +57,7 @@ const Dashboard = () => {
         [
             {
                 title: TotalMenusIcon,
-                title1: data?.data?.[0]?.today_menu_items,
+                title1: dashboardList?.data?.[0]?.today_menu_items,
                 boxColor: "#45CB85",
                 bgcolor: "#f6fcf6",
                 name: "Total Menus",
@@ -66,7 +67,7 @@ const Dashboard = () => {
 
             {
                 title: TotalOrdersIcon,
-                title1: data?.data?.[0]?.total_orders,
+                title1: dashboardList?.data?.[0]?.total_orders,
 
                 boxColor: "#45CB85",
                 bgcolor: "#f6fcf6",
@@ -74,7 +75,7 @@ const Dashboard = () => {
             },
             {
                 title: pendingOrderIcon,
-                title1:data?.data?.[0]?.pendingOrder,
+                title1:dashboardList?.data?.[0]?.pendingOrder,
                 // title1: "0",
                 boxColor: "#DA4371",
                 bgcolor: "rgb(254, 245, 248)",
@@ -82,7 +83,7 @@ const Dashboard = () => {
             },
             {
                 title: totalCustomerIcon,
-                title1: data?.data?.[0]?.total_users,
+                title1: dashboardList?.data?.[0]?.total_users,
                 name: "Total Customers",
                 boxColor: "#4B38B3",
                 bgcolor: "rgb(246, 245, 251)",
@@ -190,7 +191,7 @@ const Dashboard = () => {
                 <div className='d-flex gap-3'>
                     
                     <div className='w-100 Card'>
-                        <label className="mb-3 fw-bold fs-2">Total Revenue: {data?.data?.[0]?.total_revenue}</label>
+                        <label className="mb-3 fw-bold fs-2">Total Revenue: {dashboardList?.data?.[0]?.total_revenue}</label>
                         <HighChartDetails chart={2} />
                     </div>
 
@@ -201,7 +202,7 @@ const Dashboard = () => {
 
                 <DataTable
                     columns={columns}
-                    data={data?.data?.[0]?.mostOrderItem}
+                    data={dashboardList?.data?.[0]?.mostOrderItem}
                     pagination
         paginationPerPage={paginationPerDetails?.perPage}
 
@@ -213,7 +214,7 @@ const Dashboard = () => {
                         perPage: data,
                       });
                     }}
-                    progressPending={isLoading ? true : false}
+                    progressPending={loading == "pending" ? true : false}
                     progressComponent={
                         <div className="py-5 my-5">
                             <Spinner animation="border" variant="primary" />

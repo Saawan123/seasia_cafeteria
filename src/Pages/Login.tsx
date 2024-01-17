@@ -138,13 +138,13 @@ console.log(employeeList,"eplplplp")
         id: 2,
       },
       {
-        name:
-          "Name" +
-          "=" +
-          `${employeeList?.data?.FirstName +
-          " " +
-          employeeList?.data?.LastName
-          }`,
+        name:"Go To Profile",
+          // "Name" +
+          // "=" +
+          // `${employeeList?.data?.FirstName +
+          // " " +
+          // employeeList?.data?.LastName
+          // }`,
         id: 3,
       },
       {
@@ -382,6 +382,7 @@ navigate("/UserProfile")
                         
                         localStorage.setItem("showLoginButton", "false"); // Store showLoginButton status
                         localStorage.setItem("apiResponse", JSON.stringify(x?.payload));
+                        localStorage.setItem("Role", JSON.stringify(roleUSer));
                       }
                       else {
                         setShowModal(false);

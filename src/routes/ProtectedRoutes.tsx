@@ -15,15 +15,16 @@ export const getToken = () => {
     },
   };
 };
-
+// authentication for user
 export const ProtectedRouteCheck:any = () => {
-  // const isAuth = useAuth();
+  const isAuth = useAuth(); 
  const role = localStorage.getItem("apiResponse")
-  return role ? <Navigate to="/UserProfile" /> : <Navigate to ="/"/>;
+  return isAuth && role==="User" ? <Outlet /> : <Navigate to ="/"/>;
 };
-
+// authentication for admin
 const ProtectedRoute :any = () => {
   const isAuth = useAuth();
+  
   return isAuth ? (
     <>
       <Sidebar />

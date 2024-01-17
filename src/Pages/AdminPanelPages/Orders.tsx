@@ -12,13 +12,15 @@ import ToastifyShow from '../../components/ToastifyShow';
 import ToolTipDetails from '../../components/ToolTipDetails';
 import InputSearch from '../../components/InputSearch';
 import ChatBot from '../../components/Chatbot';
+import { useGetPostQuery } from '../../store/Dashboard/dashboardServicertk';
 
 const UserList = () => {
   const {loginOtp } = useSelector(
     (state: any) => state?.auth
   );
   const { employeeList } = useSelector((state: any) => state?.userProfile);
-
+  const {data}:any = useGetPostQuery()
+console.log(data,"dat6666")
   console.log(loginOtp?.data?.empDetails?.role,"plplplpi988887")
   const [activeTab, setActiveTab] = useState('customerOrders');
   const dispatch = useDispatch<AppDispatch>();

@@ -33,8 +33,9 @@
 //   );
 // }
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import ProtectedRoute, { ProtectedRouteCheck } from "./ProtectedRoutes";;
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import ProtectedRoute, { ProtectedRouteCheck } from "./ProtectedRoutes";
+import "../routes/route.scss"
 const Dashboard = React.lazy(() => import("../Pages/AdminPanelPages/Dashboard"))
 const Login = React.lazy(() => import("../Pages/Login"));
 const User = React.lazy(()=>import("../Pages/UserPanel/UserProfile"))
@@ -45,11 +46,13 @@ const UserList = React.lazy(() => import("../Pages/AdminPanelPages/UserList"));
 const Menu = React.lazy(() => import("../Pages/AdminPanelPages/Menu"));
 
 export default function RouteFile() {
+  const navigate = useNavigate()
   return (
     <Routes>
   
       {/* Use ProtectedRoute for routes that require authentication */}
       <Route path="/" element={<Login />} />
+       <Route path="/UserProfile" element ={<ProtectedRouteCheck/>}>
       <Route
         path="/UserProfile"
         element={
@@ -58,7 +61,8 @@ export default function RouteFile() {
        
         }
       />
-       
+        
+       </Route>
       <Route
         path="/AdminPanel"
         element={<ProtectedRoute />} 
@@ -71,7 +75,21 @@ export default function RouteFile() {
         <Route path="/AdminPanel/user-list" element={<UserList />} />
         <Route path="/AdminPanel/Menu" element={<Menu />} />
       </Route>
+      <Route path="*" element={
+      <div>
+<div className="d-flex justify-content-center align-items-center mt-5">
 
+      <h2>Something Went Wrong...</h2>
+</div>
+      <div className="d-flex justify-content-center align-items-center mt-5">
+
+      <button className="error-btn text-warning fw-bold" onClick={()=>{navigate("/");
+    localStorage.clear()
+    }}>Back to Login</button>
+      </div>
+      </div>
+      
+      } />
       {/* Public routes that don't require authentication */}
     </Routes>
   );

@@ -17,6 +17,7 @@ export const postApi:any = createApi({
     endpoints: (builder) => ({
         getPost: builder.query({
             query: () => '/'
+            
         })
     })
 })

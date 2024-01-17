@@ -74,7 +74,7 @@ const ProfileInfo = () => {
         {employeeList?.data?.email}
         {employeeList?.data?.role}
     {employeeList?.data?.wallet} */}
-<ChatBot/>
+{/* <ChatBot/> */}
             </div>
         </div>
     )
