@@ -52,7 +52,7 @@ export default function RouteFile() {
   
       {/* Use ProtectedRoute for routes that require authentication */}
       <Route path="/" element={<Login />} />
-       <Route path="/UserProfile" element ={<ProtectedRouteCheck/>}>
+       <Route path="/" element ={<ProtectedRouteCheck/>}>
       <Route
         path="/UserProfile"
         element={

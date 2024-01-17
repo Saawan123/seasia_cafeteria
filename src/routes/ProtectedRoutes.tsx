@@ -18,8 +18,8 @@ export const getToken = () => {
 // authentication for user
 export const ProtectedRouteCheck:any = () => {
   const isAuth = useAuth(); 
- const role = localStorage.getItem("apiResponse")
-  return isAuth && role==="User" ? <Outlet /> : <Navigate to ="/"/>;
+//  const role = localStorage.getItem("Role")
+  return isAuth ? <Outlet /> : <Navigate to ="/"/>;
 };
 // authentication for admin
 const ProtectedRoute :any = () => {
