@@ -48,7 +48,7 @@ const CommonDrawer = ({ show, orderItems, onClose, selectedMenuItem,  setOrderIt
     setOrderItems(updatedOrderItems); // Update the orderItems state to reflect the deletion
   };
   return (
-    <div className={drawerClasses}>
+    <div className={drawerClasses} style={{overflowY: "auto" }}>
       <p>Order Details</p>
       <div className="gap-3  p-4 row" >
         {orderItems?.map((item: any, index: any) => (

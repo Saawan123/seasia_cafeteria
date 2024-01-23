@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import "../components/chatbox.scss"
+import "../components/chatbox.scss";
+
 interface Message {
     text: string;
     isUser: boolean;
@@ -8,16 +9,18 @@ interface Message {
 const ChatBot: React.FC = () => {
     const [input, setInput] = useState<string>('');
     const [messages, setMessages] = useState<Message[]>([]);
-
     const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
 
     useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            setIsChatOpen(true);
-        }, 1000);
+        const hasChatOpenedBefore = localStorage.getItem('hasChatOpened');
 
-        return () => clearTimeout(timeoutId);
+        if (!hasChatOpenedBefore) {
+            // If chat hasn't opened before, open it
+            setIsChatOpen(true);
+            localStorage.setItem('hasChatOpened', 'true');
+        }
     }, []);
+
     useEffect(() => {
         // Initial greeting from the chatbot
         addMessage({ text: 'Hello! How can I help you today?', isUser: false });
@@ -36,7 +39,6 @@ const ChatBot: React.FC = () => {
 
         addMessage({ text: input, isUser: true });
 
-
         setTimeout(async () => {
             const botResponse = await fetchBotResponse(input);
             addMessage({ text: botResponse, isUser: false });
@@ -45,7 +47,6 @@ const ChatBot: React.FC = () => {
     };
 
     const fetchBotResponse = async (userInput: string): Promise<string> => {
-
         return new Promise<string>((resolve) => {
             setTimeout(() => {
                 resolve(`Ram Ram bhai: ${userInput}`);
@@ -83,16 +84,12 @@ const ChatBot: React.FC = () => {
                         ))}
                     </div>
                     <div className=' my-2 gap-2 d-flex' style={{ position: 'absolute', bottom: '0px', left: '3px', width: '100%' }}>
-                        <input type="text" value={input} className="input-style mb-1"onChange={handleUserInput} />
+                        <input type="text" value={input} className="input-style mb-1" onChange={handleUserInput} />
                         <button onClick={handleSendMessage} className='chat-btn'>Send</button>
                         <button onClick={handleClearChat} className='chat-btn'>Clear</button>
                     </div>
                 </div>
             )}
-
-
-
-
         </div>
     );
 };

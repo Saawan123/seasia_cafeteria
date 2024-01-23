@@ -214,6 +214,7 @@ navigate("/UserProfile")
         <p className="loader1">
           {loadingOtp == "pending" && <FullScreenLoader />}
         </p>
+        {drawerOpen && <BackDrop closeDrawer={handleBackdropClick} />}
         <SlideDrawer
           show={drawerOpen}
           orderItems={orderItems}
@@ -222,7 +223,6 @@ navigate("/UserProfile")
           addItemToOrder={addItemToOrder}
           setOrderItems={setOrderItems}
         />
-        {drawerOpen && <BackDrop closeDrawer={handleBackdropClick} />}
         <div className="upper-right-div d-flex gap-4 mb-3 p-4">
           {showLoginButton == false ?
             <div >

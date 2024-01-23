@@ -89,8 +89,9 @@ const SlideDrawer = ({ show, orderItems, onClose, selectedMenuItem, setOrderItem
 
 
   return (
-    <div className={drawerClasses}>
+    <div className={drawerClasses} style={{overflowY: "auto" }}>
       {orderItems.length != 0 && <p>Order Details</p>}
+      
       <div className="gap-3 p-4 row">
         <div className="gap-3 p-4 row">
           {orderItems?.map((orderedItem: any, index: number) => (

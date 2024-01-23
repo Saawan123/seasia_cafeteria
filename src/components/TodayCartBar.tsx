@@ -92,7 +92,7 @@ const TodayCartBar = ({ show, orderItems, onClose, selectedMenuItem, setOrderIte
         setOrderItems(updatedOrderItems); 
     };
     return (
-        <div className={drawerClasses}>
+        <div className={drawerClasses} style={{overflowY: "auto" }}>
             <p>Order Details</p>
             <div className="gap-3 p-4 row">
                 <div className="gap-3 p-4 row">

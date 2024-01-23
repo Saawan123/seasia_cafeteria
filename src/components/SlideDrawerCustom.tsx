@@ -53,7 +53,7 @@ const SlideDrawerCustom = ({ show, orderItems, onClose, selectedMenuItem,  setOr
     setOrderItems(updatedOrderItems); // Update the orderItems state to reflect the deletion
   };
   return (
-    <div className={drawerClasses}>
+    <div className={drawerClasses} style={{overflow: "auto" }}>
      { orderItems.length != 0 && <p>Order Details</p>}
       <div className="gap-3  p-4 row" >
         {orderItems?.map((item: any, index: any) => (
