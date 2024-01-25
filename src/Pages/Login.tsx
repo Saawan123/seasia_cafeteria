@@ -104,7 +104,7 @@ console.log(employeeList,"eplplplp")
   
   const Options =
 
-    loginOtp?.data?.empDetails?.role != "User" ? [
+    loginOtp?.data?.role != "User" ? [
  
       {
         name: "Balance" + "=" + `₹ ${employeeList?.data?.balance}`,
@@ -369,7 +369,8 @@ navigate("/UserProfile")
                     const otp = loginDataDetails.otp;
                     await dispatch(otpLogin({ emp_id, otp })).then((x: any) => {
                       let { token } = x?.payload?.data;
-                      let roleUSer = x?.payload?.data?.empDetails?.role;
+                      let roleUSer = x?.payload?.data?.role;
+                      console.log(roleUSer,"8888")
                       ToastifyShow("Otp Verified Successfully", "success");
                     
                       if (token) {
